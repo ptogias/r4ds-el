@@ -1,31 +1,31 @@
-# Preface to the second edition {.unnumbered}
+# Πρόλογος δεύτερης έκδοσης {.unnumbered}
 
-Welcome to the second edition of "R for Data Science"!
-This is a major reworking of the first edition, removing material we no longer think is useful, adding material we wish we included in the first edition, and generally updating the text and code to reflect changes in best practices.
-We're also very excited to welcome a new co-author: Mine Çetinkaya-Rundel, a noted data science educator and one of our colleagues at Posit (the company formerly known as RStudio).
+Καλώς ήρθατε στη δεύτερη έκδοση του βιβλίου "Η R για την Επιστήμη των Δεδομένων"!
+Ποόκειται για μια μεγάλης κλίμακας επανεπεξεργασία της πρώτης έκδοσης, αφαιρώντας υλικό που δεν θεωρούμε πλέον χρήσιμο, προσθέτωντας υλικό που θα θέλαμε να είχαμε συμπεριλάβει στην πρώτη έκδηση και γενικά ανανεώνοντας το κείμενο και τον κώδικα για να αντικατοπτρίζουν αλλαγές στις βέλτιστες πρακτικές.
+Είμαστε επίσης ιδιαίτερα ενθουσιασμένοι που καλωσορίζουμε μια νέα συν-συγγραφέα: την Mine Çetinkaya-Rundel, μια διακεκριμένη εκπαιδευτικό στην επιστήμη των δεδομένων και μία από τους συναδέλφους μας στο Posit (την εταιρεία που ήταν παλαιότερα γνωστή ως RStudio).
 
-A brief summary of the biggest changes follows:
+Ακολουθεί μια σύντομη περίληψη των μεγαλύτερων αλλαγών:
 
--   The first part of the book has been renamed to "Whole game".
-    The goal of this section is to give you the rough details of the "whole game" of data science before we dive into the details.
+-   Το πρώτο μέρος του βιβλίου μετονομάστηκε σε "Η ολοκληρωμένη εικόνα".
+    Ο στόχος αυτής της ενότητας είναι να σας δώσει την ευρύτερη εικόνα της επιστήμης δεδομένων προτού εμβαθύνουμε σε λεπτομέρειες.
 
--   The second part of the book is "Visualize".
-    This part gives data visualization tools and best practices a more thorough coverage compared to the first edition.
-    The best place to get all the details is still the [ggplot2 book](http://ggplot2-book.org/), but now R4DS covers more of the most important techniques.
+-   Το δεύτερο μέρος του βιβλίου ονομάζεται «Οπτικοποίηστε».
+    Αυτό το μέρος παρέχει στα εργαλεία οπτικοποίησης των δεδομένων και στις βέλτιστες πρακτικές μια πιο εμπεριστατωμένη κάλυψη, σε σύγκριση με την πρώτη έκδοση.
+    Το καλύτερο μέρος όπου θα βρείτε όλες τις λεπτομέρειες εξακολουθεί να είναι το [ggplot2 book](http://ggplot2-book.org/), αλλά πλέον το R4DS καλύπτει περισσότερες από τις πιο σημαντικές τεχνικές.
 
--   The third part of the book is now called "Transform" and gains new chapters on numbers, logical vectors, and missing values.
-    These were previously parts of the data transformation chapter, but needed much more room to cover all the details.
+-   Το τρίτο μέρος του βιβλίου ονομάζεται πλέον "Μετασχηματίστε" και περιλαμβάνει νέα κεφάλαια σχετικά με αριθμούς, λογικά διανύσματα και κενές τιμές.
+    Αυτά ήταν προηγουμένως μέρη του κεφαλαίου του μετασχηματισμού δεδομένων, αλλά χρειάζονταν πολύ περισσότερο χώρο για να καλυφθούν όλες οι λεπτομέρειες.
 
--   The fourth part of the book is called "Import".
-    It's a new set of chapters that goes beyond reading flat text files to working with spreadsheets, getting data out of databases, working with big data, rectangling hierarchical data, and scraping data from web sites.
+-   Το τέταρτο μέρος του βιβλίου ονομάζεται «Εισάγεται δεδομένα».
+    Πρόκειται για ένα νέο σύνολο κεφαλαίων που επεκτείνεται πέρα από την ανάγνωση απλών αρχείων κειμένων στην εργασία με υπολογιστικά φύλλα, τη λήψη δεδομένων από βάσεις δεδομένων, την εργασία με μεγάλου όγκου δεδομένα (big data), την αναδόμηση ιεραρχικών δεδομένων (rectangling hierarchical data) και την εξαγωγή δεδομένων από ιστοσελίδες (web scraping).
 
--   The "Program" part remains, but has been rewritten from top-to-bottom to focus on the most important parts of function writing and iteration.
-    Function writing now includes details on how to wrap tidyverse functions (dealing with the challenges of tidy evaluation), since this has become much easier and more important over the last few years.
-    We've added a new chapter on important base R functions that you're likely to see in wild-caught R code.
+-   Το μέρος "Προγραμματίστε" παραμένει, αλλά έχει ξαναγραφτεί από πάνω προς τα κάτω ώστε να εστιάσει στα πιο σημαντικά μέρη της δημιουργίας συναρτήσεων και των δομών επανάληψης.
+    Η δημιουργία συναρτήσεων περιλαμβάνει πλέον λεπτομέρειες σχετικά με τον τρόπο περιτύλιξης (wrapping) των συναρτήσεων του tidyverse (αντιμετώπιση των προκλήσεων που προκύπτουν από τον τρόπο που οι tidy συναρτήσεις αξιολογούν τα ορίσματα), καθώς αυτό έχει γίνει πολύ πιο εύκολο και σημαντικό τα τελευταία χρόνια.
+    Έχουμε ακόμη προσθέσει ένα νέο κεφάλαιο με σημαντικές συναρτήσεις της base R που είναι πιθανό να συναντήσετε εκεί έξω.
 
--   The modeling part has been removed.
-    We never had enough room to fully do modelling justice, and there are now much better resources available.
-    We generally recommend using the [tidymodels](https://www.tidymodels.org/) packages and reading [Tidy Modeling with R](https://www.tmwr.org/) by Max Kuhn and Julia Silge.
+-   Το τμήμα της μοντελοποίησης έχει αφαιρεθεί.
+    Ποτέ δεν είχαμε αρκετό χώρο για να αποδώσουμε πλήρως τη μοντελοποίηση και πλέον υπάρχουν πολύ καλύτεροι διαθέσιμοι πόροι.
+    Γενικά συνιστούμε να χρησιμοποιήσετε τα πακέτα [tidymodels](https://www.tidymodels.org/), καθώς και να διαβάσετε το [Tidy Modeling with R](https://www.tmwr.org/) των Max Kuhn και Julia Silge.
 
--   The "Communicate" part remains, but has been thoroughly updated to feature [Quarto](https://quarto.org/) instead of R Markdown.
-    This edition of the book has been written in Quarto, and it's clearly the tool of the future.
+-   Το τμήμα "Επικοινωνήστε" παραμένει, αλλά έχει ενημερωθεί διεξοδικά ώστε να περιλαμβάνει το [Quarto](https://quarto.org/) στη θέση του R Markdown.
+    Αυτή η έκδοση του βιβλίου έχει γραφτεί σε Quarto και αποτελεί ξεκάθαρα το εργαλείο του μέλλοντος.
