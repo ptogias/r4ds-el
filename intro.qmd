@@ -91,12 +91,6 @@ knitr::include_graphics("diagrams/data-science/base.png", dpi = 270)
 Κάθε ενότητα του βιβλίου συνδυάζεται με ασκήσεις που θα σας βοηθήσουν να εξασκήσετε αυτά που έχετε μάθει.
 Αν και μπορεί να είναι δελεαστικό να παραλείψετε τις ασκήσεις, δεν υπάρχει καλύτερος τρόπος για να μάθετε από την εξάσκηση πάνω σε πραγματικά προβλήματα.
 
-## What you won't learn
-
-There are several important topics that this book doesn't cover.
-We believe it's important to stay ruthlessly focused on the essentials so you can get up and running as quickly as possible.
-That means this book can't cover every important topic.
-
 ## Τι δεν θα μάθετε
 
 Υπάρχουν πολλά σημαντικά θέματα που δεν καλύπτει αυτό το βιβλίο.
