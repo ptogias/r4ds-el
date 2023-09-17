@@ -152,7 +152,7 @@ knitr::include_graphics("diagrams/data-science/base.png", dpi = 270)
 Προς το παρόν, το μόνο που χρειάζεται να γνωρίζετε είναι ότι πληκτρολογείτε τον κώδικα σε R στο παράθυρο της κονσόλας και πατάτε enter για να τον εκτελέσετε.
 Θα μάθετε περισσότερα καθώς προχωράμε![^intro-1]
 
-[^intro-1]: If you'd like a comprehensive overview of all of RStudio's features, see the RStudio User Guide at <https://docs.posit.co/ide/user>.
+[^intro-1]: Εάν θέλετε μια ολοκληρωμένη επισκόπηση όλων των δυνατοτήτων του RStudio, ανατρέξτε στον αντίστοιχο Οδηγό Χρήστη στη διεύθυνση <https://docs.posit.co/ide/user>.
 
 ```{r}
 #| label: fig-rstudio-console
