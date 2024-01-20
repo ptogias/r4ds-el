@@ -14,10 +14,8 @@ source("_common.R")
 #| label: fig-ds-visualize
 #| echo: false
 #| fig-cap: |
-#|   Data visualization is often the first step in data exploration.
 #|   Η οπτικοποίηση δεδομένων είναι συχνά το πρώτο βήμα κατα την εξερεύνηση των δεδομένων.
 #| fig-alt: |
-#|   Our data science model, with visualize highlighted in blue.
 #|   Το μοντέλο επιστήμης των δεδομένων με την οπτικοποίηση τονισμένη.
 #| out.width: NULL
 
