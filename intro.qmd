@@ -1,4 +1,4 @@
-# Εισαγωγή {#sec-intro}
+# Introduction {#sec-intro .unnumbered}
 
 ```{r}
 #| echo: false
