@@ -162,7 +162,7 @@ In fact, Quarto uses Pandoc markdown (a slightly extended version of Markdown th
 While Markdown is designed to be easy to read and write, as you will see in @sec-source-editor, it still requires learning new syntax.
 Therefore, if you're new to computational documents like `.qmd` files but have experience using tools like Google Docs or MS Word, the easiest way to get started with Quarto in RStudio is the visual editor.
 
-In the visual editor you can either use the buttons on the menu bar to insert images, tables, cross-references, etc. or you can use the catch-all <kbd>⌘ /</kbd> shortcut to insert just about anything.
+In the visual editor you can either use the buttons on the menu bar to insert images, tables, cross-references, etc. or you can use the catch-all <kbd>⌘</kbd> + <kbd>/</kbd> or <kbd>Ctrl</kbd> + <kbd>/</kbd> shortcut to insert just about anything.
 If you are at the beginning of a line (as shown in @fig-visual-editor), you can also enter just <kbd>/</kbd> to invoke the shortcut.
 
 ```{r}
@@ -403,7 +403,7 @@ When the report is rendered, the results of these computations are inserted into
 > The distribution of the remainder is shown below:
 
 When inserting numbers into text, `format()` is your friend.
-It allows you to set the number of `digits` so you don't print to a ridiculous degree of accuracy, and a `big.mark` to make numbers easier to read.
+It allows you to set the number of `digits` so you don't print to a ridiculous degree of precision, and a `big.mark` to make numbers easier to read.
 You might combine these into a helper function:
 
 ```{r}
@@ -863,5 +863,5 @@ We have also not touched on what you should actually write in order to clearly c
 To improve your writing, we highly recommend reading either [*Style: Lessons in Clarity and Grace*](https://www.amazon.com/Style-Lessons-Clarity-Grace-12th/dp/0134080416) by Joseph M. Williams & Joseph Bizup, or [*The Sense of Structure: Writing from the Reader's Perspective*](https://www.amazon.com/Sense-Structure-Writing-Readers-Perspective/dp/0205296327) by George Gopen.
 Both books will help you understand the structure of sentences and paragraphs, and give you the tools to make your writing more clear.
 (These books are rather expensive if purchased new, but they're used by many English classes so there are plenty of cheap second-hand copies).
-George Gopen also has a number of short articles on writing at <https://www.georgegopen.com/the-litigation-articles.html>.
+George Gopen also has a number of short articles on writing at <https://www.georgegopen.com/litigation-articles.html>.
 They are aimed at lawyers, but almost everything applies to data scientists too.
