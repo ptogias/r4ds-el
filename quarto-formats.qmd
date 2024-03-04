@@ -1,4 +1,4 @@
-# Quarto formats {#sec-quarto-formats}
+# Επιλογές μορφοποίσης στο Quarto {#sec-quarto-formats}
 
 ```{r}
 #| echo: false
@@ -6,21 +6,21 @@
 source("_common.R")
 ```
 
-## Introduction
+## Εισαγωγή
 
-So far, you've seen Quarto used to produce HTML documents.
-This chapter gives a brief overview of some of the many other types of output you can produce with Quarto.
+Μέχρι τώρα, έχετε δει το Quarto να χρησιμοποιείται για την παραγωγή HTML αρχείων.
+Αυτό το κεφάλαιο παρέχει μια σύντομη περίληψη ορισμένων από τους πολλούς τύπους εγγράφων εξόδου που μπορείτε να παράγετε με το Quarto.
 
-There are two ways to set the output of a document:
+Υπάρχουν δύο τρόποι για να καθορίσε τον τύπο του αρχείου εξόδου:
 
-1.  Permanently, by modifying the YAML header:
+1.  Μόνιμα, τροποποιώντας την YAML επικεφαλίδα:
 
     ``` yaml
     title: "Diamond sizes"
     format: html
     ```
 
-2.  Transiently, by calling `quarto::quarto_render()` by hand:
+2.  Παροδικά, καλώντας την εντολή `quarto::quarto_render()`:
 
     ```{r}
     #| eval: false
@@ -28,7 +28,7 @@ There are two ways to set the output of a document:
     quarto::quarto_render("diamond-sizes.qmd", output_format = "docx")
     ```
 
-    This is useful if you want to programmatically produce multiple types of output since the `output_format` argument can also take a list of values.
+    Αυτή η επιλογή είναι χρήσιμη εάν θέλετε να παράγετε προγραμματιστικά το ίδιο αποτέλεσμα σε πολλαπλούς τύπους εγγράφων, μιας και το όρισμα `output_format` μπορεί να πάρει μια λίστα από τιμές.
 
     ```{r}
     #| eval: false
@@ -36,14 +36,14 @@ There are two ways to set the output of a document:
     quarto::quarto_render("diamond-sizes.qmd", output_format = c("docx", "pdf"))
     ```
 
-## Output options
+## Επιλογές αρχείων εξόδου
 
-Quarto offers a wide range of output formats.
-You can find the complete list at <https://quarto.org/docs/output-formats/all-formats.html>.
-Many formats share some output options (e.g., `toc: true` for including a table of contents), but others have options that are format specific (e.g., `code-fold: true` collapses code chunks into a `<details>` tag for HTML output so the user can display it on demand, it's not applicable in a PDF or Word document).
+Το Quarto προσφέρει ένα ευρύ φάσμα μορφών εξόδου.
+Μπορείτε να βρείτε την πλήρη λίστα στη διεύθυνση <https://quarto.org/docs/output-formats/all-formats.html>.
+Πολλές μορφές μοιράζονται ορισμένες επιλογές εξόδου (για παράδειγμα, `toc: true` για τη συμπερίληψη πίνακα περιεχομένων), ενώ άλλες έχουν επιλογές που είναι συγκεκριμένες για τη μορφή αυτή (για παράδειγμα το `code-fold: true` συμπτύσσει κομμάτια κώδικα σε μια `<details>` ετικέτα για HTML αρχεία εξόδου, ώστε ο χρήστης να μπορεί να την εμφανίσει κατ' επιλογή, που δεν είναι διαθέσιμο για έγγραφα PDF ή Word).
 
-To override the default options, you need to use an expanded `format` field.
-For example, if you wanted to render an `html` with a floating table of contents, you'd use:
+Για να παρακάμψετε τις προεπιλεγμένες επιλογές, πρέπει να χρησιμοποιήσετε ένα επεκτεινόμενο πεδίο `format`.
+Για παράδειγμα, εάν θέλατε να δημιουργήσετε ένα `html` αρχείο με έναν αιωρούμενο (floating) πίνακα περιεχομένων, θα χρησιμοποιούσατε:
 
 ``` yaml
 format:
@@ -52,7 +52,7 @@ format:
     toc_float: true
 ```
 
-You can even render to multiple outputs by supplying a list of formats:
+Μπορείτε ακόμη να δημιουργήσετε πολλαπλά αρχεία εξόδου, παρέχοντας μια λίστα επιλογών μορφοποίησης:
 
 ``` yaml
 format:
@@ -63,9 +63,9 @@ format:
   docx: default
 ```
 
-Note the special syntax (`pdf: default`) if you don't want to override any default options.
+Παρατηρήστε το ιδιαίτερο συντακτικό (`pdf: default`) που θα πρέπει να χρησιμοποιήσετε εάν δεν θέλετε να παρακάμψετε τις προκαθορισμένες επιλογές.
 
-To render to all formats specified in the YAML of a document, you can use `output_format = "all"`.
+Για να παράγετε (render) όλες τις επιλογές μορφοποίησης που καθορίζονται στην κεφαλίδα YAML ενίς εγγράφου, μπορείτε να χρησιμοποιήσετε την επιλογή `output_format = "all"`.
 
 ```{r}
 #| eval: false
@@ -73,33 +73,31 @@ To render to all formats specified in the YAML of a document, you can use `outpu
 quarto::quarto_render("diamond-sizes.qmd", output_format = "all")
 ```
 
-## Documents
+## Έγγραφα
 
-The previous chapter focused on the default `html` output.
-There are several basic variations on that theme, generating different types of documents.
-For example:
+Το προηγούμενο κεφάλαιο εστίασε στην προκαθορισμένη επιλογή των `html` αρχείων εξόδου.
+Υπάρχουν διάφορες βασικές παραλλαγές αυτού του θέματος, οι οποίες παράγουν διαφορετικούς τύπους εγγράφων.
+Για παράδειγμα: - Το `pdf` δημιουργεί ένα PDF χρησιμοποιώντας LaTeX (ένα σύστημα ανοιχτού κώδικα για τη διάταξη εγγράφων), το οποίο θα πρέπει να εγκαταστήσετε.
+Το RStudio θα σας ζητήσει αν δεν το έχετε ήδη.
 
--   `pdf` makes a PDF with LaTeX (an open-source document layout system), which you'll need to install.
-    RStudio will prompt you if you don't already have it.
+-   Το `docx` για έγγραφα του Microsoft Word (`.docx`).
 
--   `docx` for Microsoft Word (`.docx`) documents.
+-   Το `odt` για έγγραφα OpenDocument Text (`.odt`).
 
--   `odt` for OpenDocument Text (`.odt`) documents.
+-   Το `rtf` για έγγραφα με μορφή εμπλουτισμένου κειμένου (`.rtf`).
 
--   `rtf` for Rich Text Format (`.rtf`) documents.
+-   Το `gfm` για ένα έγγραφο GitHub Flavored Markdown (`.md`).
 
--   `gfm` for a GitHub Flavored Markdown (`.md`) document.
+-   Το `ipynb` για Jupyter Notebooks (`.ipynb`).
 
--   `ipynb` for Jupyter Notebooks (`.ipynb`).
-
-Remember, when generating a document to share with decision-makers, you can turn off the default display of code by setting global options in the document YAML:
+Θυμηθείτε, όταν δημιουργείτε ένα έγγραφο που σκοπεύετε να μοιραστείτε με τους υπεύθυνους λήψης αποφάσεων, μπορείτε να απενεργοποιήσετε την προεπιλεγμένη εμφάνιση του κώδικα ορίζοντας τις αντίστοιχες καθολικές επιλογές στην κεφαλίδα YAML του εγγράφου:
 
 ``` yaml
 execute:
   echo: false
 ```
 
-For `html` documents another option is to make the code chunks hidden by default, but visible with a click:
+Μια εναλλακτική επιλογή για `html` έγγραφα είναι η τα κομμάτια του κώδικα να παραμένουν κρυμμένα από προεπιλογή, αλλά να γίνονται ορατά με ένα κλικ:
 
 ``` yaml
 format:
@@ -107,34 +105,34 @@ format:
     code: true
 ```
 
-## Presentations
+## Παρουσιάσεις
 
-You can also use Quarto to produce presentations.
-You get less visual control than with a tool like Keynote or PowerPoint, but automatically inserting the results of your R code into a presentation can save a huge amount of time.
-Presentations work by dividing your content into slides, with a new slide beginning at each second (`##`) level header.
-Additionally, first (`#`) level headers indicate the beginning of a new section with a section title slide that is, by default, centered in the middle.
+Μπορείτε επίσης να χρησιμοποιήσετε το Quarto για τη δημιουργία παρουσιάσεων.
+Έχετε λιγότερο οπτικό έλεγχο από ό,τι με ένα εργαλείο όπως το Keynote ή το PowerPoint, αλλά η αυτόματη εισαγωγή των αποτελεσμάτων του κώδικα σας σε R σε μια παρουσίαση μπορεί να εξοικονομήσει σημαντικό χρόνο.
+Οι παρουσιάσεις λειτουργούν διαιρώντας το περιεχόμενό σας σε διαφάνειες, με μια νέα διαφάνεια να ξεκινά σε κάθε κεφαλίδα δεύτερου επιπέδου (`##`).
+Επιπλέον, οι κεφαλίδες πρώτου επιπέδου (`#`) υποδεικνύουν την αρχή μιας νέας ενότητας με μια διαφάνεια τίτλου ενότητας που είναι, από προεπιλογή, κεντραρισμένη στη μέση.
 
-Quarto supports a variety of presentation formats, including:
+Το Quarto υποστηρίζεθ μια ποικιλία μορφών παρουσίασης, που περιλαμβάνουν:
 
-1.  `revealjs` - HTML presentation with revealjs
+1.  `revealjs` - HTML παρουσιάσεις με τη χρήση revealjs
 
-2.  `pptx` - PowerPoint presentation
+2.  `pptx` - PowerPoint παρουσιάσεις
 
-3.  `beamer` - PDF presentation with LaTeX Beamer.
+3.  `beamer` - PDF παρουσιάσεις με τη χρήση LaTeX Beamer.
 
-You can read more about creating presentations with Quarto at [https://quarto.org/docs/presentations](https://quarto.org/docs/presentations/).
+Μπορείτε να διαβάσετε περισσότερα για τη δημιουργία παρουσιάσεων με το Quarto στο [https://quarto.org/docs/presentations](https://quarto.org/docs/presentations/).
 
-## Interactivity
+## Διαδραστικότητα
 
-Just like any HTML document, HTML documents created with Quarto can contain interactive components as well.
-Here we introduce two options for including interactivity in your Quarto documents: htmlwidgets and Shiny.
+Όπως και με κάθε άλλο HTML έγγραφο, τα HTML έγγραφα που δημιουργούνται με το Quarto μπορούν να περιέχουν και διαδραστικά στοιχεία.
+Εδώ εισάγουμε δύο επιλογές για να συμπεριλάβουμε διαδραστικότητα στα Quarto έγγραφα μας: τα htmlwidgets και το Shiny.
 
 ### htmlwidgets
 
-HTML is an interactive format, and you can take advantage of that interactivity with **htmlwidgets**, R functions that produce interactive HTML visualizations.
-For example, take the **leaflet** map below.
-If you're viewing this page on the web, you can drag the map around, zoom in and out, etc.
-You obviously can't do that in a book, so Quarto automatically inserts a static screenshot for you.
+Το HTML είναι μια διαδραστική μορφή και μπορείτε να επωφεληθείτε από αυτή τη διαδραστικότητα με τη χρήση **htmlwidgets**, συναρτήσεων της R που παράγουν διαδραστικές HTML απεικονίσεις.
+Για παράδειγμα, πάρτε τον **leaflet** χάρτη στην παρακάτω εικόνα.
+Εάν προβάλλετε αυτήν τη σελίδα στο διαδίκτυο, μπορείτε να σύρετε τον χάρτη, να τον μεγεθύνετε και μικρύνετε κλπ.
+Προφανώς δεν μπορείτε να το κάνετε αυτό σε ένα βιβλίο, οπότε το Quarto εισάγει αυτόματα ένα στατικό στιγμιότυπο για εσάς.
 
 ```{r}
 #| fig-alt: Leaflet map of Maungawhau / Mount Eden.
@@ -146,29 +144,29 @@ leaflet() |>
   addMarkers(174.764, -36.877, popup = "Maungawhau") 
 ```
 
-The great thing about htmlwidgets is that you don't need to know anything about HTML or JavaScript to use them.
-All the details are wrapped inside the package, so you don't need to worry about it.
+Το υπέροχο με τα htmlwidget είναι ότι δεν χρειάζεται να γνωρίζετε τίποτα για HTML ή JavaScript για να τη χρησιμοποιήσετε.
+Όλες οι λεπτομέρειες περιέχονται στο πακέτο, οπότε δεν χρειάζεται να ανησυχείτε για αυτό.
 
-There are many packages that provide htmlwidgets, including:
+Υπάρχουν πολλά πακέτα που παρέχουν htmlwidgets, συμπεριλαμβανομένων των:
 
--   [**dygraphs**](https://rstudio.github.io/dygraphs) for interactive time series visualizations.
+-   [**dygraphs**](https://rstudio.github.io/dygraphs) για διαδραστικές απεικονίσεις χρονοσειρών.
 
--   [**DT**](https://rstudio.github.io/DT/) for interactive tables.
+-   [**DT**](https://rstudio.github.io/DT/) για διαδραστικούς πίνακες.
 
--   [**threejs**](https://bwlewis.github.io/rthreejs) for interactive 3d plots.
+-   [**threejs**](https://bwlewis.github.io/rthreejs) για διαδραστικά τρισδιάστατα διαγράμματα.
 
--   [**DiagrammeR**](https://rich-iannone.github.io/DiagrammeR) for diagrams (like flow charts and simple node-link diagrams).
+-   [**DiagrammeR**](https://rich-iannone.github.io/DiagrammeR) για διαγράμματα (όπως διαγράμματα ροής και απλά διαγράμματα κόμβων-συνδέσμων).
 
-To learn more about htmlwidgets and see a complete list of packages that provide them visit <https://www.htmlwidgets.org>.
+Για να μάθετε περισσότερα σχετικά με τα htmlwidgets και για μια πλήρη λίστα των πακέτων που τα παρέχουν, επισκεφθείτε τη διεύθυνση <https://www.htmlwidgets.org>.
 
 ### Shiny
 
-htmlwidgets provide **client-side** interactivity --- all the interactivity happens in the browser, independently of R.
-On the one hand, that's great because you can distribute the HTML file without any connection to R.
-However, that fundamentally limits what you can do to things that have been implemented in HTML and JavaScript.
-An alternative approach is to use **shiny**, a package that allows you to create interactivity using R code, not JavaScript.
+Τα htmlwidgets παρέχουν διαδραστικότητα **από την πλευρά του χρήστη** (**client-side**) --- όλη η αλληλεπίδραση συμβαίνει στο πρόγραμμα περιήγησης, ανεξάρτητα από την R.
+Από τη μία, αυτό είναι υπέροχο γιατί μπορείτε να διανείμετε το HTML αρχείο σας χωρίς καμία σύνδεση με την R.
+Ωστόσο, αυτό περιορίζει θεμελιωδώς το τι μπορείτε να κάνετε σε στοιχεία που έχουν δημιουργηθεί με HTML και JavaScript.
+Μια εναλλακτική προσέγγιση είναι να χρησιμοποιήσετε το **shiny**, ένα πακέτο που σας επιτρέπει να δημιουργήσετε διαδραστικότητα χρησιμοποιώντας τον κώδικα R, κι όχι τη JavaScript.
 
-To call Shiny code from a Quarto document, add `server: shiny` to the YAML header:
+Για να εκτελέσετε τον κώδικα σας σε Shiny από ένα έγγραφο Quarto, προσθέστε την επιλογή `server: shiny` στην κεφαλίδα YAML:
 
 ``` yaml
 title: "Shiny Web App"
@@ -176,7 +174,7 @@ format: html
 server: shiny
 ```
 
-Then you can use the "input" functions to add interactive components to the document:
+Τώρα μπορείτε να χρησιμοποιήσετε τις συναρτήσεις εισαγωγής ("input") για να προσθέσετε διαδραστικά στοιχεία σε ένα έγγραφο:
 
 ```{r}
 #| eval: false
@@ -197,34 +195,34 @@ numericInput("age", "How old are you?", NA, min = 0, max = 150)
 knitr::include_graphics("quarto/quarto-shiny.png")
 ```
 
-And you also need a code chunk with chunk option `context: server` which contains the code that needs to run in a Shiny server.
+Χρειάζεστε επίσης ένα κομμάτι κώδικα με την επιλογή `context: server` που περιέχει τον κώδικα που πρέπει να εκτελεστεί σε έναν Shiny διακομιστή.
 
-You can then refer to the values with `input$name` and `input$age`, and the code that uses them will be automatically re-run whenever they change.
+Στη συνέχεια, μπορείτε να ανατρέξετε στις τιμές με χρησιμοποιώντας τα `input$name` και `input$age` και ο κώδικας που τις χρησιμοποιεί θα εκτελείται ξανά αυτόματα κάθε φορά που αυτά αλλάζουν.
 
-We can't show you a live shiny app here because shiny interactions occur on the **server-side**.
-This means that you can write interactive apps without knowing JavaScript, but you need a server to run them on.
-This introduces a logistical issue: Shiny apps need a Shiny server to be run online.
-When you run Shiny apps on your own computer, Shiny automatically sets up a Shiny server for you, but you need a public-facing Shiny server if you want to publish this sort of interactivity online.
-That's the fundamental trade-off of shiny: you can do anything in a shiny document that you can do in R, but it requires someone to be running R.
+Δεν μπορούμε να σας δείξουμε μια ζωντανή shiny εφαρμογή εδώ επειδή οι shiny αλληλεπιδράσεις πραγματοποιούνται από την **πλευρά του διακομιστή** (**server-side**).
+Αυτό σημαίνει ότι μπορείτε να γράψετε διαδραστικές εφαρμογές χωρίς να γνωρίζετε JavaScript, αλλά χρειάζεστε έναν διακομιστή για να τις εκτελέσετε.
+Αυτό εισάγει ένα τεχνικό ζήτημα: Οι εφαρμογές Shiny χρειάζονται έναν διακομιστή Shiny για να εκτελούνται στο διαδίκτυο.
+Όταν εκτελείτε τις εφαρμογές Shiny στον δικό σας υπολογιστή, το Shiny ρυθμίζει αυτόματα έναν διακομιστή Shiny για εσάς, αλλά χρειάζεστε έναν δημοσίως ορατό διακομιστή Shiny, εάν θέλετε να δημοσιεύσετε αυτού του είδους τη διαδραστικότητα στο διαδίκτυο.
+Αυτός είναι ο θεμελιώδης συμβιβασμός του shiny: σε ένα shiny έγγραφο μπορείτε να κάνετε ότι θα κάνατε και στην R, αλλά απαιτείται κάποιος να τρέχει την R.
 
-For learning more about Shiny, we recommend reading Mastering Shiny by Hadley Wickham, [https://mastering-shiny.org](https://mastering-shiny.org/).
+Για να μάθετε περισσότερα σχετικά με το Shiny, συνιστούμε να διαβάσετε το Mastering Shiny από τον Hadley Wickham, [https://mastering-shiny.org](https://mastering-shiny.org/).
 
-## Websites and books
+## Ιστοσελίδες και βιβλία
 
-With a bit of additional infrastructure, you can use Quarto to generate a complete website or book:
+Με λίγες επιπλέον υποδομές, μπορείτε να χρησιμοποιήσετε το Quarto για να δημιουργήσετε μια πλήρη ιστοσελίδα ή ένα βιβλίο:
 
--   Put your `.qmd` files in a single directory.
-    `index.qmd` will become the home page.
+-   Εισάγετε τα αρχεία σας με κατάληξη `.qmd` σε ένα κοινό μονοπάτι εργασίας.
+    Το `index.qmd` θα γίνει η αρχική σελίδα σας.
 
--   Add a YAML file named `_quarto.yml` that provides the navigation for the site.
-    In this file, set the `project` type to either `book` or `website`, e.g.:
+-   Προσθέστε ένα YAML αρχείο που ονομάζετε ως `_quarto.yml` και το οποίο παρέχει την πλοήγηση στον ιστότοπο.
+    Σε αυτό το αρχείο, ορίστε το `project` είτε ως `book` είτε ως `website`, για παράδειγμα:
 
     ``` yaml
     project:
       type: book
     ```
 
-For example, the following `_quarto.yml` file creates a website from three source files: `index.qmd` (the home page), `viridis-colors.qmd`, and `terrain-colors.qmd`.
+Για παράδειγμα, το ακόλουθο `_quarto.yml` αρχείο δημιουγρεί μια ιστοσελίδα από τρία αρχεία πηγαίου κώδικα: το `index.qmd` (αρχική σελίδα), το `viridis-colors.qmd`, και το `terrain-colors.qmd`.
 
 ```{r}
 #| echo: false
@@ -233,9 +231,9 @@ For example, the following `_quarto.yml` file creates a website from three sourc
 cat(readr::read_file("quarto/example-site.yml"))
 ```
 
-The `_quarto.yml` file you need for a book is very similarly structured.
-The following example shows how you can create a book with four chapters that renders to three different outputs (`html`, `pdf`, and `epub`).
-Once again, the source files are `.qmd` files.
+Το αρχείο `_quarto.yml` που χρειάζεστε για ένα βιβλίο ακολουθεί παρόμοια δομή.
+Το παρακάτω παράδειγμα δείχνει πως μπορείτε να δημιουργήσετε ένα βιβλίο με τέσσερα κεφάλαια, το οποίο παράγει τρία διαφορετικού τύπου αρχεία εξόδου (`html`, `pdf`, and `epub`).
+Και πάλι, τα αρχεία του πηγαίου κώδικα είναι αρχεία με κατάληξη `.qmd`.
 
 ```{r}
 #| echo: false
@@ -244,37 +242,39 @@ Once again, the source files are `.qmd` files.
 cat(readr::read_file("quarto/example-book.yml"))
 ```
 
-We recommend that you use an RStudio project for your websites and books.
-Based on the `_quarto.yml` file, RStudio will recognize the type of project you're working on, and add a Build tab to the IDE that you can use to render and preview your websites and books.
-Both websites and books can also be rendered using `quarto::quarto_render()`.
+Σας συνιστούμε να χρησιμοποιήσετε ένα RStudio project για τους ιστότοπους και τα βιβλία σας.
+Με βάση το αρχείο `_quarto.yml`, το RStudio θα αναγνωρίσει τον τύπο του project στο οποίο εργάζεστε και θα προσθέσει μια καρτέλα Build στο IDE, την οποία μπορείτε να χρησιμοποιήσετε για την απόδοση και προεπισκόπηση των ιστότοπων και των βιβλίων σας.
+Τόσο οι ιστότοποι όσο και τα βιβλία μπορούν επίσης να αποδοθούν χρησιμοποιώντας την εντολή `quarto::quarto_render()`.
 
-Read more at <https://quarto.org/docs/websites> about Quarto websites and <https://quarto.org/docs/books> about books.
+Διαβάστε περισσότερα σχετικά με ιστοσελίδες Quarto στο <https://quarto.org/docs/websites> και στο <https://quarto.org/docs/books> για βιβλία.
 
-## Other formats
+## Άλλες επιλογές μορφοποίησης
 
-Quarto offers even more output formats:
+Το Quarto προσφέρει ακόμη περισσότερες επιλογές αρχείων εξόδου:
 
--   You can write journal articles using Quarto Journal Templates: <https://quarto.org/docs/journals/templates.html>.
+-   Μπορείτε να γράψετε άρθρα σε περιοδικά χρησιμοποιώντας τα Quarto Journal Templates: <https://quarto.org/docs/journals/templates.html>.
 
--   You can output Quarto documents to Jupyter Notebooks with `format: ipynb`: <https://quarto.org/docs/reference/formats/ipynb.html>.
+-   Μπορείτε να εξάγετε έγγραφα Quarto σε Jupyter Notebooks με την επιλογή `format: ipynb`: <https://quarto.org/docs/reference/formats/ipynb.html>.
 
-See <https://quarto.org/docs/output-formats/all-formats.html> for a list of even more formats.
+Δείτε στο <https://quarto.org/docs/output-formats/all-formats.html> για μια λίστα με ακόμη περισσότερες επιλογές μορφοποίησης.
 
-## Summary
+## Σύνοψη
 
-In this chapter we presented you a variety of options for communicating your results with Quarto, from static and interactive documents to presentations to websites and books.
+Σε αυτό το κεφάλαιο σας παρουσιάσαμε μια ποικιλία επιλογών για την επικοινωνία των αποτελεσμάτων σας με το Quarto, από στατικά και διαδραστικά έγγραφα έως παρουσιάσεις, ιστότοπους και βιβλία.
 
-To learn more about effective communication in these different formats, we recommend the following resources:
+Για να μάθετε περισσότερα σχετικά με την αποτελεσματική επικοινωνία σε αυτές τις διαφορετικές μορφές, συνιστούμε τις ακόλουθες πηγές:
 
--   To improve your presentation skills, try [*Presentation Patterns*](https://presentationpatterns.com/) by Neal Ford, Matthew McCollough, and Nathaniel Schutta.
-    It provides a set of effective patterns (both low- and high-level) that you can apply to improve your presentations.
+-   Για να βελτιώσετε τις δεξιότητες παρουσίασης σας, δοκιμάστε το [*Presentation Patterns*](https://presentationpatterns.com/) των Neal Ford, Matthew McCollough, και Nathaniel Schutta.
+    Παρέχει ένα σύνολο αποτελεσματικών μοτίβων (χαμηλού και υψηλού επιπέδου) που μπορείτε να εφαρμόσετε για να βελτιώσετε τις παρουσιάσεις σας.
 
--   If you give academic talks, you might like the [*Leek group guide to giving talks*](https://github.com/jtleek/talkguide).
+-   Εάν δίνετε ακαδημαικές ομιλίες.
+    μπορεί να σας αρέσει το [*Leek group guide to giving talks*](https://github.com/jtleek/talkguide).
 
--   We haven't taken it ourselves, but we've heard good things about Matt McGarrity's online course on public speaking: <https://www.coursera.org/learn/public-speaking>.
+-   Αν και δεν το έχουμε οι ίδιο, έχουμε ακούσει καλά λόγια για το διαδικτυακό μάθημα του Matt McGarrity για τη δημόσια ομιλία σε κοινό: <https://www.coursera.org/learn/public-speaking>.
 
--   If you are creating many dashboards, make sure to read Stephen Few's [*Information Dashboard Design: The Effective Visual Communication of Data*](https://www.amazon.com/Information-Dashboard-Design-Effective-Communication/dp/0596100167).
-    It will help you create dashboards that are truly useful, not just pretty to look at.
+-   Εάν δημιουργείτε πολλά dashboards, φροντίστε να διαβάσετε το [*Information Dashboard Design: The Effective Visual Communication of Data*](https://www.amazon.com/Information-Dashboard-Design-Effective-Communication/dp/0596100167) του Stephen Few.
+    Θα σας βοηθήσει να δημιουργείτε dashboards που είναι πραγματκά χρήσιμα, κι όχι απλά όμορφα στην όψη.
 
--   Effectively communicating your ideas often benefits from some knowledge of graphic design.
-    Robin Williams' [*The Non-Designer's Design Book*](https://www.amazon.com/Non-Designers-Design-Book-4th/dp/0133966151) is a great place to start.
+Η αποτελεσματική επικοινωνία των ιδεών σας συχνά επωφελείται από κάποιες γνώσεις γραφιστικής.
+- Η αποτελεσματική επικοινωνία των ιδεών σας συχνά επωφελείται από κάποιες γνώσεις γραφιστικής.
+Το [*The Non-Designer's Design Book*](https://www.amazon.com/Non-Designers-Design-Book-4th/dp/0133966151)της Robin Williams είναι ένα καλό σημείο για να ξεκινήσετε.
