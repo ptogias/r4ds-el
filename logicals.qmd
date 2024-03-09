@@ -1,4 +1,4 @@
-# Logical vectors {#sec-logicals}
+# Λογικά διανύσματα {#sec-logicals}
 
 ```{r}
 #| echo: false
@@ -6,20 +6,20 @@
 source("_common.R")
 ```
 
-## Introduction
+## Εισαγωγή
 
-In this chapter, you'll learn tools for working with logical vectors.
-Logical vectors are the simplest type of vector because each element can only be one of three possible values: `TRUE`, `FALSE`, and `NA`.
-It's relatively rare to find logical vectors in your raw data, but you'll create and manipulate them in the course of almost every analysis.
+Σε αυτό το κεφάλαιο, θα μάθετε για εργαλεία που θα σας βοηθήσουν να δουλεύετε με λογικά διανύσματα.
+Τα λογικά διανύσματα είναι ο πιο απλός τύπος διανύσματος επειδή κάθε στοιχείο μπορεί να είναι μόνο μία από τις τρεις πιθανές τιμές: `TRUE`, `FALSE` και `NA`.
+Είναι σχετικά σπάνιο να βρείτε λογικά διανύσματα στα ανεπεξέργαστα δεδομένα σας, αλλά θα τα δημιουργείτε και θα τα χειρίζεστε κατά τη διάρκεια σχεδόν κάθε ανάλυσης.
 
-We'll begin by discussing the most common way of creating logical vectors: with numeric comparisons.
-Then you'll learn about how you can use Boolean algebra to combine different logical vectors, as well as some useful summaries.
-We'll finish off with `if_else()` and `case_when()`, two useful functions for making conditional changes powered by logical vectors.
+Θα ξεκινήσουμε συζητώντας τον πιο συνηθισμένο τρόπο δημιουργίας λογικών διανυσμάτων: με αριθμητικές συγκρίσεις.
+Στη συνέχεια, θα μάθετε πώς μπορείτε να χρησιμοποιήσετε την άλγεβρα Boole για να συνδυάσετε διαφορετικά λογικά διανύσματα, καθώς και μερικές χρήσιμες συνόψεις.
+Θα ολοκληρώσουμε με τις `if_else()` και `case_when()`, δύο χρήσιμες συναρτήσεις για την υπο όρους πραγματοποίηση αλλαγών μέσα απο λογικά διανύσματα.
 
-### Prerequisites
+### Προαπαιτούμενα
 
-Most of the functions you'll learn about in this chapter are provided by base R, so we don't need the tidyverse, but we'll still load it so we can use `mutate()`, `filter()`, and friends to work with data frames.
-We'll also continue to draw examples from the `nycflights13::flights` dataset.
+Οι περισσότερες από τις λειτουργίες για τις οποίες θα μάθετε σε αυτό το κεφάλαιο παρέχονται από το βασικό πακέτο λειτουργειών της R, επομένως το tidyverse δεν χρειάζετε, αλλά θα το φορτώσουμε για να μπορούμε να χρησιμοποιήσουμε την `mutate()`, την `filter()`, και άλλες παρόμοιες συναρτήσεις σε πλαίσια δεδομένων.
+Θα συνεχίσουμε επίσης να αντλούμε παραδείγματα από το σύνολο δεδομένων `nycflights13::flights`.
 
 ```{r}
 #| label: setup
@@ -29,16 +29,16 @@ library(tidyverse)
 library(nycflights13)
 ```
 
-However, as we start to cover more tools, there won't always be a perfect real example.
-So we'll start making up some dummy data with `c()`:
+Ωστόσο, καθώς αρχίζουμε να καλύπτουμε περισσότερα εργαλεία, δεν θα υπάρχει πάντα κάποιο αντίστοιχο τέλειο πραγματικό παράδειγμα.
+Θα αρχίσουμε λοιπόν να φτιάχνουμε μερικά ψεύτικα δεδομένα με την `c()`:
 
 ```{r}
 x <- c(1, 2, 3, 5, 7, 11, 13)
 x * 2
 ```
 
-This makes it easier to explain individual functions at the cost of making it harder to see how it might apply to your data problems.
-Just remember that any manipulation we do to a free-floating vector, you can do to a variable inside a data frame with `mutate()` and friends.
+Αυτό διευκολύνει την εξήγηση μεμονωμένων συναρτήσεων με το μειονέκτημα οτι είναι πιο δύσκολο να δούμε πώς αυτή μπορεί να εφαρμοστεί για τα προβλήματα των δεδομένων σας.
+Να θυμάστε ότι κάθε χειρισμό που εφαρμόζουμε σε ένα διάνυσμα, μπορείτε να τον εφαρμόσετε και σε μια μεταβλητή μέσα σε ένα πλαίσιο δεδομένων με την `mutate()` και άλλες παρόμοιες συναρτήσεις.
 
 ```{r}
 df <- tibble(x)
@@ -46,18 +46,18 @@ df |>
   mutate(y = x * 2)
 ```
 
-## Comparisons
+## Συγκρίσεις
 
-A very common way to create a logical vector is via a numeric comparison with `<`, `<=`, `>`, `>=`, `!=`, and `==`.
-So far, we've mostly created logical variables transiently within `filter()` --- they are computed, used, and then thrown away.
-For example, the following filter finds all daytime departures that arrive roughly on time:
+Ένας αρκετά συνηθισμένος τρόπος για να δημιουργήσετε ένα λογικό διάνυσμα είναι μέσω μιας αριθμητικής σύγκρισης με τους τελεστές `<`, `<=`, `>`, `>=`, `!=` και `==`.
+Μέχρι στιγμής, έχουμε δημιουργήσει ως επί το πλείστον λογικές μεταβλητές μέσα στην `filter()` --- υπολογίζονται, χρησιμοποιούνται και στη συνέχεια αγνοούνται.
+Για παράδειγμα, η ακόλουθη filter βρίσκει όλες τις ημερήσιες αναχωρήσεις που φτάνουν περίπου στην ώρα τους:
 
 ```{r}
 flights |> 
   filter(dep_time > 600 & dep_time < 2000 & abs(arr_delay) < 20)
 ```
 
-It's useful to know that this is a shortcut and you can explicitly create the underlying logical variables with `mutate()`:
+Είναι χρήσιμο να γνωρίζετε ότι αυτό είναι μια συντόμευση και ότι μπορείτε να δημιουργήσετε ξεχωριστά τις υποκείμενες λογικές μεταβλητές με την `mutate()`:
 
 ```{r}
 flights |> 
@@ -68,9 +68,9 @@ flights |>
   )
 ```
 
-This is particularly useful for more complicated logic because naming the intermediate steps makes it easier to both read your code and check that each step has been computed correctly.
+Αυτό είναι ιδιαίτερα χρήσιμο στην περίπτωση μιας πιο περίπλοκης λογικής, καθώς με το να ονομάζονται τα ενδιάμεσα βήματα διευκολύνεται τόσο η ανάγνωση του κώδικά σας όσο και ο έλεγχος ότι κάθε βήμα έχει υπολογιστεί σωστά.
 
-All up, the initial filter is equivalent to:
+Εν τέλει, η αρχική filter είναι ισοδύναμη με:
 
 ```{r}
 #| results: false
@@ -83,57 +83,56 @@ flights |>
   filter(daytime & approx_ontime)
 ```
 
-### Floating point comparison {#sec-fp-comparison}
+### Σύγκριση κινητής υποδιαστολής {#sec-fp-comparison}
 
-Beware of using `==` with numbers.
-For example, it looks like this vector contains the numbers 1 and 2:
+Δώστε προσοχή στη χρήση του `==` με αριθμούς.
+Για παράδειγμα, φαίνεται ότι αυτό το διάνυσμα περιέχει τους αριθμούς 1 και 2:
 
 ```{r}
 x <- c(1 / 49 * 49, sqrt(2) ^ 2)
 x
 ```
 
-But if you test them for equality, you get `FALSE`:
+Εάν όμως τα ελέγξετε για την ισότητά τους, θα πάρετε `FALSE`
 
 ```{r}
 x == c(1, 2)
 ```
 
-What's going on?
-Computers store numbers with a fixed number of decimal places so there's no way to exactly represent 1/49 or `sqrt(2)` and subsequent computations will be very slightly off.
-We can see the exact values by calling `print()` with the `digits`[^logicals-1] argument:
+Τι συμβαίνει; Οι υπολογιστές αποθηκεύουν αριθμούς με σταθερό αριθμό δεκαδικών ψηφίων, επομένως δεν υπάρχει τρόπος να αντιπροσωπεύσετε ακριβώς το 1/49 ή το `sqrt(2)` και οι επόμενοι υπολογισμοί θα είναι ελαφρώς ανόμοιοι.
+Μπορούμε να δούμε τις ακριβείς τιμές καλώντας την `print()` με το όρισμα `digits`[^logicals-1]:
 
-[^logicals-1]: R normally calls print for you (i.e. `x` is a shortcut for `print(x)`), but calling it explicitly is useful if you want to provide other arguments.
+[^logicals-1]: Η R συνήθως καλεί την print για εσάς (το `x`, δηλαδή, είναι μια συντόμευση για την `print(x)`), αλλά η κλήση της εκ νέου είναι χρήσιμη σε περιπτώσεις που θέλετε να παρέχετε άλλα ορίσματα.
 
 ```{r}
 print(x, digits = 16)
 ```
 
-You can see why R defaults to rounding these numbers; they really are very close to what you expect.
+Μπορείτε να δείτε γιατί η R στρογγυλοποιεί από προεπιλογή αυτούς τους αριθμούς.
+Είναι πραγματικά πολύ κοντά σε αυτό που περιμένετε.
 
-Now that you've seen why `==` is failing, what can you do about it?
-One option is to use `dplyr::near()` which ignores small differences:
+Τώρα που καταλάβατε γιατί ο `==` αποτυγχάνει, τι μπορείτε να κάνετε για αυτό; Μια επιλογή είναι να χρησιμοποιήσετε την `dplyr::near()` που αγνοεί μικρές διαφορές:
 
 ```{r}
 near(x, c(1, 2))
 ```
 
-### Missing values {#sec-na-comparison}
+### Κενές τιμές {#sec-na-comparison}
 
-Missing values represent the unknown so they are "contagious": almost any operation involving an unknown value will also be unknown:
+Οι κενές τιμές αντιπροσωπεύουν το άγνωστο, επομένως είναι "μεταδοτικές": σχεδόν οποιαδήποτε λειτουργία που περιλαμβάνει μια άγνωστη τιμή θα είναι επίσης άγνωστη:
 
 ```{r}
 NA > 5
 10 == NA
 ```
 
-The most confusing result is this one:
+Το αποτέλεσμα που προκαλέι περισσότερη σύγχυση είναι αυτό:
 
 ```{r}
 NA == NA
 ```
 
-It's easiest to understand why this is true if we artificially supply a little more context:
+Είναι πιο εύκολο να καταλάβουμε γιατί ισχύει αυτό, εάν δώσουμε λίγες περισσότερες πληροφορίες:
 
 ```{r}
 # We don't know how old Mary is
@@ -147,18 +146,18 @@ age_mary == age_john
 # We don't know!
 ```
 
-So if you want to find all flights where `dep_time` is missing, the following code doesn't work because `dep_time == NA` will yield `NA` for every single row, and `filter()` automatically drops missing values:
+Επομένως, εάν θέλετε να βρείτε όλες τις πτήσεις όπου η `dep_time` έχει κενές τιμές, ο ακόλουθος κώδικας δεν λειτουργεί επειδή το `dep_time == NA` θα δώσει `NA` για κάθε γραμμή και μετά η `filter()` θα αφαιρέσει αυτόματα τις κενές τιμές:
 
 ```{r}
 flights |> 
   filter(dep_time == NA)
 ```
 
-Instead we'll need a new tool: `is.na()`.
+Aντ' αυτού, θα χρειαστούμε ένα νέο εργαλείο: την `is.na()`.
 
 ### `is.na()`
 
-`is.na(x)` works with any type of vector and returns `TRUE` for missing values and `FALSE` for everything else:
+H `is.na(x)` λειτουργεί με οποιονδήποτε τύπο διανύσματος και επιστρέφει `TRUE` για τιμές που λείπουν και `FALSE` για οτιδήποτε άλλο:
 
 ```{r}
 is.na(c(TRUE, NA, FALSE))
@@ -166,15 +165,15 @@ is.na(c(1, NA, 3))
 is.na(c("a", NA, "b"))
 ```
 
-We can use `is.na()` to find all the rows with a missing `dep_time`:
+Μπορούμε να χρησιμοποιήσουμε την `is.na()` για να βρούμε όλες τις γραμμές με κενές τιμές στη `dep_time`:
 
 ```{r}
 flights |> 
   filter(is.na(dep_time))
 ```
 
-`is.na()` can also be useful in `arrange()`.
-`arrange()` usually puts all the missing values at the end but you can override this default by first sorting by `is.na()`:
+Η `is.na()` μπορεί επίσης να είναι χρήσιμη στην `arrange()`.
+Η `arrange()` συνήθως βάζει όλες τις κενές τιμές στο τέλος, μπορείτε όμως να παρακάμψετε αυτήν την προεπιλογή ταξινομώντας πρώτα κατά `is.na()`:
 
 ```{r}
 flights |> 
@@ -186,23 +185,23 @@ flights |>
   arrange(desc(is.na(dep_time)), dep_time)
 ```
 
-We'll come back to cover missing values in more depth in @sec-missing-values.
+Θα επανέλθουμε για να καλύψουμε τις κενές τιμές σε μεγαλύτερο βάθος στο @sec-missing-values.
 
-### Exercises
+### Ασκήσεις
 
-1.  How does `dplyr::near()` work? Type `near` to see the source code. Is `sqrt(2)^2` near 2?
-2.  Use `mutate()`, `is.na()`, and `count()` together to describe how the missing values in `dep_time`, `sched_dep_time` and `dep_delay` are connected.
+1.  Πώς λειτουργεί η `dplyr::near()`; Πληκτρολογήστε `near` για να δείτε τον πηγαίο κώδικα. Είναι το αποτέλεσμα της `sqrt(2)^2` κοντά στο 2;
+2.  Χρησιμοποιήστε τις `mutate()`, `is.na()` και `count()` μαζί για να περιγράψετε πώς συνδέονται οι κενές τιμές στις `dep_time`, `sched_dep_time` και `dep_delay`.
 
-## Boolean algebra
+## Άλγεβρα Boole
 
-Once you have multiple logical vectors, you can combine them together using Boolean algebra.
-In R, `&` is "and", `|` is "or", `!` is "not", and `xor()` is exclusive or[^logicals-2].
-For example, `df |> filter(!is.na(x))` finds all rows where `x` is not missing and `df |> filter(x < -10 | x > 0)` finds all rows where `x` is smaller than -10 or bigger than 0.
-@fig-bool-ops shows the complete set of Boolean operations and how they work.
+Αφού έχετε πολλαπλά λογικά διανύσματα, μπορείτε να τα συνδυάσετε χρησιμοποιώντας άλγεβρα Boole.
+Στην R, το `&` είναι "και", το `|` είναι "είτε", το "!" είναι "όχι" και το `xor()` είναι αποκλειστική διάζευξη[^logicals-2].
+Για παράδειγμα, το `df |> filter(!is.na(x))` βρίσκει όλες τις γραμμές όπου το `x` δεν είναι κενό και το `df |> filter(x < -10 | x > 0)` βρίσκει όλες τις γραμμές όπου το `x` είναι μικρότερο από -10 ή μεγαλύτερο από 0.
+Το @fig-bool-ops δείχνει το πλήρες σύνολο των λογικών πράξεων και τον τρόπο λειτουργίας τους.
 
-[^logicals-2]: That is, `xor(x, y)` is true if x is true, or y is true, but not both.
-    This is how we usually use "or" In English.
-    "Both" is not usually an acceptable answer to the question "would you like ice cream or cake?".
+[^logicals-2]: Δηλαδή, το `xor(x, y)` είναι αληθές αν το x είναι αληθές ή το y είναι αληθές, αλλά όχι και τα δύο.
+    Συνληθως, έτσι χρησιμοποιούμε το "είτε" στα Ελληνικά.
+    Το «και τα δύο» δεν είναι συνήθως αποδεκτή απάντηση στην ερώτηση «θα ήθελες παγωτό ή κέικ;».
 
 ```{r}
 #| label: fig-bool-ops
@@ -222,14 +221,14 @@ For example, `df |> filter(!is.na(x))` finds all rows where `x` is not missing a
 knitr::include_graphics("diagrams/transform.png", dpi = 270)
 ```
 
-As well as `&` and `|`, R also has `&&` and `||`.
-Don't use them in dplyr functions!
-These are called short-circuiting operators and only ever return a single `TRUE` or `FALSE`.
-They're important for programming, not data science.
+Εκτός από τα `&` και `|`, η R έχει επίσης τα `&&` και `||`.
+Μην τα χρησιμοποιείτε σε συναρτήσεις της dplyr!
+Ονομάζονται υπο συνθήκη τελεστές και επιστρέφουν μόνο ένα `TRUE` ή `FALSE`.
+Είναι σημαντικά για τον προγραμματισμό, όχι για την επιστήμη των δεδομένων.
 
-### Missing values {#sec-na-boolean}
+### Κενές τιμές {#sec-na-boolean}
 
-The rules for missing values in Boolean algebra are a little tricky to explain because they seem inconsistent at first glance:
+Οι κανόνες για τις κενές τιμές στην άλγεβρα Boole είναι λίγο δύσκολο να εξηγηθούν επειδή φαίνονται αντιφατικοί μετά απο μια πρώτη ματιά:
 
 ```{r}
 df <- tibble(x = c(TRUE, FALSE, NA))
@@ -241,17 +240,17 @@ df |>
   )
 ```
 
-To understand what's going on, think about `NA | TRUE` (`NA` or `TRUE`).
-A missing value in a logical vector means that the value could either be `TRUE` or `FALSE`.
-`TRUE | TRUE` and `FALSE | TRUE` are both `TRUE` because at least one of them is `TRUE`.
-`NA | TRUE` must also be `TRUE` because `NA` can either be `TRUE` or `FALSE`.
-However, `NA | FALSE` is `NA` because we don't know if `NA` is `TRUE` or `FALSE`.
-Similar reasoning applies with `NA & FALSE`.
+Για να καταλάβετε τι συμβαίνει, σκεφτείτε το `NA | TRUE` (`NA` είτε `TRUE`).
+Μια κενή τιμή σε ένα λογικό διάνυσμα σημαίνει ότι η τιμή μπορεί να είναι `TRUE` ή `FALSE`.
+Τα `TRUE | TRUE` και `FALSE | TRUE` είναι και τα δύο `TRUE` επειδή τουλάχιστον ένα από αυτά είναι `TRUE`.
+Το `NA | TRUE` πρέπει επίσης να είναι `TRUE` επειδή το `NA` μπορεί να είναι είτε `TRUE` είτε `FALSE`.
+Ωστόσο, το `NA | FALSE` είναι `NA` επειδή δεν γνωρίζουμε αν το `NA` είναι `TRUE` ή `FALSE`.
+Παρόμοια λογική ισχύει και για το `NA & FALSE`.
 
-### Order of operations
+### Σειρά πράξεων
 
-Note that the order of operations doesn't work like English.
-Take the following code that finds all flights that departed in November or December:
+Σημειώστε ότι η σειρά των πράξεων δεν λειτουργεί όπως στα ελληνικά.
+Δείτε τον παρακάτω κώδικα που βρίσκει όλες τις πτήσεις που αναχώρησαν τον Νοέμβριο ή τον Δεκέμβριο:
 
 ```{r}
 #| eval: false
@@ -260,18 +259,17 @@ flights |>
    filter(month == 11 | month == 12)
 ```
 
-You might be tempted to write it like you'd say in English: "Find all flights that departed in November or December.":
+Μπορεί να μπείτε στον πειρασμό να το γράψετε όπως θα λέγατε στα Ελληνικά: "Βρές όλες τις πτήσεις που αναχώρησαν τον Νοέμβριο ή τον Δεκέμβριο.":
 
 ```{r}
 flights |> 
    filter(month == 11 | 12)
 ```
 
-This code doesn't error but it also doesn't seem to have worked.
-What's going on?
-Here, R first evaluates `month == 11` creating a logical vector, which we call `nov`.
-It computes `nov | 12`.
-When you use a number with a logical operator it converts everything apart from 0 to `TRUE`, so this is equivalent to `nov | TRUE` which will always be `TRUE`, so every row will be selected:
+Αυτός ο κώδικας δεν βγάζει κάποιο σφάλμα, αλλά επίσης δεν φαίνεται και να έχει δουλέψει.
+Τι συμβαίνει?
+Εδώ, η R αξιολογεί πρώτα το `month == 11` δημιουργώντας ένα λογικό διάνυσμα, το οποίο ονομάζουμε `nov`. Υπολογίζει, άρα, το `nov | 12`.
+Όταν χρησιμοποιείτε έναν αριθμό με έναν λογικό τελεστή, τα πάντα εκτός από το 0 μετατρέπονται σε `TRUE`, οπότε αυτό ισοδυναμεί με `nov | TRUE` που θα είναι πάντα `TRUE`, επομένως θα επιλεγούν όλες οι γραμμές:
 
 ```{r}
 flights |> 
@@ -284,15 +282,15 @@ flights |>
 
 ### `%in%`
 
-An easy way to avoid the problem of getting your `==`s and `|`s in the right order is to use `%in%`.
-`x %in% y` returns a logical vector the same length as `x` that is `TRUE` whenever a value in `x` is anywhere in `y` .
+Ένας εύκολος τρόπος για να αποφύγετε το πρόβλημα του να βάλετε στη σωστή σειρά τα `==` και `|` είναι να χρησιμοποιήσετε το `%in%`.
+Το `x %in% y` επιστρέφει ένα λογικό διάνυσμα ίδιου μήκους με το `x` που είναι `TRUE` κάθε φορά που μια τιμή στο `x` βρίσκεται οπουδήποτε στο `y`.
 
 ```{r}
 1:12 %in% c(1, 5, 11)
 letters[1:10] %in% c("a", "e", "i", "o", "u")
 ```
 
-So to find all flights in November and December we could write:
+Για να βρούμε λοιπόν όλες τις πτήσεις τον Νοέμβριο και τον Δεκέμβριο θα μπορούσαμε να γράψουμε:
 
 ```{r}
 #| eval: false
@@ -301,40 +299,42 @@ flights |>
   filter(month %in% c(11, 12))
 ```
 
-Note that `%in%` obeys different rules for `NA` to `==`, as `NA %in% NA` is `TRUE`.
+Σημειώστε ότι το `%in%` υπακούει σε διαφορετικούς κανόνες απο αυτούς του `==` για τα `NA`, καθώς το `NA %in% NA` είναι `TRUE`.
 
 ```{r}
 c(1, 2, NA) == NA
 c(1, 2, NA) %in% NA
 ```
 
-This can make for a useful shortcut:
+Το παραπάνω δημιουργεί μια χρήσιμη συντόμευση:
 
 ```{r}
 flights |> 
   filter(dep_time %in% c(NA, 0800))
 ```
 
-### Exercises
+### Ασκήσεις
 
-1.  Find all flights where `arr_delay` is missing but `dep_delay` is not. Find all flights where neither `arr_time` nor `sched_arr_time` are missing, but `arr_delay` is.
-2.  How many flights have a missing `dep_time`? What other variables are missing in these rows? What might these rows represent?
-3.  Assuming that a missing `dep_time` implies that a flight is cancelled, look at the number of cancelled flights per day. Is there a pattern? Is there a connection between the proportion of cancelled flights and the average delay of non-cancelled flights?
+1.  Βρείτε όλες τις πτήσεις στις οποίες υπάρχουν κενές τιμές στην στήλη `arr_delay` αλλά όχι στην `dep_delay`. Βρείτε όλες τις πτήσεις στις οποίες δεν λείπουν τιμές ούτε στην `arr_time` ούτε στην `sched_arr_time`, αλλά λείπουν στην `arr_delay`.
+2.  Πόσες πτήσεις έχουν κενές τιμές στη στήλη `dep_time`; Ποιες άλλες μεταβλητές έχουν κενές τιμές σε αυτές τις γραμμές; Τι μπορεί να αντιπροσωπεύουν αυτές οι γραμμές;
+3.  Αν υποθέσουμε ότι μια κενή τιμή στην στήλη `dep_time` σημαίνει ότι μια πτήση έχει ακυρωθεί, δείτε τον αριθμό των ακυρωμένων πτήσεων ανά ημέρα. Υπάρχει κάποιο μοτίβο; Υπάρχει σχέση μεταξύ του ποσοστού των ακυρωμένων πτήσεων και της μέσης καθυστέρησης των μη ακυρωμένων πτήσεων;
 
-## Summaries {#sec-logical-summaries}
+## Συνόψεις {#sec-logical-summaries}
 
-The following sections describe some useful techniques for summarizing logical vectors.
-As well as functions that only work specifically with logical vectors, you can also use functions that work with numeric vectors.
+Οι ακόλουθες ενότητες περιγράφουν μερικές χρήσιμες τεχνικές για τη σύνοψη λογικών διανυσμάτων.
+Εκτός από συναρτήσεις που λειτουργούν ειδικά μόνο με λογικά διανύσματα, μπορείτε επίσης να χρησιμοποιήσετε συναρτήσεις που λειτουργούν με αριθμητικά διανύσματα.
 
-### Logical summaries
+### Λογικές συνόψεις
 
-There are two main logical summaries: `any()` and `all()`.
-`any(x)` is the equivalent of `|`; it'll return `TRUE` if there are any `TRUE`'s in `x`.
-`all(x)` is equivalent of `&`; it'll return `TRUE` only if all values of `x` are `TRUE`'s.
-Like all summary functions, they'll return `NA` if there are any missing values present, and as usual you can make the missing values go away with `na.rm = TRUE`.
+Υπάρχουν δύο κύριες συναρτήσεις λογικών συνόψεων: η `any()` και η `all()`.
+Η `any(x)` είναι το ισοδύναμη του `|`.
+Θα επιστρέψει `TRUE` εάν υπάρχουν τιμές `TRUE` στο `x`.
+Η `all(x)` ισοδυναμεί με το `&`.
+Θα επιστρέψει `TRUE` μόνο εάν όλες οι τιμές του `x` είναι `TRUE`.
+Όπως και όλες οι συναρτήσεις σύνοψης, έτσι και αυτές θα επιστρέψουν `NA` εάν υπάρχουν κενές τιμές και, ως συνήθως, μπορείτε να τις αγνοήσετε με το `na.rm = TRUE`.
 
-For example, we could use `all()` and `any()` to find out if every flight was delayed on departure by at most an hour or if any flights were delayed on arrival by five hours or more.
-And using `group_by()` allows us to do that by day:
+Για παράδειγμα, θα μπορούσαμε να χρησιμοποιήσουμε την `all()` και την `any()` για να μάθουμε εάν κάθε πτήση καθυστέρησε κατά την αναχώρηση κατά μία ώρα το πολύ ή εάν κάποια πτήση είχε καθυστέρηση κατά την άφιξη κατά πέντε ώρες ή περισσότερο.
+Η χρήση της `group_by()` μας επιτρέπει να το κάνουμε αυτό και ανα ημέρα:
 
 ```{r}
 flights |> 
@@ -346,15 +346,15 @@ flights |>
   )
 ```
 
-In most cases, however, `any()` and `all()` are a little too crude, and it would be nice to be able to get a little more detail about how many values are `TRUE` or `FALSE`.
-That leads us to the numeric summaries.
+Στις περισσότερες περιπτώσεις, ωστόσο, η έξοδος της `any()` και της `all()` είναι λίγο απλή και θα ήταν καλό να μπορούσαμε να μάθουμε λίγες περισσότερες λεπτομέρειες σχετικά με το πόσες τιμές είναι `TRUE` ή `FALSE`.
+Αυτό μας οδηγεί στις αριθμητικές συνόψεις.
 
-### Numeric summaries of logical vectors {#sec-numeric-summaries-of-logicals}
+### Αριθμητικές συνόψεις λογικών διανυσμάτων {#sec-numeric-summaries-of-logicals}
 
-When you use a logical vector in a numeric context, `TRUE` becomes 1 and `FALSE` becomes 0.
-This makes `sum()` and `mean()` very useful with logical vectors because `sum(x)` gives the number of `TRUE`s and `mean(x)` gives the proportion of `TRUE`s (because `mean()` is just `sum()` divided by `length()`.
+Όταν χρησιμοποιείτε ένα λογικό διάνυσμα σε ένα αριθμητικό γενικό πλαίσιο, το `TRUE` γίνεται 1 και το `FALSE` γίνεται 0.
+Αυτό κάνει τις `sum()` και `mean()` πολύ χρήσιμες με λογικά διανύσματα επειδή η `sum(x)` δίνει τον αριθμό των `TRUE` και η `mean(x)` δίνει την αναλογία των `TRUE` (γιατί η `mean()` διαιρείται απλώς με την `sum()`) με την `length()`.
 
-That, for example, allows us to see the proportion of flights that were delayed on departure by at most an hour and the number of flights that were delayed on arrival by five hours or more:
+Αυτό, για παράδειγμα, μας επιτρέπει να δούμε το ποσοστό των πτήσεων που καθυστέρησαν κατά την αναχώρηση κατά μία ώρα το πολύ και τον αριθμό των πτήσεων που καθυστέρησαν κατά την άφιξη κατά πέντε ώρες ή περισσότερο:
 
 ```{r}
 flights |> 
@@ -366,13 +366,13 @@ flights |>
   )
 ```
 
-### Logical subsetting
+### Λογική δημιουργία υποσυνόλων
 
-There's one final use for logical vectors in summaries: you can use a logical vector to filter a single variable to a subset of interest.
-This makes use of the base `[` (pronounced subset) operator, which you'll learn more about in @sec-subset-many.
+Υπάρχει μια τελευταία χρήση για τα λογικά διανύσματα στις συνόψεις: μπορείτε να χρησιμοποιήσετε ένα λογικό διάνυσμα για να φιλτράρετε μια μεταβλητή σε ένα υποσύνολο.
+Αυτό χρησιμοποιεί τον βασικό τελεστή `[` (ονομάζεται τελεστής υποσυνόλου), για τον οποίο θα μάθετε περισσότερα στο @sec-subset-many.
 
-Imagine we wanted to look at the average delay just for flights that were actually delayed.
-One way to do so would be to first filter the flights and then calculate the average delay:
+Φανταστείτε ότι θέλαμε να δούμε τη μέση καθυστέρηση μόνο για πτήσεις που είχαν όντως καθυστέρηση.
+Ένας τρόπος για να το κάνετε αυτό θα ήταν να φιλτράρετε πρώτα τις πτήσεις και στη συνέχεια να υπολογίσετε τη μέση καθυστέρηση:
 
 ```{r}
 flights |> 
@@ -385,13 +385,12 @@ flights |>
   )
 ```
 
-This works, but what if we wanted to also compute the average delay for flights that arrived early?
-We'd need to perform a separate filter step, and then figure out how to combine the two data frames together[^logicals-3].
-Instead you could use `[` to perform an inline filtering: `arr_delay[arr_delay > 0]` will yield only the positive arrival delays.
+Αυτό λειτουργεί, αλλά τι θα γινόταν αν θέλαμε να υπολογίσουμε και τη μέση καθυστέρηση για πτήσεις που έφτασαν νωρίς; Θα πρέπει να εκτελέσουμε ένα ξεχωριστό βήμα φιλτραρίσματος και, στη συνέχεια, να καταλάβουμε πώς να συνδυάσουμε τα δύο πλαίσια δεδομένων μαζί[^logicals-3].
+Αντ' αυτού, θα μπορούσατε να χρησιμοποιήσετε το `[` για να εφαρμόσετε το φίλτρο: το `arr_delay[arr_delay > 0]` θα επιστρέψει μόνο τις θετικές καθυστερήσεις άφιξης.
 
-[^logicals-3]: We'll cover this in @sec-joins.
+[^logicals-3]: Θα το καλύψουμε στο @sec-joins.
 
-This leads to:
+Αυτό οδηγεί στο:
 
 ```{r}
 flights |> 
@@ -404,48 +403,54 @@ flights |>
   )
 ```
 
-Also note the difference in the group size: in the first chunk `n()` gives the number of delayed flights per day; in the second, `n()` gives the total number of flights.
+Σημειώστε επίσης τη διαφορά στο μέγεθος των γκρουπ: στο πρώτο κομμάτι κώδικα, η `n()` δίνει τον αριθμό των καθυστερημένων πτήσεων ανά ημέρα.
+Στο δεύτερο, η `n()` δίνει τον συνολικό αριθμό πτήσεων.
 
-### Exercises
+### Ασκήσεις
 
-1.  What will `sum(is.na(x))` tell you? How about `mean(is.na(x))`?
-2.  What does `prod()` return when applied to a logical vector? What logical summary function is it equivalent to? What does `min()` return when applied to a logical vector? What logical summary function is it equivalent to? Read the documentation and perform a few experiments.
+1.  Τι θα κάνει η `sum(is.na(x))`; Η `mean(is.na(x))`;
+2.  Τι επιστρέφει η `prod()` όταν εφαρμόζεται σε ένα λογικό διάνυσμα; Με ποια συνάρτηση λογικής σύνοψης είναι ισοδύναμη; Τι επιστρέφει η `min()` όταν εφαρμόζεται σε ένα λογικό διάνυσμα; Με ποια συνάρτηση λογικής σύνοψης είναι ισοδύναμη; Διαβάστε τις οδηγίες και εκτελέστε μερικά πειράματα.
 
-## Conditional transformations
+## Μετασχηματισμοί υπό όρους
 
 One of the most powerful features of logical vectors are their use for conditional transformations, i.e. doing one thing for condition x, and something different for condition y.
 There are two important tools for this: `if_else()` and `case_when()`.
 
+Ένα από τα πιο ισχυρά χαρακτηριστικά των λογικών διανυσμάτων είναι η χρήση τους για μετασχηματισμούς υπό όρους, δηλαδή να κάνουν ένα πράγμα για τη συνθήκη x και κάτι διαφορετικό για τη συνθήκη y.
+Υπάρχουν δύο σημαντικά εργαλεία για αυτό: η `if_else()` και η `case_when()`.
+
 ### `if_else()`
 
-If you want to use one value when a condition is `TRUE` and another value when it's `FALSE`, you can use `dplyr::if_else()`[^logicals-4].
-You'll always use the first three argument of `if_else()`. The first argument, `condition`, is a logical vector, the second, `true`, gives the output when the condition is true, and the third, `false`, gives the output if the condition is false.
+Εάν θέλετε να χρησιμοποιήσετε μια τιμή όταν μια συνθήκη είναι `TRUE` και μια άλλη τιμή όταν είναι `FALSE`, μπορείτε να αξιοποιήσετε την `dplyr::if_else()`[^logicals-4].
+Τα τρία πρώτα όρισμα της `if_else()` χρησιμοποιούντε πάντα.
+Το πρώτο όρισμα, `condition`, είναι ένα λογικό διάνυσμα, το δεύτερο, `true`, δίνει την αντίστοιχη τιμή σας όταν η συνθήκη είναι αληθής και το τρίτο, `false`, δίνει την την αντίστοιχη τιμή σας εάν η συνθήκη είναι ψευδής.
 
-[^logicals-4]: dplyr's `if_else()` is very similar to base R's `ifelse()`.
-    There are two main advantages of `if_else()`over `ifelse()`: you can choose what should happen to missing values, and `if_else()` is much more likely to give you a meaningful error if your variables have incompatible types.
+[^logicals-4]: Η `if_else()` της dplyr είναι πολύ παρόμοιο με της `ifelse()` του βασικού πακέτου λειτουργιών R.
+    Υπάρχουν δύο βασικά πλεονεκτήματα της `if_else()` έναντι της `ifelse()`: μπορείτε να επιλέξετε τι θα συμβεί με τις κενές τιμές και η `if_else()` είναι πολύ πιο πιθανό να σας δώσει ένα σημαντικό σφάλμα εάν οι μεταβλητές σας έχουν μη συμβατούς τύπους.
 
-Let's begin with a simple example of labeling a numeric vector as either "+ve" (positive) or "-ve" (negative):
+Ας ξεκινήσουμε με ένα απλό παράδειγμα χαρακτηρισμού ενός αριθμητικού διανύσματος είτε ως "+ve" (θετικό) ή "-ve" (αρνητικό):
 
 ```{r}
 x <- c(-3:3, NA)
 if_else(x > 0, "+ve", "-ve")
 ```
 
-There's an optional fourth argument, `missing` which will be used if the input is `NA`:
+Υπάρχει ένα προαιρετικό τέταρτο όρισμα, το `missing`, το οποίο θα χρησιμοποιηθεί εάν η είσοδος είναι `NA`:
 
 ```{r}
 if_else(x > 0, "+ve", "-ve", "???")
 ```
 
-You can also use vectors for the the `true` and `false` arguments.
-For example, this allows us to create a minimal implementation of `abs()`:
+Μπορείτε επίσης να χρησιμοποιήσετε διανύσματα για τα ορίσματα `true` και `false`.
+Για παράδειγμα, το παρακάτω μας επιτρέπει να δημιουργήσουμε μια συνοπτική υλοποίηση της `abs()`:
 
 ```{r}
 if_else(x < 0, -x, x)
 ```
 
-So far all the arguments have used the same vectors, but you can of course mix and match.
-For example, you could implement a simple version of `coalesce()` like this:
+Μέχρι στιγμής όλα τα ορίσματα έχουν χρησιμοποιήσει τα ίδια διανύσματα.
+Μπορείτε όμως φυσικά να χρησιμοποιήσετε ο,τι επιθυμείτε.
+Για παράδειγμα, θα μπορούσατε να εφαρμόσετε μια απλή έκδοση της `coalesce()` ως εξής:
 
 ```{r}
 x1 <- c(NA, 1, 2, NA)
@@ -453,24 +458,25 @@ y1 <- c(3, NA, 4, 6)
 if_else(is.na(x1), y1, x1)
 ```
 
-You might have noticed a small infelicity in our labeling example above: zero is neither positive nor negative.
-We could resolve this by adding an additional `if_else()`:
+Ίσως έχετε παρατηρήσει μια μικρή ασάφεια στο παραπάνω παράδειγμα χαρακτηρισμού: το μηδέν δεν είναι ούτε θετικό ούτε αρνητικό.
+Θα μπορούσαμε να το επιλύσουμε προσθέτοντας μία επιπλέον `if_else()`:
 
 ```{r}
 if_else(x == 0, "0", if_else(x < 0, "-ve", "+ve"), "???")
 ```
 
-This is already a little hard to read, and you can imagine it would only get harder if you have more conditions.
-Instead, you can switch to `dplyr::case_when()`.
+Αυτό είναι ήδη λίγο δύσκολο να διαβαστεί και μπορείτε να φανταστείτε ότι θα γίνει μόνο χειρότερο εάν έχετε περισσότερες συνθήκες.
+Αντ' αυτού, μπορείτε να χρησιμοποιήσετε την `dplyr::case_when()`.
 
 ### `case_when()`
 
-dplyr's `case_when()` is inspired by SQL's `CASE` statement and provides a flexible way of performing different computations for different conditions.
-It has a special syntax that unfortunately looks like nothing else you'll use in the tidyverse.
-It takes pairs that look like `condition ~ output`.
-`condition` must be a logical vector; when it's `TRUE`, `output` will be used.
+Η `case_when()` της dplyr είναι εμπνευσμένη από τη δήλωση `CASE` της SQL και παρέχει έναν ευέλικτο τρόπο εκτέλεσης διαφορετικών υπολογισμών για διαφορετικές συνθήκες.
+Έχει μια ειδική σύνταξη που δυστυχώς δεν μοιάζει με τίποτα άλλο που θα δείτε στο tidyverse.
+Χρειάζονται ζεύγη που μοιάζουν ως `συνθήκη ~ έξοδος`.
+Η `συνθήκη` πρέπει να είναι ένα λογικό διάνυσμα.
+Όταν είναι `TRUE`, η `έξοδος` θα χρησιμοποιηθεί.
 
-This means we could recreate our previous nested `if_else()` as follows:
+Αυτό σημαίνει ότι θα μπορούσαμε να αναδημιουργήσουμε την προηγούμενη εμφωλευμένη `if_else()` ως εξής:
 
 ```{r}
 x <- c(-3:3, NA)
@@ -482,10 +488,10 @@ case_when(
 )
 ```
 
-This is more code, but it's also more explicit.
+Είναι περισσότερος κώδικας, αλλά είναι επίσης πιο ξεκάθαρος.
 
-To explain how `case_when()` works, let's explore some simpler cases.
-If none of the cases match, the output gets an `NA`:
+Για να εξηγήσουμε πώς λειτουργεί η `case_when()`, ας εξερευνήσουμε μερικές πιο απλές περιπτώσεις.
+Εάν καμία από τις περιπτώσεις δεν ταιριάζει, η έξοδος παίρνει `NA`:
 
 ```{r}
 case_when(
@@ -494,7 +500,7 @@ case_when(
 )
 ```
 
-Use `.default` if you want to create a "default"/catch all value:
+Χρησιμοποιήστε το `.default` εάν θέλετε να δημιουργήσετε μια τιμή για οποιαδήποτε άλλη περίπτωση (σαν προεπιλογή):
 
 ```{r}
 case_when(
@@ -504,7 +510,7 @@ case_when(
 )
 ```
 
-And note that if multiple conditions match, only the first will be used:
+Και σημειώστε ότι εάν πολλαπλές συνθήκες ταιριάζουν, θα χρησιμοποιηθεί μόνο η πρώτη:
 
 ```{r}
 case_when(
@@ -513,8 +519,8 @@ case_when(
 )
 ```
 
-Just like with `if_else()` you can use variables on both sides of the `~` and you can mix and match variables as needed for your problem.
-For example, we could use `case_when()` to provide some human readable labels for the arrival delay:
+Ακριβώς όπως και με την `if_else()` μπορείτε να χρησιμοποιήσετε μεταβλητές και στις δύο πλευρές του `~` και μπορείτε να συνδυάσετε και να ταιριάξετε μεταβλητές όπως χρειάζεστε για το πρόβλημά σας.
+Για παράδειγμα, θα μπορούσαμε να χρησιμοποιήσουμε την `case_when()` για να παρέχουμε ορισμένους κατανοητούς χαρακτηρισμούς για την καθυστέρηση άφιξης:
 
 ```{r}
 flights |> 
@@ -531,12 +537,13 @@ flights |>
   )
 ```
 
-Be wary when writing this sort of complex `case_when()` statement; my first two attempts used a mix of `<` and `>` and I kept accidentally creating overlapping conditions.
+Να είστε προσεκτικοί όταν γράφετε αυτού του είδους σύνθετης δήλωσης `case_when()`.
+Οι δύο πρώτες μου απόπειρες χρησιμοποίησαν έναν συνδυασμό `<` και `>` και συνέχισα να δημιουργώ κατά λάθος αλληλεπικαλυπτόμενες συνθήκες.
 
-### Compatible types
+### Συμβατοί τύποι
 
-Note that both `if_else()` and `case_when()` require **compatible** types in the output.
-If they're not compatible, you'll see errors like this:
+Σημειώστε ότι τόσο η `if_else()` όσο και η `case_when()` απαιτούν **συμβατούς** τύπους τιμών στην έξοδο.
+Εάν δεν είναι συμβατοί, θα δείτε σφάλματα όπως αυτό:
 
 ```{r}
 #| error: true
@@ -549,35 +556,35 @@ case_when(
 )
 ```
 
-Overall, relatively few types are compatible, because automatically converting one type of vector to another is a common source of errors.
-Here are the most important cases that are compatible:
+Γενικά, σχετικά λίγοι τύποι είναι συμβατοί, επειδή η αυτόματη μετατροπή ενός τύπου διανύσματος σε άλλο είναι μια κοινή πηγή σφαλμάτων.
+Παρακάτω καταγράφονται οι πιο σημαντικές περιπτώσεις όπου οι τύποι είναι συμβατοί:
 
--   Numeric and logical vectors are compatible, as we discussed in @sec-numeric-summaries-of-logicals.
--   Strings and factors (@sec-factors) are compatible, because you can think of a factor as a string with a restricted set of values.
--   Dates and date-times, which we'll discuss in @sec-dates-and-times, are compatible because you can think of a date as a special case of date-time.
--   `NA`, which is technically a logical vector, is compatible with everything because every vector has some way of representing a missing value.
+-   Τα αριθμητικά και λογικά διανύσματα είναι συμβατά, όπως συζητήσαμε στο @sec-numeric-summary-of-logicals.
+-   Οι συμβολοσειρές και οι παράγοντες (@sec-factors) είναι συμβατοί, επειδή μπορείτε να σκεφτείτε έναν παράγοντα ως μια συμβολοσειρά με ένα περιορισμένο σύνολο τιμών.
+-   Οι ημερομηνίες και οι ημερομηνίες με ώρα, τις οποίες θα συζητήσουμε στο @sec-dates-and-times, είναι συμβατές επειδή μπορείτε να σκεφτείτε μια ημερομηνία ως μια ειδική περίπτωση ημερομηνίας-ώρας.
+-   Το `NA`, το οποίο είναι τεχνικά ένα λογικό διάνυσμα, είναι συμβατό με τα πάντα επειδή κάθε διάνυσμα έχει κάποιο τρόπο να αναπαριστά μια κενή τιμή.
 
-We don't expect you to memorize these rules, but they should become second nature over time because they are applied consistently throughout the tidyverse.
+Δεν περιμένουμε από εσάς να απομνημονεύσετε αυτούς τους κανόνες, αλλά θα πρέπει με την πάροδο του χρόνου να τους συνηθίσετε, επειδή εφαρμόζονται με τον ίδιο τρόπο σε όλο το tidyverse.
 
-### Exercises
+### Ασκήσεις
 
-1.  A number is even if it's divisible by two, which in R you can find out with `x %% 2 == 0`.
-    Use this fact and `if_else()` to determine whether each number between 0 and 20 is even or odd.
+1.  Ένας αριθμός είναι άρτιος εαν διαιρείται με το δύο, κάτι που στην R μπορείτε να το βρείτε με το `x %% 2 == 0`.
+    Χρησιμοποιήστε αυτό το γεγονός και την `if_else()` για να προσδιορίσετε εάν κάθε αριθμός μεταξύ 0 και 20 είναι άρτιος ή περιττός.
 
-2.  Given a vector of days like `x <- c("Monday", "Saturday", "Wednesday")`, use an `if_else()` statement to label them as weekends or weekdays.
+2.  Δεδομένου ενός διανύσματος ημερών όπως το `x <- c("Monday", "Saturday", "Wednesday")`, χρησιμοποιήστε μια δήλωση `if_else()` για να τις χαρακτηρίσετε ως Σαββατοκύριακα ή καθημερινές.
 
-3.  Use `if_else()` to compute the absolute value of a numeric vector called `x`.
+3.  Χρησιμοποιήστε την `if_else()` για να υπολογίσετε την απόλυτη τιμή ενός αριθμητικού διανύσματος με όνομα `x`.
 
-4.  Write a `case_when()` statement that uses the `month` and `day` columns from `flights` to label a selection of important US holidays (e.g., New Years Day, 4th of July, Thanksgiving, and Christmas).
-    First create a logical column that is either `TRUE` or `FALSE`, and then create a character column that either gives the name of the holiday or is `NA`.
+4.  Γράψτε μια δήλωση `case_when()` που χρησιμοποιεί τις στήλες `month` και `day` από το σύνολο δεδομένων `flights` για τον χαρακτηρισμό μιας επιλογής σημαντικών εορτών στις ΗΠΑ (π.χ. Πρωτοχρονιά, 4η Ιουλίου, Ημέρα των Ευχαριστιών και Χριστούγεννα).
+    Δημιουργήστε πρώτα μια λογική στήλη που είναι είτε `TRUE` είτε `FALSE` και, στη συνέχεια, δημιουργήστε μια στήλη χαρακτήρων που είτε δίνει το όνομα της αργίας είτε είναι `NA`.
 
-## Summary
+## Σύνοψη
 
-The definition of a logical vector is simple because each value must be either `TRUE`, `FALSE`, or `NA`.
-But logical vectors provide a huge amount of power.
-In this chapter, you learned how to create logical vectors with `>`, `<`, `<=`, `>=`, `==`, `!=`, and `is.na()`, how to combine them with `!`, `&`, and `|`, and how to summarize them with `any()`, `all()`, `sum()`, and `mean()`.
-You also learned the powerful `if_else()` and `case_when()` functions that allow you to return values depending on the value of a logical vector.
+Ο ορισμός ενός λογικού διανύσματος είναι απλός γιατί κάθε τιμή πρέπει να είναι είτε `TRUE`, `FALSE` είτε `NA`.
+Παρ' όλ' αυτά, τα λογικά διανύσματα είναι αρκετά ισχυρά.
+Σε αυτό το κεφάλαιο, μάθατε πώς να δημιουργείτε λογικά διανύσματα με `>`, `<`, `<=`, `>=`, `==`, `!=`, και `is.na()`, πώς για να τα συνδυάσετε με τα `!`, `&` και `|` και πώς να τα συνοψίσετε με τις `any()`, `all()`, `sum()` και `mean()`.
+Μάθατε επίσης τις ισχυρές συναρτήσεις `if_else()` και `case_when()` που σας επιτρέπουν να επιστρέφετε τιμές ανάλογα με την τιμή ενός λογικού διανύσματος.
 
-We'll see logical vectors again and again in the following chapters.
-For example in @sec-strings you'll learn about `str_detect(x, pattern)` which returns a logical vector that's `TRUE` for the elements of `x` that match the `pattern`, and in @sec-dates-and-times you'll create logical vectors from the comparison of dates and times.
-But for now, we're going to move onto the next most important type of vector: numeric vectors.
+Θα βλέπουμε λογικά διανύσματα αρκετές φορές στα επόμενα κεφάλαια.
+Για παράδειγμα, στο @sec-strings θα μάθετε για την `str_detect(x, μοτίβο)` η οποία επιστρέφει ένα λογικό διάνυσμα που είναι `TRUE` για τα στοιχεία του `x` που ταιριάζουν με το `μοτίβο` και στο @sec-dates-and-times θα δημιουργήσετε λογικά διανύσματα από τη σύγκριση ημερομηνιών και ωρών.
+Προς το παρόν όμως, θα προχωρήσουμε στον επόμενο πιο σημαντικό τύπο διανύσματος: τα αριθμητικά διανύσματα.
