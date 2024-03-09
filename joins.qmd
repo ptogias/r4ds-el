@@ -1,4 +1,4 @@
-# Joins {#sec-joins}
+# Ενώσεις {#sec-joins}
 
 ```{r}
 #| echo: false
@@ -6,23 +6,23 @@
 source("_common.R")
 ```
 
-## Introduction
+## Εισαγωγή
 
-It's rare that a data analysis involves only a single data frame.
-Typically you have many data frames, and you must **join** them together to answer the questions that you're interested in.
-This chapter will introduce you to two important types of joins:
+Είναι σπάνιο μια ανάλυση δεδομένων να περιλαμβάνει μόνο ένα πλαίσιο δεδομένων.
+Συνήθως έχετε πολλά πλαίσια δεδομένων και πρέπει να τα **ενώσετε** για να απαντήσετε στις ερωτήσεις που σας ενδιαφέρουν.
+Αυτό το κεφάλαιο θα σας παρουσιάσει δύο σημαντικούς τύπους ενώσεων:
 
--   Mutating joins, which add new variables to one data frame from matching observations in another.
--   Filtering joins, which filter observations from one data frame based on whether or not they match an observation in another.
+-   Ενώσεις μετάλλαξης (mutating joins), οι οποίες προσθέτουν νέες μεταβλητές σε ένα πλαίσιο δεδομένων, οι οποίες προέρχονται από αντιστοιχισμένες παρατηρήσεις σε ένα άλλο πλαίσιο δεδομένων.
+-   Ενώσεις φιλτραρίσματος (filtering joins), οι οποίες φιλτράρουν τις παρατηρήσεις από ένα πλαίσιο δεδομένων με βάση το αν ταιριάζουν ή όχι με μια παρατήρηση σε ένα άλλο.
 
-We'll begin by discussing keys, the variables used to connect a pair of data frames in a join.
-We cement the theory with an examination of the keys in the datasets from the nycflights13 package, then use that knowledge to start joining data frames together.
-Next we'll discuss how joins work, focusing on their action on the rows.
-We'll finish up with a discussion of non-equi joins, a family of joins that provide a more flexible way of matching keys than the default equality relationship.
+Θα ξεκινήσουμε συζητώντας τα κλειδιά, τις μεταβλητές που χρησιμοποιούνται για να συνδέσουν ένα ζεύγος πλαισίων δεδομένων σε μια ένωση.
+Θα εδραιώσουμε τη θεωρία εξετάζοντας τα κλειδιά στα σύνολα δεδομένων του πακέτου nycflights13 και, στη συνέχεια, χρησιμοποιούμε αυτή τη γνώση για να αρχίσουμε να ενώνουμε πλαίσια δεδομένων μεταξύ τους.
+Στη συνέχεια θα συζητήσουμε το πώς λειτουργούν οι ενώσεις, εστιάζοντας στη δράση τους στις γραμμές.
+Τέλος, Θα ολοκληρώσουμε με μια συζήτηση για ενώσεις που δεν είναι ισοδύναμες, μια οικογένεια ενώσεων που παρέχουν έναν πιο ευέλικτο τρόπο αντιστοίχισης κλειδιών από την προεπιλεγμένη σχέση ισότητας.
 
-### Prerequisites
+### Προαπαιτούμενα
 
-In this chapter, we'll explore the five related datasets from nycflights13 using the join functions from dplyr.
+Σε αυτό το κεφάλαιο, θα εξερευνήσουμε τα πέντε σχετικά σύνολα δεδομένων από το nycflights13 χρησιμοποιώντας τις συναρτήσεις σύνδεσης (join) της dplyr.
 
 ```{r}
 #| label: setup
@@ -32,27 +32,29 @@ library(tidyverse)
 library(nycflights13)
 ```
 
-## Keys
+## Κλειδιά
 
-To understand joins, you need to first understand how two tables can be connected through a pair of keys, within each table.
-In this section, you'll learn about the two types of key and see examples of both in the datasets of the nycflights13 package.
-You'll also learn how to check that your keys are valid, and what to do if your table lacks a key.
+Για να κατανοήσετε τις ενώσεις, πρέπει πρώτα να κατανοήσετε πώς δύο πίνακες μπορούν να συνδεθούν μέσω ενός ζεύγους κλειδιών, που υπάρχουν σε κάθε πίνακα.
+Σε αυτήν την ενότητα, θα μάθετε για τους δύο τύπους κλειδιών και θα δείτε παραδείγματα και των δύο στα σύνολα δεδομένων του πακέτου nycflights13.
+Θα μάθετε επίσης πώς να ελέγχετε ότι τα κλειδιά σας είναι έγκυρα και τι να κάνετε εάν ο πίνακας σας δεν διαθέτει κλειδί.
 
-### Primary and foreign keys
+### Πρωτεύοντα και δευτερεύοντα (ξένα) κλειδιά
 
-Every join involves a pair of keys: a primary key and a foreign key.
-A **primary key** is a variable or set of variables that uniquely identifies each observation.
-When more than one variable is needed, the key is called a **compound key.** For example, in nycflights13:
+-   `airlines` records two pieces of data about each airline: its carrier code and its full name. You can identify an airline with its two letter carrier code, making `carrier` the primary key.
 
--   `airlines` records two pieces of data about each airline: its carrier code and its full name.
-    You can identify an airline with its two letter carrier code, making `carrier` the primary key.
+Κάθε ένωση περιλαμβάνει ένα ζεύγος κλειδιών: ένα πρωτεύον (ή κύριο) κλειδί και ένα ξένο (ή δευτερεύον) κλειδί.
+Ένα **πρωτεύον κλειδί** είναι μια μεταβλητή ή ένα σύνολο μεταβλητών που προσδιορίζει μοναδικά κάθε παρατήρηση.
+Όταν χρειάζονται περισσότερες από μία μεταβλητές, το κλειδί ονομάζεται **σύνθετο κλειδί.** Για παράδειγμα, στο nycflights13:
+
+-   Το πλαίσιο δεδομένων `airlines` καταγράφει για κάθε αεροπορική εταιρεία δύο στοιχεία: τον κωδικό της εταιρείας και το πλήρες όνομά της.
+    Μπορείτε να προσδιορίσετε μια αεροπορική εταιρεία με τον κωδικό δύο γραμμάτων που της αντιστοιχεί, καθιστώντας τη μεταβλητή `carrier` το πρωτεύον κλειδί.
 
     ```{r}
     airlines
     ```
 
--   `airports` records data about each airport.
-    You can identify each airport by its three letter airport code, making `faa` the primary key.
+-   Το `airports` καταγράφει δεδομένα για κάθε αεροδρόμιο.
+    Μπορείτε να προσδιορίσετε κάθε αεροδρόμιο με τον κωδικό τριών γραμμάτων που του αντιστοιχεί, καθιστώντας τη μεταβλητή `faa` το πρωτεύον κλειδί.
 
     ```{r}
     #| R.options:
@@ -60,8 +62,8 @@ When more than one variable is needed, the key is called a **compound key.** For
     airports
     ```
 
--   `planes` records data about each plane.
-    You can identify a plane by its tail number, making `tailnum` the primary key.
+-   Το `planes` καταγράφει δεδομένα για κάθε αεροπλάνο.
+    Μπορείτε να προσδιορίσετε ένα αεροπλάνο με τον αριθμό ουράς του, καθιστώντας τη μεταβλητή `tailnum` το πρωτεύον κλειδί.
 
     ```{r}
     #| R.options:
@@ -69,8 +71,8 @@ When more than one variable is needed, the key is called a **compound key.** For
     planes
     ```
 
--   `weather` records data about the weather at the origin airports.
-    You can identify each observation by the combination of location and time, making `origin` and `time_hour` the compound primary key.
+-   Το `weather` καταγράφει δεδομένα για τον καιρό στο αεροδρόμιο αναχώρησης.
+    Μπορείτε να προσδιορίσετε κάθε παρατήρηση από το συνδυασμο τοποθεσίας και ώρας, καθιστώντας τις μεταβλητές `origin` και `time_hour` το σύνθετο πρωτεύον κλειδί.
 
     ```{r}
     #| R.options:
@@ -78,16 +80,16 @@ When more than one variable is needed, the key is called a **compound key.** For
     weather
     ```
 
-A **foreign key** is a variable (or set of variables) that corresponds to a primary key in another table.
-For example:
+Ένα **ξένο κλειδί** είναι μια μεταβλητή (ή σύνολο μεταβλητών) που αντιστοιχεί στο πρωτεύον κλειδί από έναν άλλο πίνακα.
+Για παράδειγμα:
 
--   `flights$tailnum` is a foreign key that corresponds to the primary key `planes$tailnum`.
--   `flights$carrier` is a foreign key that corresponds to the primary key `airlines$carrier`.
--   `flights$origin` is a foreign key that corresponds to the primary key `airports$faa`.
--   `flights$dest` is a foreign key that corresponds to the primary key `airports$faa`.
--   `flights$origin`-`flights$time_hour` is a compound foreign key that corresponds to the compound primary key `weather$origin`-`weather$time_hour`.
+-   Η μεταβλητή `flights$tailnum` είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί `planes$tailnum`.
+-   Η μεταβλητή `flights$carrier` είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί `airlines$carrier`.
+-   Η μεταβλητή `flights$origin` είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί `airports$faa`.
+-   Η μεταβλητή `flights$dest` είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί `airports$faa`.
+-   Η μεταβλητή `flights$origin`-`flights$time_hour` είναι ένα σύνθετο ξένο κλειδί που αντιστοιχεί στο σύνθετο πρωτεύον κλειδί `weather$origin`-`weather$time_hour`.
 
-These relationships are summarized visually in @fig-flights-relationships.
+Αυτές οι σχέσεις συνοψίζονται και οπτικά στην @fig-flights-relationships.
 
 ```{r}
 #| label: fig-flights-relationships
@@ -109,16 +111,16 @@ These relationships are summarized visually in @fig-flights-relationships.
 knitr::include_graphics("diagrams/relational.png", dpi = 270)
 ```
 
-You'll notice a nice feature in the design of these keys: the primary and foreign keys almost always have the same names, which, as you'll see shortly, will make your joining life much easier.
-It's also worth noting the opposite relationship: almost every variable name used in multiple tables has the same meaning in each place.
-There's only one exception: `year` means year of departure in `flights` and year of manufacturer in `planes`.
-This will become important when we start actually joining tables together.
+Θα παρατηρήσετε ένα ωραίο χαρακτηριστικό στο σχεδιασμό αυτών των κλειδιών: το πρωτεύον και το ξένο κλειδί έχουν σχεδόν πάντα τα ίδια ονόματα, κάτι που, όπως θα δείτε σύντομα, θα κάνει πολύ πιο εύκολη τη ζωή σας όταν κάνετε ενώσεις.
+Αξίζει επίσης να σημειωθεί και η αντίθετη σχέση: σχεδόν κάθε όνομα μεταβλητής που χρησιμοποιείται σε πολλούς πίνακες έχει την ίδια σημασία σε κάθε μέρος.
+Υπάρχει μόνο μία εξαίρεση: η μεταβλητή `year` υποδηλώνει το έτος αναχώρησης στο πλαίσιο δεδομένων `flights` το έτος του κατασκευαστή στο πλαίσιο δεδομένων `planes`.
+Αυτό θα γίνει σημαντικό όταν αρχίσουμε να ενώνουμε πίνακες μαζί.
 
-### Checking primary keys
+### Έλεγχος πρωτευόντων κλειδιών
 
-Now that that we've identified the primary keys in each table, it's good practice to verify that they do indeed uniquely identify each observation.
-One way to do that is to `count()` the primary keys and look for entries where `n` is greater than one.
-This reveals that `planes` and `weather` both look good:
+Τώρα που προσδιορίσαμε τα κύρια κλειδιά σε κάθε πίνακα, είναι καλή πρακτική να επαληθεύσουμε ότι όντως προσδιορίζουν μοναδικά κάθε παρατήρηση.
+Ένας τρόπος για να γίνει αυτό είναι να μετρώντας τις τιμές που αντιστοιχούν στα κύρια κλειδιά με την `count()` και να εστιάσουμε σε παρατηρήσεις όπου το πλήθος τιμών (`n`) είναι μεγαλύτερο από ένα.
+Αυτός ο έλεγχος αποκαλύπτει ότι οι μεταβλητές `planes` και `weather` δείχουν και οι δύο καλά:
 
 ```{r}
 planes |> 
@@ -130,7 +132,7 @@ weather |>
   filter(n > 1)
 ```
 
-You should also check for missing values in your primary keys --- if a value is missing then it can't identify an observation!
+Θα πρέπει επίσης να ελέγξετε για την ύπαρξη κενών τιμών στα κύρια κλειδιά σας --- εάν λείπει μια τιμή, αυτό σημαίνει ότι μια παρατήρηση δεν μπορεί να αναγνωριστεί!
 
 ```{r}
 planes |> 
@@ -140,12 +142,12 @@ weather |>
   filter(is.na(time_hour) | is.na(origin))
 ```
 
-### Surrogate keys
+### Υποκατάστατα κλειδιά
 
-So far we haven't talked about the primary key for `flights`.
-It's not super important here, because there are no data frames that use it as a foreign key, but it's still useful to consider because it's easier to work with observations if we have some way to describe them to others.
+Μέχρι στιγμής δεν έχουμε μιλήσει για το πρωτεύον κλειδί στο πλαίσιο δεδομένων `flights`.
+Δεν είναι πολύ σημαντικό εδώ, επειδή δεν υπάρχουν πλαίσια δεδομένων που να το χρησιμοποιούν ως ξένο κλειδί, αλλά παραμένει χρήσιμο να το ανφέρουμε γιατί είναι πιο εύκολο να εργαστούμε με παρατηρήσεις, αν έχουμε κάποιο τρόπο να τις περιγράψουμε σε άλλους.
 
-After a little thinking and experimentation, we determined that there are three variables that together uniquely identify each flight:
+Μετά από λίγη σκέψη και πειραματισμό, αποφασίσαμε ότι υπάρχουν τρεις μεταβλητές που μαζί προσδιορίζουν μοναδικά κάθε πτήση:
 
 ```{r}
 flights |> 
@@ -153,9 +155,8 @@ flights |>
   filter(n > 1)
 ```
 
-Does the absence of duplicates automatically make `time_hour`-`carrier`-`flight` a primary key?
-It's certainly a good start, but it doesn't guarantee it.
-For example, are altitude and latitude a good primary key for `airports`?
+Κάνει αυτόματα η απουσία διπλότυπων τιμών τον συνδυασμό `time_hour`-`carrier`-`flight` ένα πρωτεύον κλειδί; Είναι σίγουρα μια καλή αρχή, ωστόσο δεν αποτελεί εγγύηση.
+Για παράδειγμα, είναι το υψόμετρο και το γεωγραφικό πλάτος ένα καλό πρωτεύον κλειδί για το πλαίσιο `airports`;
 
 ```{r}
 airports |>
@@ -163,10 +164,10 @@ airports |>
   filter(n > 1)
 ```
 
-Identifying an airport by its altitude and latitude is clearly a bad idea, and in general it's not possible to know from the data alone whether or not a combination of variables makes a good a primary key.
-But for flights, the combination of `time_hour`, `carrier`, and `flight` seems reasonable because it would be really confusing for an airline and its customers if there were multiple flights with the same flight number in the air at the same time.
+Η αναγνώριση ενός αεροδρομίου με βάση το υψόμετρο και το γεωγραφικό του πλάτος είναι σαφώς κακή ιδέα και γενικά δεν είναι δυνατό να γνωρίζουμε μόνο από τα δεδομένα εάν ένας συνδυασμός μεταβλητών αποτελεί ένα καλό πρωτεύον κλειδί ή όχι.
+Ωστόσο, για τις πτήσεις, ο συνδυασμός των μεταβλητών `time_hour`, `carrier`, και `flight` φαίνεται λογικός γιατί θα προκαλούσε σύγχυση για μια αεροπορική εταιρεία και τους πελάτες της εάν υπήρχαν πολλές πτήσεις με τον ίδιο αριθμό πτήσης στον αέρα ταυτόχρονα .
 
-That said, we might be better off introducing a simple numeric surrogate key using the row number:
+Έχοντας ξεκαθαρίσει αυτό το σημείο, ίσως είναι καλύτερα να εισάγουμε ένα απλό αριθμητικό υποκατάστατο κλειδί χρησιμοποιώντας τον αριθμό κάθε γραμμής:
 
 ```{r}
 flights2 <- flights |> 
@@ -174,44 +175,42 @@ flights2 <- flights |>
 flights2
 ```
 
-Surrogate keys can be particularly useful when communicating to other humans: it's much easier to tell someone to take a look at flight 2001 than to say look at UA430 which departed 9am 2013-01-03.
+Τα υποκατάστατα κλειδιά μπορούν να είναι ιδιαίτερα χρήσιμα όταν επικοινωνείτε με άλλους ανθρώπους: είναι πολύ πιο εύκολο να πείτε σε κάποιον να ρίξει μια ματιά στην πτήση 2001 παρά να του πείτε να δει την UA430 που αναχώρησε στις 9 π.μ., στις 03-01-2013.
 
-### Exercises
+### Ασκήσεις
 
-1.  We forgot to draw the relationship between `weather` and `airports` in @fig-flights-relationships.
-    What is the relationship and how should it appear in the diagram?
+1.  Ξεχάσαμε να σχεδιάσουμε τη σχέση μεταξύ `weather` και `airports` στην @fig-flights-relationships.
+    Ποια είναι η σχέση και πώς πρέπει να εμφανίζεται στο διάγραμμα;
 
-2.  `weather` only contains information for the three origin airports in NYC.
-    If it contained weather records for all airports in the USA, what additional connection would it make to `flights`?
+2.  Η μεταβλητή `weather` περιέχει μόνο πληροφορίες για τα τρία αεροδρόμια αναχώρησης στη Νέα Υόρκη.
+    Εάν περιείχε αρχεία καιρού για όλα τα αεροδρόμια των ΗΠΑ, ποια πρόσθετη σύνδεση θα έκανε με το πλαίσιο δεδομένων `flights`;
 
-3.  The `year`, `month`, `day`, `hour`, and `origin` variables almost form a compound key for `weather`, but there's one hour that has duplicate observations.
-    Can you figure out what's special about that hour?
+3.  Οι μεταβλητές `year`, `month`, `day`, `hour`, και `origin` σχεδόν σχηματίζουν ένα σύνθετο κλειδί για το πλαίσιο δεδομένων `weather`, ωστόσο υπάρχει μια τιμή ώρας που έχει διπλότυπες παρατηρήσεις.
+    Μπορείτε να καταλάβετε τι το ιδιαίτερο έχει αυτή η ώρα;
 
-4.  We know that some days of the year are special and fewer people than usual fly on them (e.g., Christmas eve and Christmas day).
-    How might you represent that data as a data frame?
-    What would be the primary key?
-    How would it connect to the existing data frames?
+4.  Γνωρίζουμε ότι κάποιες μέρες του χρόνου είναι ιδιαίτερες και λιγότεροι άνθρωποι από το συνηθισμένο επιλέγουν να πετάξουν αυτές τις μέρες (για παράδειγμα, παραμονή και ανήμερα Χριστουγέννων).
+    Πώς μπορείτε να αναπαραστήσετε αυτά τα δεδομένα ως πλαίσιο δεδομένων; Ποιο θα ήταν το πρωτεύον κλειδί; Πώς θα συνδεόταν με τα υπάρχοντα πλαίσια δεδομένων;
 
-5.  Draw a diagram illustrating the connections between the `Batting`, `People`, and `Salaries` data frames in the Lahman package.
-    Draw another diagram that shows the relationship between `People`, `Managers`, `AwardsManagers`.
-    How would you characterize the relationship between the `Batting`, `Pitching`, and `Fielding` data frames?
+5.  Σχεδιάστε ένα διάγραμμα που απεικονίζει τις συνδέσεις μεταξύ των πλαισίων δεδομένων `Batting`, `People`, και `Salaries`στο πακέτο Lahman.
+    Σχεδιάστε ένα άλλο διάγραμμα που δείχνει τη σχέση μεταξύ των `People`, `Managers`, `AwardsManagers`.
+    Πώς θα χαρακτηρίζατε τη σχέση μεταξύ των πλαισίων δεδομένων `Batting`, `Pitching`, και `Fielding`;
 
-## Basic joins {#sec-mutating-joins}
+## Βασικές ενώσεις {#sec-mutating-joins}
 
-Now that you understand how data frames are connected via keys, we can start using joins to better understand the `flights` dataset.
-dplyr provides six join functions: `left_join()`, `inner_join()`, `right_join()`, `full_join()`, `semi_join()`, and `anti_join().` They all have the same interface: they take a pair of data frames (`x` and `y`) and return a data frame.
-The order of the rows and columns in the output is primarily determined by `x`.
+Τώρα που καταλαβαίνετε πως συνδέονται τα πλαίσια δεδομένων με τη βοήθεια κλειδιών, μπορούμε να αρχίσουμε να χρησιμοποιούμε ενώσεις για να καανοήσουμε καλύτερα το σύνολο δεδομένων `flights`.
+Η dplyr προσφέρει έξι συναρτήσεις ένωσης: `left_join()`, `inner_join()`, `right_join()`, `full_join()`, `semi_join()`, και `anti_join().` Όλες έχουν την ίδια διεπαφή: παίρνουν ένα ζευγάρι πλαισίων δεδομένων (`x` και `y`) και επιστρέφουν ένα πλαίσιο δεδομένων.
+Η σειρά των γραμμών και στηλών στην έξοδο καθορίζεται κυρίως από το `x`.
 
-In this section, you'll learn how to use one mutating join, `left_join()`, and two filtering joins, `semi_join()` and `anti_join()`.
-In the next section, you'll learn exactly how these functions work, and about the remaining `inner_join()`, `right_join()` and `full_join()`.
+Σε αυτήν την ενότητα, θα μάθετε πώς να χρησιμοποιείτε μια mutating ένωση, την `left_join()`, και δύο filtering ενώσεις, τις `semi_join()` και `anti_join()`.
+Στην επόμενη ενότητα, θα μάθετε πώς ακριβώς λειτουργούν αυτές οι συναρτήσεις, καθώς και για τις υπόλοιπες: `inner_join()`, `right_join()` και `full_join()`.
 
-### Mutating joins
+### Mutating ενώσεις
 
-A **mutating join** allows you to combine variables from two data frames: it first matches observations by their keys, then copies across variables from one data frame to the other.
-Like `mutate()`, the join functions add variables to the right, so if your dataset has many variables, you won't see the new ones.
-For these examples, we'll make it easier to see what's going on by creating a narrower dataset with just six variables[^joins-1]:
+Μια **mutating σύνδεση** σάς επιτρέπει να συνδυάσετε μεταβλητές από δύο πλαίσια δεδομένων: πρώτα αντιστοιχίζει παρατηρήσεις με βάση τα κλειδιά τους και μετά αντιγράφει παρατηρήσεις μεταξύ των μεταβλητών από το ένα πλαίσιο δεδομένων στο άλλο.
+Όπως και η `mutate()`, οι συναρτήσεις ένωσης προσθέτουν μεταβλητές στα δεξιά, οπότε αν το σύνολο δεδομένων σας έχει πολλές μεταβλητές, δεν θα δείτε τις νέες.
+Για αυτά τα παραδείγματα, θα διευκολύνουμε την παρατήρηση του τι συμβαίνει δημιουργώντας ένα πιο στενό σύνολο δεδομένων με έξι μόνο μεταβλητές[^joins-1]:
 
-[^joins-1]: Remember that in RStudio you can also use `View()` to avoid this problem.
+[^joins-1]: Να θυμάστε ότι στο RStudio μπορείτε επίσης να χρησιμοποιήσετε το `View()` για να αποφύγετε αυτό το πρόβλημα.
 
 ```{r}
 flights2 <- flights |> 
@@ -219,34 +218,34 @@ flights2 <- flights |>
 flights2
 ```
 
-There are four types of mutating join, but there's one that you'll use almost all of the time: `left_join()`.
-It's special because the output will always have the same rows as `x`, the data frame you're joining to[^joins-2].
-The primary use of `left_join()` is to add in additional metadata.
-For example, we can use `left_join()` to add the full airline name to the `flights2` data:
+Υπάρχουν τέσσερις τύποι mutating ενώσεων, ωστόσο ένας είναι που θα χρησιμοποιείτε σχεδόν συνέχεια: `left_join()`.
+Αυτό είναι ιδιαίτερο γιατί η έξοδος θα έχει πάντα τις ίδιες γραμμές με το `x`, το πλαίσιο δεδομένων προς τπ οποίο συνδέετε[^joins-2].
+Η κύρια χρήση του `left_join()` είναι η προσθήκη επιπλέον μεταδεδομένων.
+Για παράδειγμα, μπορούμε να χρησιμοποιήσουμε το `left_join()` για να προσθέσουμε το πλήρες όνομα της αεροπορικής εταιρείας στα δεδομένα του `flights2`:
 
-[^joins-2]: That's not 100% true, but you'll get a warning whenever it isn't.
+[^joins-2]: Αυτό δεν είναι 100% αλήθεια, αλλά θα λαμβάνετε μια προειδοποίηση όποτε δεν είναι.
 
 ```{r}
 flights2 |>
   left_join(airlines)
 ```
 
-Or we could find out the temperature and wind speed when each plane departed:
+Ή θα μπορούσαμε να μάθουμε τη θερμοκρασία και την ταχύτητα του ανέμου όταν κάθε αεροπλάνο αναχωρούσε:
 
 ```{r}
 flights2 |> 
   left_join(weather |> select(origin, time_hour, temp, wind_speed))
 ```
 
-Or what size of plane was flying:
+Ή τι μέγεθος αεροπλάνου πετούσε:
 
 ```{r}
 flights2 |> 
   left_join(planes |> select(tailnum, type, engines, seats))
 ```
 
-When `left_join()` fails to find a match for a row in `x`, it fills in the new variables with missing values.
-For example, there's no information about the plane with tail number `N3ALAA` so the `type`, `engines`, and `seats` will be missing:
+Όταν η `left_join()` δεν βρει ταίριασμα για μια γραμμή στο `x`, συμπληρώνει τις νέες μεταβλητές με κενές τιμές.
+Για παράδειγμα, δεν υπάρχουν πληροφορίες σχετικά με το αεροπλάνο με αριθμό ουράς`N3ALAA`, οπότε οι τιμές στις στήλες `type`, `engines`, και `seats` θα λείπουν:
 
 ```{r}
 flights2 |> 
@@ -254,39 +253,39 @@ flights2 |>
   left_join(planes |> select(tailnum, type, engines, seats))
 ```
 
-We'll come back to this problem a few times in the rest of the chapter.
+Θα επανέλθουμε σε αυτό το πρόβλημα μερικές φορές στο υπόλοιπο αυτού του κεφαλαίου.
 
-### Specifying join keys
+### Καθορισμός κλειδιών ένωσης
 
-By default, `left_join()` will use all variables that appear in both data frames as the join key, the so called **natural** join.
-This is a useful heuristic, but it doesn't always work.
-For example, what happens if we try to join `flights2` with the complete `planes` dataset?
+Από προεπιλογή, η `left_join()` θα χρησιμοποιεί όλες τις μεταβλητές που εμφανίζονται και στα δύο πλαίσια δεδομένων ως κλειδί ένωση, τη λεγόμενη **φυσική** (**natural**) ένωση.
+Αυτό είναι ένα χρήσιμο ευρετικό, αλλά δεν λειτουργεί πάντα.
+Για παράδειγμα, τι θα συμβεί αν προσπαθήσουμε να ενώσουμε το `flights2` με το πλήρες σύνολο δεδομένων `planes`;
 
 ```{r}
 flights2 |> 
   left_join(planes)
 ```
 
-We get a lot of missing matches because our join is trying to use `tailnum` and `year` as a compound key.
-Both `flights` and `planes` have a `year` column but they mean different things: `flights$year` is the year the flight occurred and `planes$year` is the year the plane was built.
-We only want to join on `tailnum` so we need to provide an explicit specification with `join_by()`:
+Θα λάβουμε πολλές ελλιπείς αντιστοιχίσεις επειδή η ένωση μας προσπαθεί να χρησιμοποιήσει τις μεταβλητές `tailnum` και `year` ως σύνθετο κλειδί.
+Και τα δύο σύνολα, `flights` και `planes`, περιέχουν μια στήλη `year`, ωστόσο αυτή η στήλη έχει σημαίνει διαφορετικά πράγματα σε κάθε περίπτωση: η `flights$year` είναι το έτος που πραγματοποιήθηκε η πτήση και η `planes$year` είναι το έτος κατασκευής του αεροπλάνου.
+Θέλουμε να πραγματοποιήσουμε ένωση μόνο με βάση την `tailnum`, επομένως πρέπει να παρέχουμε μια ρητή προδιαγραφή με το `join_by()`:
 
 ```{r}
 flights2 |> 
   left_join(planes, join_by(tailnum))
 ```
 
-Note that the `year` variables are disambiguated in the output with a suffix (`year.x` and `year.y`), which tells you whether the variable came from the `x` or `y` argument.
-You can override the default suffixes with the `suffix` argument.
+Σημείωστε ότι η προέλευση των μεταβλητων `year` αποσαφηνίζεται στην έξοδο με ένα επίθημα (`year.x` and `year.y`), το οποίο μας λέει εάν η μεταβλητή προήλθε από το όρισμα `x` ή `y`.
+Μπορείτε να παρακάμψετε τα προεπιλεγμένα επιθήματα με το όρισμα `suffix`.
 
-`join_by(tailnum)` is short for `join_by(tailnum == tailnum)`.
-It's important to know about this fuller form for two reasons.
-Firstly, it describes the relationship between the two tables: the keys must be equal.
-That's why this type of join is often called an **equi join**.
-You'll learn about non-equi joins in @sec-non-equi-joins.
+Το `join_by(tailnum)` είναι η σύντομη εκδοχή του `join_by(tailnum == tailnum)`.
+Είναι σημαντικό να γνωρίζετε αυτήν την πληρέστερη εκδοχή για δύο λόγους.
+Πρώτον, γιατί περιγράφει τη σχέση μεταξύ των δύο πινάκων: τα κλειδιά πρέπει να είναι ίσα (equal).
+Αυτός είναι ο λόγος για τον οποίο αυτός ο τύπος σύνδεσης ονομάζεται συχνά **equi join**.
+Θα μάθετε για τις non-equi συνδέσεις στο @sec-non-equi-joins.
 
-Secondly, it's how you specify different join keys in each table.
-For example, there are two ways to join the `flight2` and `airports` table: either by `dest` or `origin`:
+Δεύτερον, γιατί δείχνει τον τρόπο με τον οποίο καθορίζετε διαφορετικά κλειδιά σύνδεσης σε κάθε πίνακα.
+Για παράδειγμα, υπάρχουν δύο τρόποι για να ενώσετε τους πίνακες `flight2` και `airports`: είτε με βάση το `dest` (τον προορισμό) είτε το `origin` (την προέλευση):
 
 ```{r}
 flights2 |> 
@@ -296,40 +295,39 @@ flights2 |>
   left_join(airports, join_by(origin == faa))
 ```
 
-In older code you might see a different way of specifying the join keys, using a character vector:
+Σε παλαιότερο κώδικα, ενδέχεται να δείτε έναν διαφορετικό τρόπο καθορισμού των κλειδιών ένωσης, χρησιμοποιώντας ένα διάνυσμα χαρακτήρων:
 
--   `by = "x"` corresponds to `join_by(x)`.
--   `by = c("a" = "x")` corresponds to `join_by(a == x)`.
+-   Το `by = "x"` αντιστοιχεί στο `join_by(x)`.
+-   Το `by = c("a" = "x")` αντιστοιχεί στο `join_by(a == x)`.
 
-Now that it exists, we prefer `join_by()` since it provides a clearer and more flexible specification.
+Ωστόσο, προτιμούμε το `join_by()` που υπάρχει πλέον, αφού παρέχει ένα πιο ξεκάθαρο και πιο ευέλικτο τρόπο προσδιορισμού.
 
-`inner_join()`, `right_join()`, `full_join()` have the same interface as `left_join()`.
-The difference is which rows they keep: left join keeps all the rows in `x`, the right join keeps all rows in `y`, the full join keeps all rows in either `x` or `y`, and the inner join only keeps rows that occur in both `x` and `y`.
-We'll come back to these in more detail later.
+Οι `inner_join()`, `right_join()`, και `full_join()` έχουν την ίδια διεπαφή με τη `left_join()`.
+Η διαφορά εντοπίζετε στο ποιες γραμμές διατηρούν: η αριστερή ένωση (`left_join()`) διατηρεί όλες τις γραμμές από το `x`, η δεξιά ένωση (`right_join()`) διατηρεί όλες τις γραμμές από το `y`, η πλήρης ένωση (`full_join()`) διατηρεί όλες τις γραμμές, είτε προέρχονται από το `x` είτε από το `y` και η εσωτερική ένωση (`inner_join()`) διατηρεί μόνο τις γραμμές που εμφανίζονται και στο `x` και στο `y`.
+Θα επανέλθουμε σε αυτά με περισσότερες λεπτομέρειες αργότερα.
 
-### Filtering joins
+### Φιλτράρισμα συνδέσεων
 
-As you might guess the primary action of a **filtering join** is to filter the rows.
-There are two types: semi-joins and anti-joins.
-**Semi-joins** keep all rows in `x` that have a match in `y`.
-For example, we could use a semi-join to filter the `airports` dataset to show just the origin airports:
+Όπως μπορείτε να μαντέψετε, η κύρια ενέργεια μιας **filtering ένωσης** είναι το φιλτράρισμα των γραμμών Υπάρχουν δύο τύποι: ημι-ενώσεις και αντι-ενώσεις.
+Οι **ημι-ενώσεις** (**semi-joins**) διατηρούν όλες τις σειρές στο `x` που έχουν αντιστοιχία στο `y`.
+Για παράδειγμα, θα μπορούσαμε να χρησιμοποιήσουμε μια ημι-ένωση για να φιλτράρουμε το σύνολο δεδομένων `airports` για να διατηρήσουμε μόνο τα αεροδρόμια προέλευσης:
 
 ```{r}
 airports |> 
   semi_join(flights2, join_by(faa == origin))
 ```
 
-Or just the destinations:
+Ή μόνο τους προορισμούς:
 
 ```{r}
 airports |> 
   semi_join(flights2, join_by(faa == dest))
 ```
 
-**Anti-joins** are the opposite: they return all rows in `x` that don't have a match in `y`.
-They're useful for finding missing values that are **implicit** in the data, the topic of @sec-missing-implicit.
-Implicitly missing values don't show up as `NA`s but instead only exist as an absence.
-For example, we can find rows that are missing from `airports` by looking for flights that don't have a matching destination airport:
+Οι **αντι-ενώσεις** (**anti-joins**) είναι το αντίθετο: επιστρέφουν όλες τις γραμμές από το `x` που δεν έχουν αντιστοιχία στο `y`.
+Είναι χρήσιμα για την εύρεση κενών τιμών που είναι **implicit** στα δεδομένα, το θέμα του @sec-missing-implicit.
+Οι τιμές που λείπουν σιωπηρά δεν εμφανίζονται ως `NA` αλλά υπάρχουν μόνο ως απουσία.
+Για παράδειγμα, μπορούμε να βρούμε γραμμές που λείπουν από το `airports` αναζητώντας πτήσεις που δεν έχουν αντίστοιχο αεροδρόμιο προορισμού:
 
 ```{r}
 flights2 |> 
@@ -337,7 +335,7 @@ flights2 |>
   distinct(dest)
 ```
 
-Or we can find which `tailnum`s are missing from `planes`:
+Ή μπορούμε να βρούμε ποιες τιμές της μεταβλητής `tailnum` λείπουν από το `planes`:
 
 ```{r}
 flights2 |>
@@ -345,13 +343,13 @@ flights2 |>
   distinct(tailnum)
 ```
 
-### Exercises
+### Ασκήσεις
 
-1.  Find the 48 hours (over the course of the whole year) that have the worst delays.
-    Cross-reference it with the `weather` data.
-    Can you see any patterns?
+1.  Εντοπίστε τις 48 ώρες (κατά τη διάρκεια ολόκληρου του έτους) που έχουν τις χειρότερες καθυστερήσεις.
+    Διασταυρώστε το με τα δεδομένα του `weather`.
+    Μπορείτε να δείτε κάποιο μοτίβο;
 
-2.  Imagine you've found the top 10 most popular destinations using this code:
+2.  Φανταστείτε ότι έχετε βρει τους 10 πιο δημοφιλείς προορισμούς χρησιμοποιώντας αυτόν τον κώδικα:
 
     ```{r}
     top_dest <- flights2 |>
@@ -359,22 +357,21 @@ flights2 |>
       head(10)
     ```
 
-    How can you find all flights to those destinations?
+    Πώς μπορείτε να βρείτε όλες τις πτήσεις προς αυτούς τους προορισμούς;
 
-3.  Does every departing flight have corresponding weather data for that hour?
+3.  Έχει κάθε πτήση που αναχωρεί αντίστοιχα δεδομένα καιρού για εκείνη την ώρα;
 
-4.  What do the tail numbers that don't have a matching record in `planes` have in common?
-    (Hint: one variable explains \~90% of the problems.)
+4.  Τι κοινό έχουν οι αριθμοί της ουράς που δεν έχουν αντίστοιχη εγγραφή στο `planes`; (Υπόδειξη: μία μεταβλητή εξηγεί \~90% των προβλημάτων.)
 
-5.  Add a column to `planes` that lists every `carrier` that has flown that plane.
-    You might expect that there's an implicit relationship between plane and airline, because each plane is flown by a single airline.
-    Confirm or reject this hypothesis using the tools you've learned in previous chapters.
+5.  Προσθέστε μια στήλη στο `planes` που αναφέρει κάθε `carrier` που έχει χρησιμοποιήσει αυτό το αεροπλάνο.
+    Μπορεί να περιμένετε ότι υπάρχει μια έμμεση σχέση μεταξύ αεροπλάνου και αεροπορικής εταιρείας, επειδή κάθε αεροπλάνο πετά με μία μόνο αεροπορική εταιρεία.
+    Επιβεβαιώστε ή απορρίψτε αυτήν την υπόθεση χρησιμοποιώντας τα εργαλεία που έχετε μάθει σε προηγούμενα κεφάλαια.
 
-6.  Add the latitude and the longitude of the origin *and* destination airport to `flights`.
-    Is it easier to rename the columns before or after the join?
+6.  Προσθέστε το γεωγραφικό πλάτος και μήκος του αεροδρομίου προέλευσης *και* προορισμού στο πλαίσιο δεδομένων `flights`.
+    Είναι πιο εύκολο να μετονομάσετε τις στήλες πριν ή αφού κάνετε την ένωση;
 
-7.  Compute the average delay by destination, then join on the `airports` data frame so you can show the spatial distribution of delays.
-    Here's an easy way to draw a map of the United States:
+7.  Υπολογίστε τη μέση καθυστέρηση ανά προορισμό και, στη συνέχεια, ενώστε την πληροφορία στο `airports`, ώστε να μπορέσετε να παρουσιάσετε την κατανομή των καθυστερήσεων γεωγραφικά.
+    Ακολουθεί ένας εύκολος τρόπος για να σχεδιάσετε έναν χάρτη των Ηνωμένων Πολιτειών:
 
     ```{r}
     #| eval: false
@@ -387,10 +384,9 @@ flights2 |>
         coord_quickmap()
     ```
 
-    You might want to use the `size` or `color` of the points to display the average delay for each airport.
+    Μπορεί να θέλετε να χρησιμοποιήσετε το `size` ή το `color` των σημείων για να εμφανίσετε τη μέση καθυστέρηση για κάθε αεροδρόμιο.
 
-8.  What happened on June 13 2013?
-    Draw a map of the delays, and then use Google to cross-reference with the weather.
+8.  Τι συνέβη στις 13 Ιουνίου 2013; Σχεδιάστε έναν χάρτη με τις καθυστερήσεις και, στη συνέχεια, χρησιμοποιήστε το Google για να διασταυρώσετε τα δεδομένα για τον καιρό.
 
     ```{r}
     #| eval: false
@@ -408,11 +404,11 @@ flights2 |>
         coord_quickmap()
     ```
 
-## How do joins work?
+## Πώς λειτουργούν οι ενώσεις;
 
-Now that you've used joins a few times it's time to learn more about how they work, focusing on how each row in `x` matches rows in `y`.
-We'll begin by introducing a visual representation of joins, using the simple tibbles defined below and shown in @fig-join-setup.
-In these examples we'll use a single key called `key` and a single value column (`val_x` and `val_y`), but the ideas all generalize to multiple keys and multiple values.
+Τώρα που έχετε χρησιμοποιήσει συνδέσεις μερικές φορές, ήρθε η ώρα να μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας τους, εστιάζοντας στο πώς κάθε γραμμή στο `x` αντιστοιχίζεται με τις γραμμές στο `y`.
+Θα ξεκινήσουμε εισάγοντας μια οπτική αναπαράσταση των ενώσεων, χρησιμοποιώντας τα απλά tibbles που ορίζονται παρακάτω και εμφανίζονται στο @fig-join-setup.
+Σε αυτά τα παραδείγματα θα χρησιμοποιήσουμε ένα μόνο κλειδί που ονομάζεται `key` και μια στήλη με μία τιμή (`val_x` και `val_y`), αλλά όλες οι ιδέες που χρησιμοποιούνται εδώ γενικεύονται σε πολλά κλειδιά και πολλαπλές τιμές.
 
 ```{r}
 x <- tribble(
@@ -445,9 +441,9 @@ y <- tribble(
 knitr::include_graphics("diagrams/join/setup.png", dpi = 270)
 ```
 
-@fig-join-setup2 introduces the foundation for our visual representation.
-It shows all potential matches between `x` and `y` as the intersection between lines drawn from each row of `x` and each row of `y`.
-The rows and columns in the output are primarily determined by `x`, so the `x` table is horizontal and lines up with the output.
+Η @fig-join-setup2 εισάγει τη βάση για την οπτική μας αναπαράσταση.
+Εμφανίζει όλες τις πιθανές αντιστοιχίσεις μεταξύ των `x` και `y` ως τομή μεταξύ των γραμμών που σχεδιάζονται από κάθε γραμμή του `x` και κάθε γραμμής του `y`.
+Οι γραμμές και οι στήλες στην έξοδο καθορίζονται κυρίως από το `x`, επομένως ο πίνακας `x` είναι οριζόντιος και ευθυγραμμίζεται με την έξοδο.
 
 ```{r}
 #| label: fig-join-setup2
@@ -465,9 +461,9 @@ The rows and columns in the output are primarily determined by `x`, so the `x` t
 knitr::include_graphics("diagrams/join/setup2.png", dpi = 270)
 ```
 
-To describe a specific type of join, we indicate matches with dots.
-The matches determine the rows in the output, a new data frame that contains the key, the x values, and the y values.
-For example, @fig-join-inner shows an inner join, where rows are retained if and only if the keys are equal.
+Για να περιγράψουμε έναν συγκεκριμένο τύπο ένωσης, υποδεικνύουμε τις αντιστοιχίσεις με τελείες.
+Οι αντιστοιχίσεις καθορίζουν τις γραμμές στην έξοδο, ένα νέο πλαίσιο δεδομένων που περιέχει το κλειδί, τις τιμές x και τις τιμές y.
+Για παράδειγμα, το @fig-join-inner δείχνει μια εσωτερική ένωση, όπου οι γραμμές διατηρούνται εάν και μόνο εάν τα κλειδιά είναι ίσα.
 
 ```{r}
 #| label: fig-join-inner
@@ -485,13 +481,13 @@ For example, @fig-join-inner shows an inner join, where rows are retained if and
 knitr::include_graphics("diagrams/join/inner.png", dpi = 270)
 ```
 
-We can apply the same principles to explain the **outer joins**, which keep observations that appear in at least one of the data frames.
-These joins work by adding an additional "virtual" observation to each data frame.
-This observation has a key that matches if no other key matches, and values filled with `NA`.
-There are three types of outer joins:
+Μπορούμε να εφαρμόσουμε τις ίδιες αρχές για να εξηγήσουμε τις **εξωτερικές ενώσεις** (**outer joins**), οι οποίες διατηρούν τις παρατηρήσεις που εμφανίζονται σε τουλάχιστον ένα από τα πλαίσια δεδομένων.
+Αυτές οι ενώσεις λειτουργούν προσθέτοντας μια πρόσθετη "εικονική" παρατήρηση σε κάθε πλαίσιο δεδομένων.
+Αυτή η παρατήρηση έχει ένα κλειδί που ταιριάζει αν δεν ταιριάζει άλλο κλειδί, και τιμές γεμάτες με `NA`.
+Υπάρχουν τρεις τύποι εξωτερικών ενώσεων:
 
--   A **left join** keeps all observations in `x`, @fig-join-left.
-    Every row of `x` is preserved in the output because it can fall back to matching a row of `NA`s in `y`.
+-   Μια **αριστερή ένωση** (**left join**) διατηρεί όλες τις παρατηρήσεις του `x`, @fig-join-left.
+    Κάθε γραμμή του `x` διατηρείται στην έξοδο, μιας και μπορεί να αντιστοιχιστεί σε μια γραμμή με `NA` του `y`.
 
     ```{r}
     #| label: fig-join-left
@@ -510,9 +506,9 @@ There are three types of outer joins:
     knitr::include_graphics("diagrams/join/left.png", dpi = 270)
     ```
 
--   A **right join** keeps all observations in `y`, @fig-join-right.
-    Every row of `y` is preserved in the output because it can fall back to matching a row of `NA`s in `x`.
-    The output still matches `x` as much as possible; any extra rows from `y` are added to the end.
+-   Μια **δεξιά ένωση** (**right join**) διατηρεί όλες τις παρατηρήσεις του `y`, @fig-join-right.
+    Κάθε γραμμή του `y` διατηρείται στην έξοδο, επειδή μπορεί να αντιστοιχιστεί σε μια γραμμή με `NA` του `x`.
+    Η έξοδος εξακολουθεί να ταιριάζει με το `x` όσο το δυνατόν περισσότερο, ενώ τυχόν επιπλέον σειρές από το `y` προστίθενται στο τέλος.
 
     ```{r}
     #| label: fig-join-right
@@ -529,9 +525,9 @@ There are three types of outer joins:
     knitr::include_graphics("diagrams/join/right.png", dpi = 270)
     ```
 
--   A **full join** keeps all observations that appear in `x` or `y`, @fig-join-full.
-    Every row of `x` and `y` is included in the output because both `x` and `y` have a fall back row of `NA`s.
-    Again, the output starts with all rows from `x`, followed by the remaining unmatched `y` rows.
+-   Μια **πλήρης ένωση** (**full join**) διατηρεί όλες τις παρατηρήσεις που εμφανίζονται είτε στο `x` είτε στο `y`, @fig-join-full.
+    Κάθε γραμμή των `x` και `y` περιλαμβάνεται στην έξοδο επειδή και τα `x` και `y` περιλαμβάνουν μια εναλλακτική γραμμή με `NA`.
+    Και πάλι, η έξοδος ξεκινά με όλες τις γραμμές από το `x`, ακολουθούμενες από τις υπόλοιπες γραμμές του `y` που δεν αντιστοιχίσθηκαν σε συγκεκιρμένη γραμμή του `x`.
 
     ```{r}
     #| label: fig-join-full
@@ -549,8 +545,8 @@ There are three types of outer joins:
     knitr::include_graphics("diagrams/join/full.png", dpi = 270)
     ```
 
-Another way to show how the types of outer join differ is with a Venn diagram, as in @fig-join-venn.
-However, this is not a great representation because while it might jog your memory about which rows are preserved, it fails to illustrate what's happening with the columns.
+Ένας άλλος τρόπος για να δείξετε τις διαφορές ανάμεσα στους διάφορους τύπους της εξωτερικής ένωσης είναι με ένα διάγραμμα Venn, όπως στο @fig-join-venn.
+Ωστόσο, αυτή δεν είναι μια καλή αναπαράσταση, επειδή, ενώ μπορεί να φρεσκάρει τη μνήμη σας σχετικά με το ποιες γραμμές διατηρούνται, αποτυγχάνει όμως να επεξηγήσει τι συμβαίνει με τις στήλες.
 
 ```{r}
 #| label: fig-join-venn
@@ -573,15 +569,14 @@ However, this is not a great representation because while it might jog your memo
 knitr::include_graphics("diagrams/join/venn.png", dpi = 270)
 ```
 
-The joins shown here are the so-called **equi** **joins**, where rows match if the keys are equal.
-Equi joins are the most common type of join, so we'll typically omit the equi prefix, and just say "inner join" rather than "equi inner join".
-We'll come back to non-equi joins in @sec-non-equi-joins.
+Οι ενώσεις που φαίνονται εδώ είναι οι λεγόμενες **equi** **joins**, όπου οι γραμμές αντιστοιχίζονται εάν τα κλειδιά είναι ίσα.
+Οι ενώσεις ισοτιμίας είναι ο πιο συνηθισμένος τύπος ένωσης, επομένως συνήθως παραλείπουμε το πρόθεμα equi και απλώς λέμε "inner join" αντί για "equi inner join".
+Θα επανέλθουμε στις non-equi ενώσεις στο @sec-non-equi-joins.
 
-### Row matching
+### Αντιστοίχιση γραμμών
 
-So far we've explored what happens if a row in `x` matches zero or one row in `y`.
-What happens if it matches more than one row?
-To understand what's going let's first narrow our focus to the `inner_join()` and then draw a picture, @fig-join-match-types.
+Μέχρι στιγμής έχουμε εξερευνήσει τι συμβαίνει εάν μια γραμμή από το `x` ταιριάζει με μια ή καμμία γραμμή στο `y`.
+Τι συμβαίνει όμως αν ταιριάζει με περισσότερες από μία γραμμές; Για να κατανοήσουμε τι συμβαίνει, ας εστιάσουμε την προσοχή μας στο `inner_join()` και ας σχεδιάσουμε μια εικόνα, @fig-join-match-types.
 
 ```{r}
 #| label: fig-join-match-types
@@ -601,38 +596,38 @@ To understand what's going let's first narrow our focus to the `inner_join()` an
 knitr::include_graphics("diagrams/join/match-types.png", dpi = 270)
 ```
 
-There are three possible outcomes for a row in `x`:
+Υπάρχουν τρία πιθανά αποτελέσματα για μια γραμμή στο `x`:
 
--   If it doesn't match anything, it's dropped.
--   If it matches 1 row in `y`, it's preserved.
--   If it matches more than 1 row in `y`, it's duplicated once for each match.
+-   Αν δεν ταιριάζει με τίποτα, απορρίπτεται.
+-   Εάν ταιριάζει με 1 σειρά στο `y`, διατηρείται.
+-   Εάν αντιστοιχεί σε περισσότερες από 1 σειρές στο `y`, γίνεται διπλότυπη μία φορά για κάθε αντιστοίχιση
 
-In principle, this means that there's no guaranteed correspondence between the rows in the output and the rows in `x`, but in practice, this rarely causes problems.
-There is, however, one particularly dangerous case which can cause a combinatorial explosion of rows.
-Imagine joining the following two tables:
+Κατ 'αρχήν, αυτό σημαίνει ότι δεν υπάρχει εγγυημένη αντιστοιχία μεταξύ των γραμμών στην έξοδο και των γραμμών στο `x`, αλλά πρακτικά, αυτό σπάνια προκαλεί προβλήματα.
+Υπάρχει, ωστόσο, μια ιδιαίτερα επικίνδυνη περίπτωση που μπορεί να προκαλέσει μια συνδυαστική έκρηξη γραμμών.
+Φανταστείτε ότι ενώνετε τους παρακάτω δύο πίνακες:
 
 ```{r}
 df1 <- tibble(key = c(1, 2, 2), val_x = c("x1", "x2", "x3"))
 df2 <- tibble(key = c(1, 2, 2), val_y = c("y1", "y2", "y3"))
 ```
 
-While the first row in `df1` only matches one row in `df2`, the second and third rows both match two rows.
-This is sometimes called a `many-to-many` join, and will cause dplyr to emit a warning:
+Ενώ η πρώτη γραμμή του `df1` αντιστοιχίζεται με μία μόνο γραμμή του `df2`, η δεύτερη και η τρίτη γραμμή αντιστοιχίζονται με από δύο γραμμές η καθεμία.
+Αυτό μπορεί να το συναντήσετε ως ένωση `πολλά-με-πολλά`, και θα έχει ως αποτελέσμα η dplyr να επιστρέψει μια προειδοποίηση:
 
 ```{r}
 df1 |> 
   inner_join(df2, join_by(key))
 ```
 
-If you are doing this deliberately, you can set `relationship = "many-to-many"`, as the warning suggests.
+Εάν το κάνετε αυτό σκόπιμα, μπορείτε να ορίσετε `relationship = "many-to-many"`,, όπως προτείνει η προειδοποίηση.
 
-### Filtering joins
+### Filtering ενώσεις
 
-The number of matches also determines the behavior of the filtering joins.
-The semi-join keeps rows in `x` that have one or more matches in `y`, as in @fig-join-semi.
-The anti-join keeps rows in `x` that match zero rows in `y`, as in @fig-join-anti.
-In both cases, only the existence of a match is important; it doesn't matter how many times it matches.
-This means that filtering joins never duplicate rows like mutating joins do.
+Ο αριθμός των αντιστοιχιών καθορίζει επίσης τη συμπεριφορά των ενώσεων φιλτραρίσματος.
+Η ημι-ένωηση (semi-join) διατηρεί γραμμές στο `x` που έχουν μία ή περισσότερες αντιστοιχίσεις στο `y`, όπως στην @fig-join-semi.
+Η αντι-ένωση (anti-join) διατηρεί γραμμές στο `x` που δεν ταιριάζουν με καμία γραμμή στο `y`, όπως στην @fig-join-anti.
+Και στις δύο περιπτώσεις, μόνο η ύπαρξη μιας αντιστοίχισης είναι σημαντική, και όχι το πλήθος των αντιστοιχίσεων.
+Αυτό σημαίνει ότι οι ενώσεις φιλτραρίσματος δεν δημιουργούν ποτέ διπλότυπες γραμμές όπως κάνουν οι mutating ενώσεις.
 
 ```{r}
 #| label: fig-join-semi
@@ -663,14 +658,14 @@ knitr::include_graphics("diagrams/join/semi.png", dpi = 270)
 knitr::include_graphics("diagrams/join/anti.png", dpi = 270)
 ```
 
-## Non-equi joins {#sec-non-equi-joins}
+## Non-equi ενώσεις {#sec-non-equi-joins}
 
-So far you've only seen equi joins, joins where the rows match if the `x` key equals the `y` key.
-Now we're going to relax that restriction and discuss other ways of determining if a pair of rows match.
+Μέχρι στιγμής έχετε δει μόνο ενώσεις ισοτιμίας, ενώσεις όπου οι γραμμές ταιριάζουν εάν το κλειδί του `x` ισούται με το κλειδί στο `y`.
+Τώρα θα χαλαρώσουμε αυτόν τον περιορισμό και θα συζητήσουμε άλλους τρόπους για να προσδιορίσουμε εάν ένα ζευγάρι γραμμών ταιριάζει.
 
-But before we can do that, we need to revisit a simplification we made above.
-In equi joins the `x` keys and `y` are always equal, so we only need to show one in the output.
-We can request that dplyr keep both keys with `keep = TRUE`, leading to the code below and the re-drawn `inner_join()` in @fig-inner-both.
+Αλλά προτού μπορέσουμε να το κάνουμε αυτό, πρέπει να επανεξετάσουμε μια απλοποίηση που κάναμε παραπάνω.
+Σε ισότιμες ενώσεις (equi joins) τα κλειδιά των `x` και `y` είναι πάντα ίσα, οπότε αρκεί να εμφανίσουμε μόνο ένα στην έξοδο.
+Μπορούμε να ζητήσουμε από την dplyr να διατηρήσει και τα δύο κλειδιά με το όρισμα `keep = TRUE`, οδηγώντας στον παρακάτω κώδικα και στο επανασχεδιασμένο `inner_join()` στη @fig-inner-both.
 
 ```{r}
 x |> inner_join(y, join_by(key == key), keep = TRUE)
@@ -691,9 +686,9 @@ x |> inner_join(y, join_by(key == key), keep = TRUE)
 knitr::include_graphics("diagrams/join/inner-both.png", dpi = 270)
 ```
 
-When we move away from equi joins we'll always show the keys, because the key values will often be different.
-For example, instead of matching only when the `x$key` and `y$key` are equal, we could match whenever the `x$key` is greater than or equal to the `y$key`, leading to @fig-join-gte.
-dplyr's join functions understand this distinction equi and non-equi joins so will always show both keys when you perform a non-equi join.
+Όταν απομακρυνόμαστε από τις ενώσεις ισοτιμίας, θα εμφανίζουμε πάντα τα κλειδιά, επειδή οι τιμές των κλειδιών συχνά θα είναι διαφορετικές.
+Για παράδειγμα, αντί να κάνουμε την αντιστοίχιση μόνο όταν το `x$key` και το `y$key` είναι ίσα, θα μπορούσαμε να κάνουμε την αντιστοίχιση κάθε φορά που το `x$key` είναι μεγαλύτερο ή ίσο με το `y$key`, που οδηγεί στην @fig -join-gte.
+Οι συναρτήσεις ένωσης της dplyr κατανοούν αυτή τη διάκριση ανάμεσα σε ισοδύναμες και μη ισοδύναμες ενώσεις, επομένως θα εμφανίζουν πάντα και τα δύο κλειδιά όταν εκτελείτε μια ένωση χωρίς ισοδυναμία.
 
 ```{r}
 #| label: fig-join-gte
@@ -710,19 +705,20 @@ dplyr's join functions understand this distinction equi and non-equi joins so wi
 knitr::include_graphics("diagrams/join/gte.png", dpi = 270)
 ```
 
-Non-equi join isn't a particularly useful term because it only tells you what the join is not, not what it is. dplyr helps by identifying four particularly useful types of non-equi join:
+Η σύνδεση χωρίς ισοτιμία δεν είναι ιδιαίτερα χρήσιμος όρος, επειδή μας λέει μόνο τι δεν είναι η ένωση, όχι τι είναι.
+Η dplyr βοηθά προσδιορίζοντας τέσσερις ιδιαίτερα χρήσιμους τύπους non-equi join:
 
--   **Cross joins** match every pair of rows.
--   **Inequality joins** use `<`, `<=`, `>`, and `>=` instead of `==`.
--   **Rolling joins** are similar to inequality joins but only find the closest match.
--   **Overlap joins** are a special type of inequality join designed to work with ranges.
+-   Οι **διασταυρούμενες ενώσεις** (**Cross joins**) αντιστοιχίζουν κάθε ζεύγος γραμμών
+-   Οι **ενώσεις ανισότητας** (**Inequality joins**) χρησιμοποιούν τα `<`, `<=`, `>`, και `>=` αντί του `==`.
+-   Οι **κυλιόμενες ενώσεις** (**Rolling joins**) είναι παρόμοιες με τις ενώσεις ανισότητας αλλά βρίσκουν μόνο την πλησιέστερη αντιστοιχία.
+-   Οι **ενώσεις επικάλυψης** (**Overlap joins**) είναι ένας ειδικός τύπος ένωσης ανισότητας που έχει σχεδιαστεί για να λειτουργεί με εύρη.
 
-Each of these is described in more detail in the following sections.
+Καθένα από αυτά περιγράφεται λεπτομερέστερα στις επόμενες ενότητες.
 
-### Cross joins
+### Διασταυρούμενες ενώσει
 
-A cross join matches everything, as in @fig-join-cross, generating the Cartesian product of rows.
-This means the output will have `nrow(x) * nrow(y)` rows.
+Μια διασταυρούμενη ένωση ταιριάζει με τα πάντα, όπως στην @fig-join-cross, δημιουργώντας το καρτεσιανό γινόμενο των γραμμών.
+Αυτό σημαίνει ότι η έξοδος θα έχει `nrow(x) * nrow(y)` γραμμές.
 
 ```{r}
 #| label: fig-join-cross
@@ -735,19 +731,19 @@ This means the output will have `nrow(x) * nrow(y)` rows.
 knitr::include_graphics("diagrams/join/cross.png", dpi = 270)
 ```
 
-Cross joins are useful when generating permutations.
-For example, the code below generates every possible pair of names.
-Since we're joining `df` to itself, this is sometimes called a **self-join**.
-Cross joins use a different join function because there's no distinction between inner/left/right/full when you're matching every row.
+Οι διασταυρούμενες ενώσεις είναι χρήσιμες κατά τη δημιουργία συνδυασμών.
+Για παράδειγμα, ο παρακάτω κώδικας δημιουργεί κάθε πιθανό ζεύγος ονομάτων.
+Εφόσον ενώνουμε το `df` με τον εαυτό του, αυτό μερικές φορές ονομάζεται **αυτο-σύνδεση** (**self-join**).
+Οι διασταυρούμενες ενώσεις χρησιμοποιούν διαφορετική συνάρτηση σύνδεσης επειδή δεν υπάρχει διάκριση μεταξύ εσωτερικές/αριστερές/δεξιές/πλήρεις ενώσεις όταν η αντιστοίχιση αφορά κάθε γραμμή.
 
 ```{r}
 df <- tibble(name = c("John", "Simon", "Tracy", "Max"))
 df |> cross_join(df)
 ```
 
-### Inequality joins
+### Ενώσεις ανισότητας
 
-Inequality joins use `<`, `<=`, `>=`, or `>` to restrict the set of possible matches, as in @fig-join-gte and @fig-join-lt.
+Οι ενώσεις ανισότητας χρησιμοποιούν τους τελεστές `<`, `<=`, `>=`, ή `>` για να περιορίσουν το σύνολο των πιθανών αντιστοιχίσεων, όπως στις @fig-join-gte και @fig-join-lt.
 
 ```{r}
 #| label: fig-join-lt
@@ -765,8 +761,8 @@ Inequality joins use `<`, `<=`, `>=`, or `>` to restrict the set of possible mat
 knitr::include_graphics("diagrams/join/lt.png", dpi = 270)
 ```
 
-Inequality joins are extremely general, so general that it's hard to come up with meaningful specific use cases.
-One small useful technique is to use them to restrict the cross join so that instead of generating all permutations, we generate all combinations:
+Οι ενώσεις ανισότητας είναι εξαιρετικά γενικές, τόσο γενικές που είναι δύσκολο να βρούμε ουσιαστικές συγκεκριμένες περιπτώσεις χρήσης.
+Μια μικρή χρήσιμη τεχνική είναι να τις χρησιμοποιούμε για να περιορίσουμε τη διασταυρούμενη ένωση έτσι ώστε αντί να δημιουργούμε όλες τις μεταθέσεις, να δημιουργούμε όλους τους συνδυασμούς:
 
 ```{r}
 df <- tibble(id = 1:4, name = c("John", "Simon", "Tracy", "Max"))
@@ -774,11 +770,11 @@ df <- tibble(id = 1:4, name = c("John", "Simon", "Tracy", "Max"))
 df |> inner_join(df, join_by(id < id))
 ```
 
-### Rolling joins
+### Κυλιόμενες ενώσεις
 
-Rolling joins are a special type of inequality join where instead of getting *every* row that satisfies the inequality, you get just the closest row, as in @fig-join-closest.
-You can turn any inequality join into a rolling join by adding `closest()`.
-For example `join_by(closest(x <= y))` matches the smallest `y` that's greater than or equal to x, and `join_by(closest(x > y))` matches the biggest `y` that's less than `x`.
+Οι κυλιόμενες ενώσεις είναι ένας ειδικός τύπος ένωσης ανισότητας όπου αντί να λαμβάνουμε *κάθε* γραμμή που ικανοποιεί την ανισότητα, παίρνουμε μόνο την πλησιέστερη γραμμή, όπως στην @fig-join-closest.
+Μπορείτε να μετατρέψετε οποιαδήποτε ένωση ανισότητας σε κυλιόμενη ένωση προσθέτοντας το όρισμα `closest()`.
+Για παράδειγμα, το `join_by(closest(x <= y))` αντιστοιχεί στο μικρότερο `y` που είναι μεγαλύτερο ή ίσο με το `x` και το `join_by(closest(x > y))` αντιστοιχεί στο μεγαλύτερο `y` που είναι μικρότερο από το `x`.
 
 ```{r}
 #| label: fig-join-closest
@@ -794,12 +790,12 @@ For example `join_by(closest(x <= y))` matches the smallest `y` that's greater t
 knitr::include_graphics("diagrams/join/closest.png", dpi = 270)
 ```
 
-Rolling joins are particularly useful when you have two tables of dates that don't perfectly line up and you want to find (e.g.) the closest date in table 1 that comes before (or after) some date in table 2.
+Οι κυλιόμενες ενώσεις είναι ιδιαίτερα χρήσιμες όταν έχετε δύο πίνακες ημερομηνιών που δεν ευθυγραμμίζονται τέλεια και θέλετε να βρείτε (για παράδειγμα) την πλησιέστερη ημερομηνία στον πίνακα 1 που είναι πριν (ή μετά) κάποια ημερομηνία στον πίνακα 2.
 
-For example, imagine that you're in charge of the party planning commission for your office.
-Your company is rather cheap so instead of having individual parties, you only have a party once each quarter.
-The rules for determining when a party will be held are a little complex: parties are always on a Monday, you skip the first week of January since a lot of people are on holiday, and the first Monday of Q3 2022 is July 4, so that has to be pushed back a week.
-That leads to the following party days:
+Για παράδειγμα, φανταστείτε ότι είστε υπεύθυνος της επιτροπής σχεδιασμού εορτασμών για το γραφείο σας.
+Η εταιρεία σας θέλει να μην ξοδέψει πολλά χρήματα, επομένως αντί να κάνετε μεμονωμένα πάρτι, θα κάνετε ένα πάρτι μόνο, μία φορά το τρίμηνο.
+Οι κανόνες για τον καθορισμό του πότε θα γίνει ένα πάρτι είναι λίγο περίπλοκοι: τα πάρτι γίνονται πάντα Δευτέρα, παραλείπετε την πρώτη εβδομάδα του Ιανουαρίου, καθώς πολλοί είναι σε διακοπές, ενώ και η πρώτη Δευτέρα του τρίτου τριμήνου 2022 είναι στις 4 Ιουλίου, οπότε και σε αυτή την περίπτωση η ημερομηνία του πάρτι θα πρέπει να μεταφερθεί κατά μια εβδομάδα αργότερα.
+Αυτό οδηγεί στις ακόλουθες ημέρες πάρτι:
 
 ```{r}
 parties <- tibble(
@@ -808,7 +804,7 @@ parties <- tibble(
 )
 ```
 
-Now imagine that you have a table of employee birthdays:
+Τώρα φανταστείτε ότι έχετε έναν πίνακα με τα γενέθλια των εργαζομένων:
 
 ```{r}
 set.seed(123)
@@ -819,34 +815,34 @@ employees <- tibble(
 employees
 ```
 
-And for each employee we want to find the first party date that comes after (or on) their birthday.
-We can express that with a rolling join:
+Και για κάθε εργαζόμενο θέλουμε να βρούμε τη πρώτη διαθέσιμη ημερομηνία για πάρτι που έρχεται μετά (ή πάνω στα) γενέθλιά του.
+Μπορούμε να το εκφράσουμε με μια κυλιόμενη ένωση:
 
 ```{r}
 employees |> 
   left_join(parties, join_by(closest(birthday >= party)))
 ```
 
-There is, however, one problem with this approach: the folks with birthdays before January 10 don't get a party:
+Υπάρχει, ωστόσο, ένα πρόβλημα με αυτήν την προσέγγιση: οι άνθρωποι με γενέθλια πριν από τις 10 Ιανουαρίου δεν κάνουν πάρτι:
 
 ```{r}
 employees |> 
   anti_join(parties, join_by(closest(birthday >= party)))
 ```
 
-To resolve that issue we'll need to tackle the problem a different way, with overlap joins.
+Για να το λύσουμε αυτό, θα χρειαστεί να αντιμετωπίσουμε το πρόβλημα με διαφορετικό τρόπο, χρησιμοποιώντας ενώσεις επικάλυψης.
 
-### Overlap joins
+### Ενώσεις επικάλυψης
 
-Overlap joins provide three helpers that use inequality joins to make it easier to work with intervals:
+Οι ενώσεις επικάλυψης παρέχουν τρεις βοηθητικές συναρτήσεις που χρησιμοποιούν ενώσεις ανισότητας για να διευκολύνουν την εργασία με διαστήματα:
 
--   `between(x, y_lower, y_upper)` is short for `x >= y_lower, x <= y_upper`.
--   `within(x_lower, x_upper, y_lower, y_upper)` is short for `x_lower >= y_lower, x_upper <= y_upper`.
--   `overlaps(x_lower, x_upper, y_lower, y_upper)` is short for `x_lower <= y_upper, x_upper >= y_lower`.
+-   Η `between(x, y_lower, y_upper)` είναι η συντομογραφία του `x >= y_lower, x <= y_upper`.
+-   Η `within(x_lower, x_upper, y_lower, y_upper)` είναι η συντομογραφία του `x_lower >= y_lower, x_upper <= y_upper`.
+-   Η `overlaps(x_lower, x_upper, y_lower, y_upper)` είναι η συντομογραφία του `x_lower <= y_upper, x_upper >= y_lower`.
 
-Let's continue the birthday example to see how you might use them.
-There's one problem with the strategy we used above: there's no party preceding the birthdays Jan 1-9.
-So it might be better to be explicit about the date ranges that each party spans, and make a special case for those early birthdays:
+Ας συνεχίσουμε με το παράδειγμα γενεθλίων για να δούμε πώς μπορείτε να τα χρησιμοποιήσετε.
+Υπάρχει ένα πρόβλημα με τη στρατηγική που χρησιμοποιήσαμε παραπάνω: δεν υπάρχει πάρτι που να προηγείται των γενεθλίων που είναι μεταξύ 1-9 Ιανουαρίου.
+Επομένως, ίσως είναι καλύτερο να είμαστε σαφείς σχετικά με το εύρος ημερομηνιών που καλύπτει κάθε πάρτι και να κάνουμε μια ειδική περίπτωση για αυτά τα πρώιμα γενέθλια:
 
 ```{r}
 parties <- tibble(
@@ -858,8 +854,8 @@ parties <- tibble(
 parties
 ```
 
-Hadley is hopelessly bad at data entry so he also wanted to check that the party periods don't overlap.
-One way to do this is by using a self-join to check if any start-end interval overlap with another:
+Ο Hadley είναι απελπιστικά κακός στην εισαγωγή δεδομένων, έτσι ήθελε επίσης να ελέγξει ότι οι περίοδοι που οργανώνονται τα πάρτι δεν αλληλεπικαλύπτονται.
+Ένας τρόπος για να το κάνετε αυτό είναι χρησιμοποιώντας μια αυτο-ένωση για να ελέγξετε εάν κάποιο διάστημα έναρξης-λήξης επικαλύπτεται με κάποιο άλλο:
 
 ```{r}
 parties |> 
@@ -867,7 +863,7 @@ parties |>
   select(start.x, end.x, start.y, end.y)
 ```
 
-Ooops, there is an overlap, so let's fix that problem and continue:
+Υπάρχει μια επικάλυψη, οπότε ας διορθώσουμε αυτό το πρόβλημα και ας συνεχίσουμε:
 
 ```{r}
 parties <- tibble(
@@ -878,18 +874,17 @@ parties <- tibble(
 )
 ```
 
-Now we can match each employee to their party.
-This is a good place to use `unmatched = "error"` because we want to quickly find out if any employees didn't get assigned a party.
+Τώρα μπορούμε να ταιριάξουμε κάθε εργαζόμενο με το πάρτι του.
+Αυτό είναι ένα καλό παράδειγμα για να χρησιμοποιήσετε το όρισμα `unmatched = "error"`, επειδή θέλουμε να μάθουμε γρήγορα εάν σε κάποιους υπαλλήλους δεν ανατέθηκε πάρτι.
 
 ```{r}
 employees |> 
   inner_join(parties, join_by(between(birthday, start, end)), unmatched = "error")
 ```
 
-### Exercises
+### Ασκήσεις
 
-1.  Can you explain what's happening with the keys in this equi join?
-    Why are they different?
+1.  Μπορείτε να εξηγήσετε τι συμβαίνει με τα κλειδιά σε αυτή την ένωση ισοδυναμίας; Γιατί είναι διαφορετικά;
 
     ```{r}
     x |> full_join(y, join_by(key == key))
@@ -897,18 +892,17 @@ employees |>
     x |> full_join(y, join_by(key == key), keep = TRUE)
     ```
 
-2.  When finding if any party period overlapped with another party period we used `q < q` in the `join_by()`?
-    Why?
-    What happens if you remove this inequality?
+2.  Για να βρούμε εάν οι περίοδοι των πάρτι επικαλύπτονται με άλλα πάρτι χρησιμοποιήσαμε το `q < q` στην `join_by()`.
+    Γιατί; Τι συμβαίνει εάν αφαιρέσουμε αυτή την ανισότητα;
 
-## Summary
+## Σύνοψη
 
-In this chapter, you've learned how to use mutating and filtering joins to combine data from a pair of data frames.
-Along the way you learned how to identify keys, and the difference between primary and foreign keys.
-You also understand how joins work and how to figure out how many rows the output will have.
-Finally, you've gained a glimpse into the power of non-equi joins and seen a few interesting use cases.
+Σε αυτό το κεφάλαιο, μάθατε πώς να χρησιμοποιείτε mutating ενώσεις και ενώσεις φιλτραρίσματος για να συνδυάσετε δεδομένα από ένα ζεύγος πλαισίων δεδομένων.
+Στην πορεία μάθατε πώς να αναγνωρίζετε κλειδιά και τη διαφορά μεταξύ πρωτεύοντος και ξένου κλειδιού.
+Καταλαβαίνετε επίσης πώς λειτουργούν οι ενώσεις και πώς να υπολογίσετε πόσες γραμμές θα έχει η έξοδος.
+Τέλος, ρίξατε μια ματιά στη δύναμη των non-equi ενώσεων και έχετε δει μερικές ενδιαφέρουσες περιπτώσεις χρήσης.
 
-This chapter concludes the "Transform" part of the book where the focus was on the tools you could use with individual columns and tibbles.
-You learned about dplyr and base functions for working with logical vectors, numbers, and complete tables, stringr functions for working with strings, lubridate functions for working with date-times, and forcats functions for working with factors.
+Αυτό το κεφάλαιο ολοκληρώνει το μέρος "Μετασχηματισμός" αυτού του βιβλίου, όπου η το ενδιαφέρον μας ήταν στα εργαλεία που θα μπορούσατε να χρησιμοποιήσετε με μεμονωμένες στήλες και tibbles.
+Μάθατε για συναρτήσεις από την dplyr και από το βασικό σύνολο συναρτήσεων της R για εργασία με λογικά διανύσματα, αριθμούς και πλήρεις πίνακες, τις συναρτήσεις της stringr για εργασία με συμβολοσειρές, τις συναρτήσεις της lubridate για εργασία με ημερομηνίες-ώρες και τις συναρτήσεις της forcats για εργασία με παράγοντες.
 
-In the next part of the book, you'll learn more about getting various types of data into R in a tidy form.
+Στο επόμενο μέρος του βιβλίου, θα μάθετε περισσότερα σχετικά με τη μετατροπή διαφόρων τύπων δεδομένων στην R σε μια τακτοποιημένη (tidy) μορφή.
