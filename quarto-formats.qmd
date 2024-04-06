@@ -269,14 +269,12 @@ cat(readr::read_file("quarto/example-book.yml"))
 -   Για να βελτιώσετε τις δεξιότητες παρουσίασης σας, δοκιμάστε το [*Presentation Patterns*](https://presentationpatterns.com/) των Neal Ford, Matthew McCollough, και Nathaniel Schutta.
     Παρέχει ένα σύνολο αποτελεσματικών μοτίβων (χαμηλού και υψηλού επιπέδου) που μπορείτε να εφαρμόσετε για να βελτιώσετε τις παρουσιάσεις σας.
 
--   Εάν δίνετε ακαδημαικές ομιλίες.
-    μπορεί να σας αρέσει το [*Leek group guide to giving talks*](https://github.com/jtleek/talkguide).
+-   Εάν δίνετε ακαδημαικές ομιλίες μπορεί να σας αρέσει το [*Leek group guide to giving talks*](https://github.com/jtleek/talkguide).
 
 -   Αν και δεν το έχουμε οι ίδιο, έχουμε ακούσει καλά λόγια για το διαδικτυακό μάθημα του Matt McGarrity για τη δημόσια ομιλία σε κοινό: <https://www.coursera.org/learn/public-speaking>.
 
 -   Εάν δημιουργείτε πολλά dashboards, φροντίστε να διαβάσετε το [*Information Dashboard Design: The Effective Visual Communication of Data*](https://www.amazon.com/Information-Dashboard-Design-Effective-Communication/dp/0596100167) του Stephen Few.
     Θα σας βοηθήσει να δημιουργείτε dashboards που είναι πραγματκά χρήσιμα, κι όχι απλά όμορφα στην όψη.
 
-Η αποτελεσματική επικοινωνία των ιδεών σας συχνά επωφελείται από κάποιες γνώσεις γραφιστικής.
-- Η αποτελεσματική επικοινωνία των ιδεών σας συχνά επωφελείται από κάποιες γνώσεις γραφιστικής.
-Το [*The Non-Designer's Design Book*](https://www.amazon.com/Non-Designers-Design-Book-4th/dp/0133966151)της Robin Williams είναι ένα καλό σημείο για να ξεκινήσετε.
+-   Η αποτελεσματική επικοινωνία των ιδεών σας συχνά επωφελείται από κάποιες γνώσεις γραφιστικής.
+    Το [*The Non-Designer's Design Book*](https://www.amazon.com/Non-Designers-Design-Book-4th/dp/0133966151) της Robin Williams είναι ένα καλό σημείο για να ξεκινήσετε.
