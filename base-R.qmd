@@ -1,4 +1,4 @@
-# A field guide to base R {#sec-base-r}
+# Ένας οδηγός για τo βασικό σύνολο λειτουργειών της R
 
 ```{r}
 #| echo: false
@@ -6,26 +6,27 @@
 source("_common.R")
 ```
 
-## Introduction
+## Εισαγωγή
 
-To finish off the programming section, we're going to give you a quick tour of the most important base R functions that we don't otherwise discuss in the book.
-These tools are particularly useful as you do more programming and will help you read code you'll encounter in the wild.
+Ως επίλογο της ενότητας του προγραμματισμού, θα σας δώσουμε μια ιδέα για τις πιο σημαντικές βασικές συναρτήσεις της R που διαφορετικά δεν θα συζητούσαμε σε αυτό το βιβλίο.
+Τα εργαλεία αυτά είναι αρκετά χρήσιμα όσο προγραματίζετε περισσότερο και θα σας βοηθήσουν στο να διαβάζετε κώδικα που κυκλοφορεί εκεί έξω.
 
-This is a good place to remind you that the tidyverse is not the only way to solve data science problems.
-We teach the tidyverse in this book because tidyverse packages share a common design philosophy, increasing the consistency across functions, and making each new function or package a little easier to learn and use.
-It's not possible to use the tidyverse without using base R, so we've actually already taught you a **lot** of base R functions: from `library()` to load packages, to `sum()` and `mean()` for numeric summaries, to the factor, date, and POSIXct data types, and of course all the basic operators like `+`, `-`, `/`, `*`, `|`, `&`, and `!`.
-What we haven't focused on so far is base R workflows, so we will highlight a few of those in this chapter.
+Σε αυτό το σημείο είναι καλό να σας υπενθυμίσουμε ότι το tidyverse δεν υπάρχει μόνο για να αντιμετωπίζει προβλήματα της επιστήμης δεδομένων.
+Δείχνουμε το tidyverse σε αυτό το βιβλίο επειδή τα αντίστοιχα πακέτα του μοιράζονται μια κοινή φιλοσοφία, αυξάνοντας τη συνοχή μεταξύ των συναρτήσεων και καθιστώντας κάθε νέα συνάρτηση ή πακέτο λίγο πιο εύκολα στην εκμάθηση και χρήση.
+Δεν είναι δυνατό να χρησιμοποιήσετε το tidyverse χωρίς τη χρήση των βασικών συναρτήσεων της R.
+Σας έχουμε ήδη μάθει **πολλές** βασικές συναρτήσεις R: από την `library()` για την φόρτωση πακέτων, τη `sum()` και τη `mean()` για αριθμητικές περιλήψεις, για τους τύπους δεδομένων με παράγοντες (factors), ημερομηνίες και POSIXct και φυσικά όλους τους βασικούς τελεστές όπως `+`, `-`, `/`, `*`, `|`, `&`, και `!`.
+Αυτό στο οποίο δεν έχουμε επικεντρωθεί μέχρι στιγμής είναι οι βασικές ροές εργασίας της R, επομένως θα επισημάνουμε μερικές από αυτές σε αυτό το κεφάλαιο.
 
-After you read this book, you'll learn other approaches to the same problems using base R, data.table, and other packages.
-You'll undoubtedly encounter these other approaches when you start reading R code written by others, particularly if you're using StackOverflow.
-It's 100% okay to write code that uses a mix of approaches, and don't let anyone tell you otherwise!
+Αφού διαβάσετε αυτό το βιβλίο, θα μάθετε και άλλες προσεγγίσεις πάνω στα ίδια προβλήματα χρησιμοποιώντας το βασικό σύνολο λειτουργιών της R, τη data.table και άλλα πακέτα.
+Θα συναντήσετε αυτές τις άλλες προσεγγίσεις χωρίς αμφιβολία όταν αρχίσετε να διαβάζετε κώδικα R που γράφτηκε από άλλους, ιδιαίτερα εάν χρησιμοποιείτε το StackOverflow.
+Είναι 100% εντάξει να γράφετε κώδικα που χρησιμοποιεί έναν συνδυασμό προσεγγίσεων και μην αφήνετε κανέναν να σας πει το αντίθετο!
 
-In this chapter, we'll focus on four big topics: subsetting with `[`, subsetting with `[[` and `$`, the apply family of functions, and `for` loops.
-To finish off, we'll briefly discuss two essential plotting functions.
+Σε αυτό το κεφάλαιο, θα εστιάσουμε σε τέσσερις μεγάλες θεματολογίες: δημιουργία υποσυνόλων με `[`, δημιουργία υποσυνόλων με τα `[[` και `$`, την οικογένεια συναρτήσεων apply και βρόγχους `for`.
+Τέλος, θα συζητήσουμε εν συντομία δύο συναρτήσεις δημιουργίας διαγραμμάτων.
 
-### Prerequisites
+### Προαπαιτούμενα
 
-This package focuses on base R so doesn't have any real prerequisites, but we'll load the tidyverse in order to explain some of the differences.
+Το πακέτο αυτό εστιάζει στις βασικές λειτουργίες της R, επομένως δεν έχει πραγματικά προαπαιτούμενα, αλλά θα φορτώσουμε το tidyverse για να εξηγήσουμε μερικές διαφορές.
 
 ```{r}
 #| label: setup
@@ -34,40 +35,40 @@ This package focuses on base R so doesn't have any real prerequisites, but we'll
 library(tidyverse)
 ```
 
-## Selecting multiple elements with `[` {#sec-subset-many}
+## Επιλογή πολλαπλών στοιχείων με `[` {#sec-subset-many}
 
-`[` is used to extract sub-components from vectors and data frames, and is called like `x[i]` or `x[i, j]`.
-In this section, we'll introduce you to the power of `[`, first showing you how you can use it with vectors, then how the same principles extend in a straightforward way to two-dimensional (2d) structures like data frames.
-We'll then help you cement that knowledge by showing how various dplyr verbs are special cases of `[`.
+Το `[` χρησιμοποιείται για την εξαγωγή υποσυνόλων από διανύσματα και πλαίσια δεδομένων και καλείται ως `x[i]` ή `x[i, j]`.
+Σε αυτήν την ενότητα, θα σας παρουσιάσουμε τις ικανότητες του `[`, δείχνοντάς σας πρώτα πώς μπορείτε να το χρησιμοποιήσετε με διανύσματα και στη συνέχεια πως οι ίδιες αρχές επεκτείνονται με απλό τρόπο στις δύο διαστάσεις όπως στα πλαίσια δεδομένων.
+Στη συνέχεια, θα σας βοηθήσουμε να το εμπεδώσετε δείχνοντας πώς διάφορες συναρτήσεις της dplyr είναι ειδικές περιπτώσεις του `[`.
 
-### Subsetting vectors
+### Υποσύνολα απο διανύσματα
 
-There are five main types of things that you can subset a vector with, i.e., that can be the `i` in `x[i]`:
+Υπάρχουν πέντε κύριοι τύποι κατηγοριών με τις οποίες μπορείτε να εξάγετε ένα υποσύνολο απο ένα διάνυσμα, δηλαδή πέντε διαφορετικές κατηγορίες που αντιστοιχούν στο `i` από το `x[i]`:
 
-1.  **A vector of positive integers**.
-    Subsetting with positive integers keeps the elements at those positions:
+1.  **Διάνυσμα με θετικούς ακέραιους αριθμούς**.
+    Η δημιουργία υποσυνόλων με θετικούς ακέραιους αριθμούς επιστρέφει τα στοιχεία των αντίστοιχων θέσεων:
 
     ```{r}
     x <- c("one", "two", "three", "four", "five")
     x[c(3, 2, 5)]
     ```
 
-    By repeating a position, you can actually make a longer output than input, making the term "subsetting" a bit of a misnomer.
+    Επαναλαμβάνοντας μια θέση μπορείτε να δημιουργήσετε μια μεγαλύτερη έξοδο, κάνοντας τον όρο "υποσύνολο" ελαφρώς λανθασμένο.
 
     ```{r}
     x[c(1, 1, 5, 5, 5, 2)]
     ```
 
-2.  **A vector of negative integers**.
-    Negative values drop the elements at the specified positions:
+2.  **Διάνυσμα με αρνητικούς ακέραιους αριθμούς**.
+    Αρνητικές τιμές αφαιρούν τα στοιχεία στις αντίστοιχες θέσεις:
 
     ```{r}
     x[c(-1, -3, -5)]
     ```
 
-3.  **A logical vector**.
-    Subsetting with a logical vector keeps all values corresponding to a `TRUE` value.
-    This is most often useful in conjunction with the comparison functions.
+3.  **Λογικό διάνυσμα**.
+    Δημιουργώντας ένα υποσύνολο χρησιμοποιώντας λογικές τιμές επιστρέφει όλες τις τιμές όπου είναι `TRUE`.
+    Συχνά, αυτό είναι πιο χρήσιμο σε συνδυασμό με συναρτήσεις σύγκρισης.
 
     ```{r}
     x <- c(10, 3, NA, 5, 8, 1, NA)
@@ -79,30 +80,30 @@ There are five main types of things that you can subset a vector with, i.e., tha
     x[x %% 2 == 0]
     ```
 
-    Unlike `filter()`, `NA` indices will be included in the output as `NA`s.
+    Σε αντίθεση με την `filter()`, οι θέσεις που περιέχουν `NA` θα συμπεριληφθούν στην έξοδο ως `NA`.
 
-4.  **A character vector**.
-    If you have a named vector, you can subset it with a character vector:
+4.  **Διάνυσμα χαρακτήρα**.
+    Εάν έχετε ένα διάνυσμα με ονόματα για κάθε στοιχείο του, μπορείτε να δημιουργήσετε ένα υποσύνολο με ένα διάνυσμα χαρακτήρα:
 
     ```{r}
     x <- c(abc = 1, def = 2, xyz = 5)
     x[c("xyz", "def")]
     ```
 
-    As with subsetting with positive integers, you can use a character vector to duplicate individual entries.
+    Όπως και με τα υποσύνολα απο θετικούς ακέραιους αριθμούς, μπορείτε να χρησιμοποιήσετε ένα διάνυσμα χαρακτήρων για να επαναλάβετε μεμονωμένες εγγραφές.
 
-5.  **Nothing**.
-    The final type of subsetting is nothing, `x[]`, which returns the complete `x`.
-    This is not useful for subsetting vectors, but as we'll see shortly, it is useful when subsetting 2d structures like tibbles.
+5.  **Κενό**.
+    Ο τελευταίος τύπος δημιουργίας υποσύνολου είναι το κενό, `x[]`, το οποίο επιστρέφει ολόκληρο το `x`.
+    Δεν είναι χρήσιμο όμως για υποσύνολα διανυσμάτων, αλλά όπως θα δούμε σύντομα, είναι χρήσιμο για υποσύνολα δισδιάστατων δομών, όπως τα tibbles.
 
-### Subsetting data frames
+### Υποσύνολα πλαισίων δεδομένων
 
-There are quite a few different ways[^base-r-1] that you can use `[` with a data frame, but the most important way is to select rows and columns independently with `df[rows, cols]`. Here `rows` and `cols` are vectors as described above.
-For example, `df[rows, ]` and `df[, cols]` select just rows or just columns, using the empty subset to preserve the other dimension.
+Υπάρχουν αρκετοί διαφορετικοί τρόποι[^base-r-1] με τους οποίους μπορείτε να χρησιμοποιήσετε το `[` με ένα πλαίσιο δεδομένων, αλλά ο πιο σημαντικός είναι να επιλέξετε γραμμές και στήλες ξεχωριστά χρησιμοποιόντας το `df[γραμμές, στήλες]`. Εδώ οι `γραμμές` και οι `στήλες` είναι διανύσματα όπως περιγράφονται παραπάνω.
+Για παράδειγμα, τα `df[γραμμές, ]` και `df[, στήλες]` επιλέγουν μόνο γραμμές ή μόνο στήλες, χρησιμοποιώντας το κενό υποσύνολο για να διατηρήσουν την άλλη διάσταση.
 
-[^base-r-1]: Read <https://adv-r.hadley.nz/subsetting.html#subset-multiple> to see how you can also subset a data frame like it is a 1d object and how you can subset it with a matrix.
+[^base-r-1]: Διαβάστε το <https://adv-r.hadley.nz/subsetting.html#subset-multiple> για να δείτε πώς μπορείτε επίσης να ορίσετε ένα υποσύνολο σε ένα πλαίσιο δεδομένων σαν να είναι αντικείμενο μίας διάστασης και πώς μπορείτε να δημιουργήσετε ένα υποσύνολο με ένα μητρώο.
 
-Here are a couple of examples:
+Μερικά παραδείγματα:
 
 ```{r}
 df <- tibble(
@@ -121,14 +122,14 @@ df[, c("x" , "y")]
 df[df$x > 1, ]
 ```
 
-We'll come back to `$` shortly, but you should be able to guess what `df$x` does from the context: it extracts the `x` variable from `df`.
-We need to use it here because `[` doesn't use tidy evaluation, so you need to be explicit about the source of the `x` variable.
+Θα επανέλθουμε σύντομα στο `$`, θα πρέπει όμως να μπορείτε να μαντέψετε ήδη τι κάνει το `df$x` από τα συμφραζόμενα: εξάγει τη μεταβλητή `x` από το `df`.
+Εδώ, πρέπει να το χρησιμοποιήσουμε επειδή το `[` δεν χρησιμοποιεί αξιολόγηση tidy, επομένως πρέπει να είστε ξεκάθαροι σχετικά με την πηγή της μεταβλητής `x`.
 
-There's an important difference between tibbles and data frames when it comes to `[`.
-In this book, we've mainly used tibbles, which *are* data frames, but they tweak some behaviors to make your life a little easier.
-In most places, you can use "tibble" and "data frame" interchangeably, so when we want to draw particular attention to R's built-in data frame, we'll write `data.frame`.
-If `df` is a `data.frame`, then `df[, cols]` will return a vector if `col` selects a single column and a data frame if it selects more than one column.
-If `df` is a tibble, then `[` will always return a tibble.
+Υπάρχει μια σημαντική διαφορά μεταξύ των tibbles και των πλαισίων δεδομένων όσον αφορά το `[`.
+Σε αυτό το βιβλίο, χρησιμοποιήσαμε κυρίως τα tibbles, τα οποία *είναι* πλαίσια δεδομένων, αλλά τροποποιούν ορισμένες συμπεριφορές για να κάνουν τη ζωή σας λίγο πιο εύκολη.
+Στα περισσότερα σημεία, μπορείτε να χρησιμοποιήσετε το "tibble" και το "data frame" (πλαίσιο δεδομένων) εναλλάξιμα, οπότε όταν θέλουμε να δώσουμε έμφαση στο ενσωματωμένο πλαίσιο δεδομένων της R, θα γράφουμε `data.frame`.
+Εάν το `df` είναι ένα `data.frame`, τότε το `df[, cols]` θα επιστρέψει ένα διάνυσμα εάν το `col` επιλέγει μία στήλη, και ένα πλαίσιο δεδομένων εάν επιλέγει περισσότερες από μία στήλες.
+Εάν το `df` είναι tibble, τότε η χρήση του `[` θα επιστρέφει πάντα ένα tibble.
 
 ```{r}
 df1 <- data.frame(x = 1:3)
@@ -138,17 +139,17 @@ df2 <- tibble(x = 1:3)
 df2[, "x"]
 ```
 
-One way to avoid this ambiguity with `data.frame`s is to explicitly specify `drop = FALSE`:
+Ένας τρόπος για να αποφύγετε αυτή την ασάφεια με τα `data.frame` είναι να θέτετε το όρισμα `drop = FALSE`:
 
 ```{r}
 df1[, "x" , drop = FALSE]
 ```
 
-### dplyr equivalents
+### Ισοδύναμα της dplyr
 
-Several dplyr verbs are special cases of `[`:
+Αρκετές συναρτήσεις της dplyr είναι ειδικές περιπτώσεις του `[`:
 
--   `filter()` is equivalent to subsetting the rows with a logical vector, taking care to exclude missing values:
+-   Η `filter()` ισοδυναμεί με το να δημιουργείτε υποσύνολα γραμμών χρησιμοποιώντας ένα λογικό διάνυσμα ενώ ταυτόχρονα εξαιρείτε τις κενές τιμές:
 
     ```{r}
     #| results: false
@@ -164,9 +165,10 @@ Several dplyr verbs are special cases of `[`:
     df[!is.na(df$x) & df$x > 1, ]
     ```
 
-    Another common technique in the wild is to use `which()` for its side-effect of dropping missing values: `df[which(df$x > 1), ]`.
+    Μία άλλη γνωστή τεχνική είναι η χρήση της `which()`, εξαιτίας της ιδιότητάς της να εξαιρεί κενές τιμές: `df[which(df$x > 1), ]`.
 
--   `arrange()` is equivalent to subsetting the rows with an integer vector, usually created with `order()`:
+-   Η `arrange()` ισοδυναμεί με την αναδιοργάνωση των γραμμών χρησιμοποιώντας ένα διάνυσμα ακέραιου αριθμού.
+    Συνήθως γίνεται με την `order()`:
 
     ```{r}
     #| results: false
@@ -177,9 +179,9 @@ Several dplyr verbs are special cases of `[`:
     df[order(df$x, df$y), ]
     ```
 
-    You can use `order(decreasing = TRUE)` to sort all columns in descending order or `-rank(col)` to sort columns in decreasing order individually.
+    Μπορείτε να χρησιμοποιήσετε το `order(decreasing = TRUE)` για να ταξινομήσετε όλες τις στήλες με φθίνουσα σειρά ή το `-rank(col)` για να ταξινομήσετε τις στήλες με φθίνουσα μία προς μία.
 
--   Both `select()` and `relocate()` are similar to subsetting the columns with a character vector:
+-   Τόσο η `select()` όσο και η `relocate()` είναι παρόμοιες με το να δημιουργείτε υποσύνολα στηλών χρησιμοποιώντας ένα διάνυσμα χαρακτήρων:
 
     ```{r}
     #| results: false
@@ -190,9 +192,9 @@ Several dplyr verbs are special cases of `[`:
     df[, c("x", "z")]
     ```
 
-Base R also provides a function that combines the features of `filter()` and `select()`[^base-r-2] called `subset()`:
+Το βασικό σύνολο της R προσφέρει μια συνάρτηση η οποία συνδυάζει τα χαρακτηριστικά της `filter()` και της `select()`[^base-r-2] και ονομάζεται `subset()`:
 
-[^base-r-2]: But it doesn't handle grouped data frames differently and it doesn't support selection helper functions like `starts_with()`.
+[^base-r-2]: Ωστόσο, δεν χειρίζεται ομαδοποιημένα πλαίσια δεδομένων με διαφορετικό τρόπο και δεν υποστηρίζει βοηθητικές συναρτήσεις επιλογής όπως η `starts_with()`.
 
 ```{r}
 df |> 
@@ -207,28 +209,29 @@ df |>
 df |> subset(x > 1, c(y, z))
 ```
 
-This function was the inspiration for much of dplyr's syntax.
+Η συνάρτηση αυτή ήταν η έμπνευση για ένα αρκετά μεγάλο μέρος του συντακτικού της dplyr.
 
-### Exercises
+### Ασκήσεις
 
-1.  Create functions that take a vector as input and return:
+1.  Δημιουργήστε συναρτήσεις οι οποίες παίρνουν ως είσοδο ένα διάνυσμα και επιστρέφουν:
 
-    a.  The elements at even-numbered positions.
-    b.  Every element except the last value.
-    c.  Only even values (and no missing values).
+    ```         
+    α.  Τα στοιχεία που βρίσκονται σε ζυγές θέσεις.
+    β.  Όλα τα στοιχεία εκτός του τελευταίου.
+    γ.  Μόνο ζυγές τιμές (και όχι κενές τιμές).
+    ```
 
-2.  Why is `x[-which(x > 0)]` not the same as `x[x <= 0]`?
-    Read the documentation for `which()` and do some experiments to figure it out.
+2.  Γιατί το `x[-which(x > 0)]` δεν είναι το ίδιο με το `x[x <= 0]`; Διαβάστε τις οδηγίες για την `which()` και πειραματιστείτε για να το βρείτε.
 
-## Selecting a single element with `$` and `[[` {#sec-subset-one}
+## Επιλέγοντας μόνο ένα στοιχείο με το `$` και το `[[` {#sec-subset-one}
 
-`[`, which selects many elements, is paired with `[[` and `$`, which extract a single element.
-In this section, we'll show you how to use `[[` and `$` to pull columns out of data frames, discuss a couple more differences between `data.frames` and tibbles, and emphasize some important differences between `[` and `[[` when used with lists.
+Το `[`, το οποίο επιλέγει πολλαπλά στοιχεία, συνδυάζεται με τα `[[` και `$`, τα οποία εξάγουν ένα μεμονωμένο στοιχείο.
+Σε αυτήν την ενότητα, θα σας δείξουμε πώς να χρησιμοποιείτε τα `[[` και `$` για να εξάγετε στήλες από τα πλαίσια δεδομένων, θα συζητήσουμε μερικές ακόμη διαφορές μεταξύ των `data.frame` και των tibbles και θα τονίσουμε μερικές σημαντικές διαφορές μεταξύ του `[` και του `[[` όταν χρησιμοποιούνται με λίστες.
 
-### Data frames
+### Πλαίσια δεδομένων
 
-`[[` and `$` can be used to extract columns out of a data frame.
-`[[` can access by position or by name, and `$` is specialized for access by name:
+Τα `[[` και `$` μπορούν να χρησιμοποιηθούν για την εξαγωγή στηλών από ένα πλαίσιο δεδομένων.
+Το `[[` μπορεί να έχει πρόσβαση σε δομές δεδομένων με βάση τη θέση ή το όνομα, και το `$` είναι ειδικά για πρόσβαση με βάση το όνομα:
 
 ```{r}
 tb <- tibble(
@@ -244,18 +247,19 @@ tb[["x"]]
 tb$x
 ```
 
-They can also be used to create new columns, the base R equivalent of `mutate()`:
+Μπορούν να χρησιμοποιηθούν και για τη δημιουργία νέων στηλών.
+Το αντίστοιχο της `mutate()` στο βασικό σύνολο της R είναι:
 
 ```{r}
 tb$z <- tb$x + tb$y
 tb
 ```
 
-There are several other base R approaches to creating new columns including with `transform()`, `with()`, and `within()`.
-Hadley collected a few examples at <https://gist.github.com/hadley/1986a273e384fb2d4d752c18ed71bedf>.
+Υπάρχουν πολλές άλλες προσεγγίσεις του βασικού συνόλου της R για τη δημιουργία νέων στηλών, συμπεριλαμβανομένων των `transform()`, `with()` και `within()`.
+Ο Hadley συγκέντρωσε μερικά παραδείγματα στη διεύθυνση <https://gist.github.com/hadley/1986a273e384fb2d4d752c18ed71bedf>.
 
-Using `$` directly is convenient when performing quick summaries.
-For example, if you just want to find the size of the biggest diamond or the possible values of `cut`, there's no need to use `summarize()`:
+Η απευθείας χρήση του `$` είναι βολική για την κατασκευή γρήγορων περιλήψεων.
+Για παράδειγμα, εάν θέλετε απλώς να βρείτε το μέγεθος του μεγαλύτερου διαμαντιού ή τις πιθανές τιμές της `cut`, δεν χρειάζεται να χρησιμοποιήσετε την `summarize()`:
 
 ```{r}
 max(diamonds$carat)
@@ -263,9 +267,9 @@ max(diamonds$carat)
 levels(diamonds$cut)
 ```
 
-dplyr also provides an equivalent to `[[`/`$` that we didn't mention in @sec-data-transform: `pull()`.
-`pull()` takes either a variable name or variable position and returns just that column.
-That means we could rewrite the above code to use the pipe:
+Η dplyr παρέχει επίσης ένα ισοδύναμο με το `[[`/`$` που δεν αναφέραμε στο @sec-data-transform: την `pull()`.
+Η `pull()` παίρνει είτε ένα όνομα μεταβλητής είτε μία θέση μεταβλητής και επιστρέφει ακριβώς αυτήν τη στήλη.
+Αυτό σημαίνει ότι θα μπορούσαμε να ξαναγράψουμε τον παραπάνω κώδικα για να χρησιμοποιήσουμε το pipe:
 
 ```{r}
 diamonds |> pull(carat) |> max()
@@ -275,8 +279,8 @@ diamonds |> pull(cut) |> levels()
 
 ### Tibbles
 
-There are a couple of important differences between tibbles and base `data.frame`s when it comes to `$`.
-Data frames match the prefix of any variable names (so-called **partial matching**) and don't complain if a column doesn't exist:
+Υπάρχουν μερικές σημαντικές διαφορές μεταξύ των tibbles και του βασικού `data.frame` όσον αφορά το `$`.
+Στα πλαίσια δεδομένων αρκεί να ταιριάξει το πρόθεμα οποιουδήποτε ονόματος μεταβλητής (η λεγόμενη **μερική αντιστοίχιση**) και δεν παραπονιέται εάν η στήλη δεν υπάρχει:
 
 ```{r}
 df <- data.frame(x1 = 1)
@@ -284,7 +288,7 @@ df$x
 df$z
 ```
 
-Tibbles are more strict: they only ever match variable names exactly and they will generate a warning if the column you are trying to access doesn't exist:
+Τα tibbles είναι πιο αυστηρά: τα ονόματα των μεταβλητών πρέπει να ταιριάζουν ακριβώς και θα επιστρέψουν μια προειδοποίηση εάν η στήλη στην οποία προσπαθείτε να αποκτήσετε πρόσβαση δεν υπάρχει:
 
 ```{r}
 tb <- tibble(x1 = 1)
@@ -293,12 +297,12 @@ tb$x
 tb$z
 ```
 
-For this reason we sometimes joke that tibbles are lazy and surly: they do less and complain more.
+Για αυτόν τον λόγο, μερικές φορές αστειευόμαστε ότι τα tibbles είναι τεμπέλικα και κακόκεφα: κάνουν λίγα και παραπονιούνται περισσότερο.
 
-### Lists
+### Λίστες
 
-`[[` and `$` are also really important for working with lists, and it's important to understand how they differ from `[`.
-Let's illustrate the differences with a list named `l`:
+Τα `[[` και `$` είναι επίσης πολύ σημαντικά για εργασίες με λίστες και είναι σημαντικό να κατανοήσουμε πώς διαφέρουν από το `[`.
+Ας δείξουμε τις διαφορές με μια λίστα με όνομα `l`:
 
 ```{r}
 l <- list(
@@ -309,8 +313,8 @@ l <- list(
 )
 ```
 
--   `[` extracts a sub-list.
-    It doesn't matter how many elements you extract, the result will always be a list.
+-   Το `[` εξάγει μια υπο-λίστα.
+    Δεν έχει σημασία πόσα στοιχεία θα εξάγετε, το αποτέλεσμα θα είναι πάντα λίστα.
 
     ```{r}
     str(l[1:2])
@@ -320,10 +324,10 @@ l <- list(
     str(l[4])
     ```
 
-    Like with vectors, you can subset with a logical, integer, or character vector.
+    Όπως και με τα διανύσματα, μπορείτε να δημιουργήσετε υποσύνολα χρησιμοποιώντας διανύσματα λογικών τιμών, ακέραιων αριθμών ή χαρακτήρων.
 
--   `[[` and `$` extract a single component from a list.
-    They remove a level of hierarchy from the list.
+-   Τα `[[` και `$` εξάγουν ένα μόνο στοιχείο από μια λίστα.
+    Αφαιρούν ένα επίπεδο από τη λίστα.
 
     ```{r}
     str(l[[1]])
@@ -333,21 +337,21 @@ l <- list(
     str(l$a)
     ```
 
-The difference between `[` and `[[` is particularly important for lists because `[[` drills down into the list while `[` returns a new, smaller list.
-To help you remember the difference, take a look at the unusual pepper shaker shown in @fig-pepper.
-If this pepper shaker is your list `pepper`, then, `pepper[1]` is a pepper shaker containing a single pepper packet.
-`pepper[2]` would look the same, but would contain the second packet.
-`pepper[1:2]` would be a pepper shaker containing two pepper packets.
-`pepper[[1]]` would extract the pepper packet itself.
+Η διαφορά μεταξύ `[` και `[[` είναι ιδιαίτερα σημαντική για τις λίστες, επειδή το `[[` εμβαθύνει στη λίστα ενώ το `[` επιστρέφει μια νέα, μικρότερη λίστα.
+Για να σας βοηθήσουμε να θυμάστε τη διαφορά, ρίξτε μια ματιά στην ασυνήθιστη πιπεριέρα στο @fig-pepper.
+Εάν η πιπεριέρα είναι η λίστα σας με όνομα `pepper`, τότε, το `pepper[1]` είναι μια πιπεριέρα που περιέχει ένα μόνο φακελάκι πιπεριού.
+Το `pepper[2]` θα ήταν το ίδιο, αλλά θα περιέχει το δεύτερο φακελάκι.
+Το `pepper[1:2]` θα ήταν μια πιπεριέρα με δύο φακελάκια πιπεριού.
+Το `pepper[[1]]` θα εξάγει το ίδιο το φακελάκι πιπεριού.
 
 ```{r}
 #| label: fig-pepper
 #| echo: false
 #| out-width: "100%"
 #| fig-cap: |
-#|   (Left) A pepper shaker that Hadley once found in his hotel room.
-#|   (Middle) `pepper[1]`.
-#|   (Right) `pepper[[1]]`
+#|   (Αριστερά) Μια πιπεριέρα που βρήκε κάποτε ο Χάντλεϊ στο δωμάτιο του ξενοδοχείου του.
+#|   (Μέση) `pepper[1]`.
+#|   (Δεξιά) `pepper[[1]]`
 #| fig-alt: |
 #|   Three photos. On the left is a photo of a glass pepper shaker. Instead of 
 #|   the pepper shaker containing pepper, it contains a single packet of pepper.
@@ -357,30 +361,28 @@ If this pepper shaker is your list `pepper`, then, `pepper[1]` is a pepper shake
 knitr::include_graphics("diagrams/pepper.png")
 ```
 
-This same principle applies when you use 1d `[` with a data frame: `df["x"]` returns a one-column data frame and `df[["x"]]` returns a vector.
+Η ίδια αρχή ισχύει όταν χρησιμοποιείτε το μονοσδιάστατο `[` σε ένα πλαίσιο δεδομένων: το `df["x"]` επιστρέφει ένα πλαίσιο δεδομένων μίας στήλης και το `df[["x"]]` επιστρέφει ένα διάνυσμα.
 
-### Exercises
+### Ασκήσεις
 
-1.  What happens when you use `[[` with a positive integer that's bigger than the length of the vector?
-    What happens when you subset with a name that doesn't exist?
+1.  Τι συμβαίνει όταν χρησιμοποιείτε το `[[` με έναν θετικό ακέραιο που είναι μεγαλύτερος από το μήκος του διανύσματος; Τι συμβαίνει κατα τη δημιουργείτε ενός υποσυνόλου χρησιμοποιώντας ένα όνομα που δεν υπάρχει;
 
-2.  What would `pepper[[1]][1]` be?
-    What about `pepper[[1]][[1]]`?
+2.  Τι θα μπορούσε να είναι το `pepper[[1]][1]`; Το `pepper[[1]][[1]]`;
 
-## Apply family
+## Οικογένεια συναρτήσεων apply
 
-In @sec-iteration, you learned tidyverse techniques for iteration like `dplyr::across()` and the map family of functions.
-In this section, you'll learn about their base equivalents, the **apply family**.
-In this context apply and map are synonyms because another way of saying "map a function over each element of a vector" is "apply a function over each element of a vector".
-Here we'll give you a quick overview of this family so you can recognize them in the wild.
+Στο @sec-iteration, μάθατε τεχνικές σχετικές με το tidyverse για επανάληψη, όπως την `dplyr::across()` και την οικογένεια συναρτήσεων map.
+Σε αυτήν την ενότητα, θα μάθετε για τα βασικά τους ισοδύναμα, την **οικογένεια συναρτήσεων apply**.
+Σε αυτό το πλαίσιο, η apply κκαι η map είναι συνώνυμες επειδή ένας άλλος τρόπος να πούμε "αντιστοίχιση (map) μιας συνάρτησης σε κάθε στοιχείο ενός διανύσματος" είναι "εφαρμογή (apply) μιας συνάρτησης σε κάθε στοιχείο ενός διανύσματος".
+Εδώ θα σας δώσουμε μια γρήγορη επισκόπηση αυτής της οικογένειας συναρτήσεων, ώστε να μπορείτε να την αναγνωρίσετε εκεί έξω.
 
-The most important member of this family is `lapply()`, which is very similar to `purrr::map()`[^base-r-3].
-In fact, because we haven't used any of `map()`'s more advanced features, you can replace every `map()` call in @sec-iteration with `lapply()`.
+Το πιο σημαντικό μέλος αυτής της οικογένειας είναι η `lapply()`, η οποία μοιάζει πολύ με τη `purrr::map()`[^base-r-3].
+Στην πραγματικότητα, επειδή δεν έχουμε χρησιμοποιήσει καμία από τις πιο προχωρημένες δυνατότητες της `map()`, μπορείτε να αντικαταστήσετε κάθε κλήση της `map()` στο @sec-iteration με την `lapply()`.
 
-[^base-r-3]: It just lacks convenient features like progress bars and reporting which element caused the problem if there's an error.
+[^base-r-3]: Απλώς δεν διαθέτει βολικές λειτουργίες, όπως καταστάσεις προόδου και αναφορές για το ποιο στοιχείο προκάλεσε το πρόβλημα εάν υπάρχει σφάλμα.
 
-There's no exact base R equivalent to `across()` but you can get close by using `[` with `lapply()`.
-This works because under the hood, data frames are lists of columns, so calling `lapply()` on a data frame applies the function to each column.
+Δεν υπάρχει ακριβής αντιστοίχιση του βασικού συνόλου λειτουργειών της R με την `across()`, αλλά μπορείτε να έρθετε αρκετά κοντά χρησιμοποιώντας το `[` με την `lapply()`.
+Αυτό λειτουργεί επειδή στο παρασκήνιο, τα πλαίσια δεδομένων είναι λίστες στηλών, επομένως η κλήση της `lapply()` σε ένα πλαίσιο δεδομένων εφαρμόζει τη συνάρτηση σε κάθε στήλη.
 
 ```{r}
 df <- tibble(a = 1, b = 2, c = "a", d = "b", e = 4)
@@ -394,22 +396,24 @@ df[, num_cols] <- lapply(df[, num_cols, drop = FALSE], \(x) x * 2)
 df
 ```
 
-The code above uses a new function, `sapply()`.
-It's similar to `lapply()` but it always tries to simplify the result, hence the `s` in its name, here producing a logical vector instead of a list.
-We don't recommend using it for programming, because the simplification can fail and give you an unexpected type, but it's usually fine for interactive use.
-purrr has a similar function called `map_vec()` that we didn't mention in @sec-iteration.
+Ο παραπάνω κώδικας χρησιμοποιεί μια νέα συνάρτηση, την `sapply()`.
+Είναι παρόμοια με την `lapply()`, αλλά προσπαθεί πάντα να απλοποιήσει το αποτέλεσμα, εξ ου και το `s` στο όνομά της.
+Εδώ παράγει ένα λογικό διάνυσμα αντί για μια λίστα.
+Δεν συνιστούμε να τη χρησιμοποιήσετε για τη δημιουργεία προγραμμάτων, επειδή η απλοποίηση μπορεί να αποτύχει και να σας δώσει έναν απροσδόκητο τύπο δεδομένων.
+Συνήθως όμως είναι καλή για διαδραστική χρήση.
+Η purrr έχει μια παρόμοια συνάρτηση που ονομάζεται `map_vec()` που δεν αναφέραμε στο @sec-iteration.
 
-Base R provides a stricter version of `sapply()` called `vapply()`, short for **v**ector apply.
-It takes an additional argument that specifies the expected type, ensuring that simplification occurs the same way regardless of the input.
-For example, we could replace the `sapply()` call above with this `vapply()` where we specify that we expect `is.numeric()` to return a logical vector of length 1:
+Το βασικό σύνολο της R παρέχει μια πιο αυστηρή έκδοση της `sapply()` που ονομάζεται `vapply()`, συντομογραφία για το **v**ector apply.
+Παίρνει ένα πρόσθετο όρισμα που καθορίζει τον αναμενόμενο τύπο, διασφαλίζοντας ότι η απλοποίηση γίνεται με τον ίδιο τρόπο ανεξάρτητα από την είσοδο.
+Για παράδειγμα, θα μπορούσαμε να αντικαταστήσουμε την κλήση της `sapply()` παραπάνω με αυτήν της `vapply()` όπου προσδιορίζουμε ότι αναμένουμε από την `is.numeric()` να επιστρέψει ένα λογικό διάνυσμα μήκους 1:
 
 ```{r}
 vapply(df, is.numeric, logical(1))
 ```
 
-The distinction between `sapply()` and `vapply()` is really important when they're inside a function (because it makes a big difference to the function's robustness to unusual inputs), but it doesn't usually matter in data analysis.
+Η διαφορά μεταξύ των `sapply()` και `vapply()` είναι πολύ σημαντική όταν βρίσκονται μέσα σε μια συνάρτηση (καθώς επηρεάζεται η ανθεκτικότητα της συνάρτησης σε ασυνήθιστες εισόδους), αλλά συνήθως δεν έχει σημασία στην ανάλυση δεδομένων.
 
-Another important member of the apply family is `tapply()` which computes a single grouped summary:
+Ένα άλλο σημαντικό μέλος της οικογένειας συναρτήσεων apply είναι η `tapply()` η οποία υπολογίζει μια ενιαία ομαδοποιημένη σύνοψη:
 
 ```{r}
 diamonds |> 
@@ -419,18 +423,17 @@ diamonds |>
 tapply(diamonds$price, diamonds$cut, mean)
 ```
 
-Unfortunately `tapply()` returns its results in a named vector which requires some gymnastics if you want to collect multiple summaries and grouping variables into a data frame (it's certainly possible to not do this and just work with free floating vectors, but in our experience that just delays the work).
-If you want to see how you might use `tapply()` or other base techniques to perform other grouped summaries, Hadley has collected a few techniques [in a gist](https://gist.github.com/hadley/c430501804349d382ce90754936ab8ec).
+Δυστυχώς, η `tapply()` επιστρέφει τα αποτελέσματά της σε ένα διάνυσμα με όνομα και απαιτεί κάποια προσπάθεια εάν θέλετε να συλλέξετε πολλές περιλήψεις και μεταβλητές ομαδοποίησης σε ένα πλαίσιο δεδομένων (είναι σίγουρα εφικτό το να μην το κάνετε αυτό και απλώς να εργαστείτε με ξεχωριστά διανύσματα, αλλά κατά την εμπειρία μας αυτό απλώς καθυστερεί την δουλειά που πρέπει να γίνει).
+Αν θέλετε να δείτε πώς μπορείτε να χρησιμοποιήσετε την `tapply()` ή άλλες βασικές τεχνικές για να εκτελέσετε άλλες ομαδοποιημένες περιλήψεις, ο Hadley έχει συγκεντρώσει μερικές τεχνικές [σε ένα gist](https://gist.github.com/hadley/c430501804349d382ce90754936ab8ec).
 
-The final member of the apply family is the titular `apply()`, which works with matrices and arrays.
-In particular, watch out for `apply(df, 2, something)`, which is a slow and potentially dangerous way of doing `lapply(df, something)`.
-This rarely comes up in data science because we usually work with data frames and not matrices.
+Το τελευταίο μέλος της οικογένειας apply είναι η `apply()`, η οποία λειτουργεί με μητρώα και arrays.
+Πιο αναλυτικά, προσέξτε την `apply(df, 2, something)`, που είναι ένας αργός και δυνητικά επικίνδυνος τρόπος για να εφαρμόσετε την `lapply(df, something)`.
+Αυτό σπάνια εμφανίζεται στην επιστήμη δεδομένων επειδή συνήθως εργαζόμαστε με πλαίσια δεδομένων και όχι με μητρώα.
 
-## `for` loops
+## Βρόγχοι `for`
 
-`for` loops are the fundamental building block of iteration that both the apply and map families use under the hood.
-`for` loops are powerful and general tools that are important to learn as you become a more experienced R programmer.
-The basic structure of a `for` loop looks like this:
+Οι βρόγχοι `for` είναι το θεμελιώδες δομικό στοιχείο της επανάληψης που χρησιμοποιούν και οι οικογένειες apply και map στο παρασκήνιο Οι βρόγχοι `for` είναι ισχυρά και γενικά εργαλεία που είναι σημαντικό να μάθετε καθώς γίνεστε πιο έμπειρος προγραμματιστής στην R.
+Η βασική δομή ενός βρόγχου `for` μοιάζει με το εξής:
 
 ```{r}
 #| eval: false
@@ -440,8 +443,8 @@ for (element in vector) {
 }
 ```
 
-The most straightforward use of `for` loops is to achieve the same effect as `walk()`: call some function with a side-effect on each element of a list.
-For example, in @sec-save-database instead of using `walk()`:
+Η πιο απλή χρήση των βρόγχων `for` είναι είναι για την επίτευξη του ίδιου αποτελέσματος με την `walk()`: η κλήση κάποιας συνάρτησης με κάποιο αποτέλεσμα σε κάθε στοιχείο μιας λίστας.
+Για παράδειγμα, στο @sec-save-database αντί να χρησιμοποιήσετε τη `walk()`:
 
 ```{r}
 #| eval: false
@@ -449,7 +452,7 @@ For example, in @sec-save-database instead of using `walk()`:
 paths |> walk(append_file)
 ```
 
-We could have used a `for` loop:
+Θα μπορούσαμε να χρησιμοποιήσουμε έναν βρόγχο `for`:
 
 ```{r}
 #| eval: false
@@ -459,27 +462,27 @@ for (path in paths) {
 }
 ```
 
-Things get a little trickier if you want to save the output of the `for` loop, for example reading all of the excel files in a directory like we did in @sec-iteration:
+Τα πράγματα γίνονται λίγο πιο δύσκολα αν θέλετε να αποθηκεύσετε την έξοδο του βρόγχου `for`, για παράδειγμα η ανάγνωση όλων των αρχείων excel σε έναν κατάλογο όπως κάναμε στο @sec-iteration:
 
 ```{r}
 paths <- dir("data/gapminder", pattern = "\\.xlsx$", full.names = TRUE)
 files <- map(paths, readxl::read_excel)
 ```
 
-There are a few different techniques that you can use, but we recommend being explicit about what the output is going to look like upfront.
-In this case, we're going to want a list the same length as `paths`, which we can create with `vector()`:
+Υπάρχουν μερικές διαφορετικές τεχνικές που μπορείτε να χρησιμοποιήσετε, αλλά σας συνιστούμε να είστε ξεκάθαροι σχετικά με το πώς θα είναι το αποτέλεσμα εκ των προτέρων.
+Σε αυτήν την περίπτωση, θα θέλουμε μια λίστα με το ίδιο μήκος με το `paths`, την οποία μπορούμε να δημιουργήσουμε με την `vector()`:
 
 ```{r}
 files <- vector("list", length(paths))
 ```
 
-Then instead of iterating over the elements of `paths`, we'll iterate over their indices, using `seq_along()` to generate one index for each element of paths:
+Στη συνέχεια, αντί να επαναλαμβάνουμε τις διαδικασίες μας στα στοιχεία του `paths`, θα τις επαναλαμβάνουμε στους δείκτες τους, χρησιμοποιώντας τη `seq_along()` για να δημιουργήσουμε ένα ευρετήριο για κάθε στοιχείο του paths:
 
 ```{r}
 seq_along(paths)
 ```
 
-Using the indices is important because it allows us to link to each position in the input with the corresponding position in the output:
+Η χρήση των δεικτών είναι σημαντική γιατί μας επιτρέπει να συνδέσουμε κάθε θέση στην είσοδο με την αντίστοιχη θέση στην έξοδο:
 
 ```{r}
 for (i in seq_along(paths)) {
@@ -487,13 +490,13 @@ for (i in seq_along(paths)) {
 }
 ```
 
-To combine the list of tibbles into a single tibble you can use `do.call()` + `rbind()`:
+Για να συνδυάσετε τη λίστα των tibbles σε ένα μόνο tibble, μπορείτε να χρησιμοποιήσετε τις `do.call()` + `rbind()`:
 
 ```{r}
 do.call(rbind, files)
 ```
 
-Rather than making a list and saving the results as we go, a simpler approach is to build up the data frame piece-by-piece:
+Αντί να δημιουργήσουμε μια λίστα και να αποθηκεύουμε εκεί τα αποτελέσματα καθώς προχωράμε, μια απλούστερη προσέγγιση είναι να δημιουργήσουμε το πλαίσιο δεδομένων κομμάτι-κομμάτι:
 
 ```{r}
 out <- NULL
@@ -502,16 +505,16 @@ for (path in paths) {
 }
 ```
 
-We recommend avoiding this pattern because it can become very slow when the vector is very long.
-This is the source of the persistent canard that `for` loops are slow: they're not, but iteratively growing a vector is.
+Συνιστούμε να αποφύγετε αυτό το μοτίβο γιατί μπορεί να γίνει αρκετά αργό όταν το διάνυσμα είναι πολύ μεγάλο.
+Αυτή είναι και η πηγή του μύθου ότι οι βρόγχοι `for` είναι αργοί: δεν είναι, αλλά το να αυξάνεται προοδευτικά ένα διάνυσμα, είναι.
 
-## Plots
+## Διαγράμματα
 
-Many R users who don't otherwise use the tidyverse prefer ggplot2 for plotting due to helpful features like sensible defaults, automatic legends, and a modern look.
-However, base R plotting functions can still be useful because they're so concise --- it takes very little typing to do a basic exploratory plot.
+Πολλοί χρήστες της R, που δεν χρησιμοποιούν υπο άλλες συνθήκες το tidyverse, προτιμούν την ggplot2 για σχεδίαση, λόγω των χρήσιμων χαρακτηριστικών της, όπως οι λογικές προεπιλογές, τα αυτοματοποιημένα υπομνήματα και η μοντέρνα εμφάνιση.
+Ωστόσο, οι βασικές συναρτήσεις σχεδίασης της R μπορούν να είναι ακόμα χρήσιμες μόνο και μόνο επειδή επειδή είναι τόσο συνοπτικές --- χρειάζεται πολύ λίγη πληκτρολόγηση για να κάνετε ένα απλό εξερευνητικό διάγραμμα.
 
-There are two main types of base plot you'll see in the wild: scatterplots and histograms, produced with `plot()` and `hist()` respectively.
-Here's a quick example from the diamonds dataset:
+Υπάρχουν δύο κύριοι τύποι απλών διαγραμμάτων που θα δείτε εκεί έξω: διαγράμματα διασποράς και ιστογράμματα, που παράγονται με τις `plot()` και `hist()` αντίστοιχα.
+Ακολουθεί ένα γρήγορο παράδειγμα από το σύνολο δεδομένων diamonds:
 
 ```{r}
 #| dev: png
@@ -533,14 +536,14 @@ hist(diamonds$carat)
 plot(diamonds$carat, diamonds$price)
 ```
 
-Note that base plotting functions work with vectors, so you need to pull columns out of the data frame using `$` or some other technique.
+Σημειώστε ότι οι βασικές συναρτήσεις διαγραμμάτων λειτουργούν με διανύσματα, επομένως πρέπει να επιλέξετε στήλες από το πλαίσιο δεδομένων χρησιμοποιώντας το `$` ή κάποια άλλη τεχνική.
 
-## Summary
+## Σύνοψη
 
-In this chapter, we've shown you a selection of base R functions useful for subsetting and iteration.
-Compared to approaches discussed elsewhere in the book, these functions tend to have more of a "vector" flavor than a "data frame" flavor because base R functions tend to take individual vectors, rather than a data frame and some column specification.
-This often makes life easier for programming and so becomes more important as you write more functions and begin to write your own packages.
+Σε αυτό το κεφάλαιο, σας δείξαμε μια επιλογή απο βασικές συναρτήσεις της R που είναι χρήσιμες για την δημιουργία υποσυνόλων και για την επανάληψη.
+Σε σύγκριση με προσεγγίσεις που συζητούνται αλλού στο βιβλίο, αυτές οι συναρτήσεις τείνουν να έχουν περισσότερο άρωμα "διανύσματος" παρά "πλαισίου δεδομένων", επειδή οι βασικές συναρτήσεις της R τείνουν να λαμβάνουν μεμονωμένα διανύσματα ως είσοδο, παρά ένα πλαίσιο δεδομένων μαζί με προδιαγραφές στηλών.
+Αυτό συχνά, στον προγραμματισμό, κάνει τη ζωή πιο εύκολη και γι' αυτό γίνεται πιο σημαντικό καθώς γράφετε περισσότερες συναρτήσεις και αρχίζετε να γράφετε τα δικά σας πακέτα.
 
-This chapter concludes the programming section of the book.
-You've made a solid start on your journey to becoming not just a data scientist who uses R, but a data scientist who can *program* in R.
-We hope these chapters have sparked your interest in programming and that you're looking forward to learning more outside of this book.
+Αυτό το κεφάλαιο ολοκληρώνει την ενότητα προγραμματισμού του βιβλίου.
+Έχετε κάνει μια καλή αρχή στο ταξίδι σας για να γίνετε όχι απλώς ένας επιστήμονας δεδομένων που χρησιμοποιεί την R, αλλά ένας επιστήμονας δεδομένων που μπορεί να *προγραμματίσει* σε R.
+Ελπίζουμε ότι αυτά τα κεφάλαια έχουν κεντρίσει το ενδιαφέρον σας για τον προγραμματισμό και ότι ανυπομονείτε να μάθετε περισσότερα εκτός αυτού του βιβλίου.
