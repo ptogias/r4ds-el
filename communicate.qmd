@@ -1,4 +1,4 @@
-# Communicate {#sec-communicate-intro .unnumbered}
+# Επικοινωνία της πληροφορίας {#sec-communicate-intro .unnumbered}
 
 ```{r}
 #| echo: false
@@ -6,8 +6,8 @@
 source("_common.R")
 ```
 
-So far, you've learned the tools to get your data into R, tidy it into a form convenient for analysis, and then understand your data through transformation, and visualization.
-However, it doesn't matter how great your analysis is unless you can explain it to others: you need to **communicate** your results.
+Μέχρι στιγμής, έχετε μάθει τα εργαλεία που χρειάζεστε για να μεταφέρετε τα δεδομένα σας στην R, να τα τακτοποιήσετε σε μια μορφή κατάλληλη για ανάλυση και, στη συνέχεια, να κατανοήσετε τα δεδομένα σας μέσω μετασχηματισμού και οπτικοποίησης.
+Ωστόσο, δεν έχει σημασία πόσο αξιόλογη είναι η ανάλυσή σας, εκτός αν μπορείτε να την εξηγήσετε σε άλλους: πρέπει να **επικοινωνήσετε** τα αποτελέσματά σας.
 
 ```{r}
 #| label: fig-ds-communicate
@@ -24,13 +24,13 @@ However, it doesn't matter how great your analysis is unless you can explain it 
 knitr::include_graphics("diagrams/data-science/communicate.png", dpi = 270)
 ```
 
-Communication is the theme of the following two chapters:
+Η επικοινωνία είναι το θέμα των επόμενων δύο κεφαλαίων:
 
--   In @sec-quarto, you will learn about Quarto, a tool for integrating prose, code, and results.
-    You can use Quarto for analyst-to-analyst communication as well as analyst-to-decision-maker communication.
-    Thanks to the power of Quarto formats, you can even use the same document for both purposes.
+-   Στο @sec-quarto, θα μάθετε για το Quarto, ένα εργαλείο για την ενοποίηση πεζού λόγου, κώδικα και αποτελεσμάτων.
+    Μπορείτε να χρησιμοποιήσετε το Quarto για επικοινωνία τόσο με άλλους αναλυτές όσο και με τους υπευθύνους για τη λήψη αποφάσεων.
+    Χάρη στη δύναμη των μορφών που προσφέρει το Quarto, μπορείτε ακόμη και να χρησιμοποιήσετε το ίδιο έγγραφο και για τους δύο σκοπούς.
 
--   In @sec-quarto-formats, you'll learn a little about the many other varieties of outputs you can produce using Quarto, including dashboards, websites, and books.
+-   Στο @sec-quarto-formats, θα μάθετε λίγα πράγματα για τις πολλές άλλες επιλογές αρχείων εξόδου που μπορείτε να παράγετε χρησιμοποιώντας το Quarto, συμπεριλαμβανομένων των dashboards, των ιστότοπων και των βιβλίων.
 
-These chapters focus mostly on the technical mechanics of communication, not the really hard problems of communicating your thoughts to other humans.
-However, there are lot of other great books about communication, which we'll point you to at the end of each chapter.
+Αυτά τα κεφάλαια επικεντρώνονται κυρίως στους τεχνικούς μηχανισμούς της επικοινωνίας, όχι στα πραγματικά δύσκολα προβλήματα της επικοινωνίας των σκέψεών σας σε άλλους ανθρώπους.
+Ωστόσο, υπάρχουν πολλά άλλα σπουδαία βιβλία για την επικοινωνία, τα οποία θα σας αναφέρουμε στο τέλος κάθε κεφαλαίου.
