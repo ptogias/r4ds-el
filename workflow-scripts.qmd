@@ -186,7 +186,7 @@ report-draft-notes.txt
 #| echo: false
 #| fig-cap: |
 #|   Αντιγράψτε αυτές τις επιλογές στο δικό σας RStudio έτσι ώστε κάθε συνεδρία,
-#|   στο άνοιγμα του RStudio, να ξεκινά απο την αρχή.
+#|   κατά το άνοιγμα του RStudio, να ξεκινά απο την αρχή.
 #| fig-alt: |
 #|   RStudio Global Options window where the option Restore .RData into workspace 
 #|   at startup is not checked. Also, the option Save workspace to .RData 
