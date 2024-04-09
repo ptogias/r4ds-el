@@ -3,20 +3,20 @@ project:
   output-dir: _book
 
 book:
-  title: "R for Data Science (2e)"
+  title: "Η R για την Επιστήμη των Δεδομένων (2η έκδοση)"
   reader-mode: true
 
   page-footer:
     left: |
-      R for Data Science (2e) was written by Hadley Wickham, Mine
-      Çetinkaya-Rundel, and Garrett Grolemund.
+      Η 2η έκδοση του "Η R για την Επιστήμη των Δεδομένων" γράφτηκε από τους Hadley Wickham, Mine
+      Çetinkaya-Rundel, και Garrett Grolemund.
     right: |
-      This book was built with <a href="https://quarto.org/">Quarto</a>.
+      Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.
   cover-image: cover.jpg
   favicon: cover.jpg
   site-url: https://r4ds.hadley.nz/
-  repo-url: https://github.com/hadley/r4ds/
-  repo-branch: main
+  repo-url: https://github.com/ptogias/r4ds-gr/
+  repo-branch: develop
   repo-actions: [edit, issue]
   chapters:
     - index.qmd
@@ -78,7 +78,7 @@ format:
       - r4ds.scss
     code-link: true
 
-    author-meta: "Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund"
+    author-meta: "Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund"
     include-in-header: "plausible.html"
     callout-appearance: simple
 
