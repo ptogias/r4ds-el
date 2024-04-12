@@ -14,9 +14,9 @@ book:
       Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.
   cover-image: cover.jpg
   favicon: cover.jpg
-  site-url: https://r4ds.hadley.nz/
-  repo-url: https://github.com/ptogias/r4ds-gr/
-  repo-branch: develop
+  #site-url:
+  #repo-url:
+  #repo-branch:
   repo-actions: [edit, issue]
   chapters:
     - index.qmd
