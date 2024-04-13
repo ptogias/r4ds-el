@@ -106,16 +106,16 @@ knitr::include_graphics("images/tidy-1.png", dpi = 270)
 #|   όσο και για το 2000, με τιμές που φαίνεται να είναι πολύ κοντά στο 0 σε 
 #|   αυτήν την κλίμακα.
 
-# Compute rate per 10,000
+# Υπολογίστε τον ρυθμό (rate) ανά 10.000
 table1 |>
   mutate(rate = cases / population * 10000)
 
-# Compute total cases per year
+# Υπολογίστε τις συνολικές περιπτώσεις (cases) ανά χρόνο
 table1 |> 
   group_by(year) |> 
   summarize(total_cases = sum(cases))
 
-# Visualize changes over time
+# Οπτικοποιήστε τις αλλαγές ανά χρονική περίοδο
 ggplot(table1, aes(x = year, y = cases)) +
   geom_line(aes(group = country), color = "grey50") +
   geom_point(aes(color = country, shape = country)) +
@@ -332,7 +332,7 @@ knitr::include_graphics("diagrams/tidy-data/column-names.png", dpi = 270)
 #|   Ο αριθμός των τιμών διατηρείται (δεν επαναλαμβάνεται), απλώς τα δεδομένα 
 #|   ξετυλίγονται γραμμή-προς-γραμμή.
 #| fig-alt: | 
-#|    Ένα διάγραμμα που δείχνει πώς η `pivot_longer()` μετασχηματίζει δεδομένα,
+#|   Ένα διάγραμμα που δείχνει πώς η `pivot_longer()` μετασχηματίζει δεδομένα,
 #|   χρησιμοποιώντας χρώμα για να τονίσει πώς οι τιμές των κελιών 
 #|   (μετρήσεις αρτηριακής πίεσης) γίνονται τιμές σε μια νέα στήλη, τη
 #|   `value`. Ξετυλίγονται γραμμή-προς-γραμμή, επομένως πρώτα οι αρχικές γραμμές 

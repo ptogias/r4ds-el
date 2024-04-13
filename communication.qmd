@@ -607,7 +607,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 ```{r}
 #| label: fig-brewer
 #| echo: false
-#| fig-cap: Όλες οι χρωματικές διαβαθμίσεις της colorBrewer.
+#| fig-cap: Όλες οι χρωματικές διαβαθμίσεις του colorBrewer.
 #| fig-asp: 2.5
 #| fig-alt: |
 #|   Οι χρωματικές διαβαθμίσεις της colorBrewer. Η μία ομάδα πηγαίνει από 
@@ -897,7 +897,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 ```{r}
 #| label: fig-themes
 #| echo: false
-#| fig-cap: The eight themes built-in to ggplot2.
+#| fig-cap: Οι οκτώ προεγκατεστημένες θεματικές επιλογές του πακέτου ggplot2.
 #| fig-alt: |
 #|   Οκτώ ραδβογράμματα που δημιουργήθηκαν με την ggplot2, το καθένα με 
 #|   ένα από τα οκτώ ενσωματωμένα θέματα:
