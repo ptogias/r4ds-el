@@ -17,7 +17,7 @@ source("_common.R")
 #|   Η εισαγωγή δεδομένων είναι η αρχή της διαδικασίας της επιστήμης των δεδομένων.
 #|   Χωρίς δεδομένα δεν μπορείτε να εφαρμόσετε την επιστήμη των δεδομένων!
 #| fig-alt: |
-#|   Our data science model with import highlighted in blue.
+#|   Το μοντέλο επιστήμης δεδομένων μας με την εισαγωγή επισημασμένη με μπλε χρώμα.
 #| out.width: NULL
 
 knitr::include_graphics("diagrams/data-science/import.png", dpi = 270)
