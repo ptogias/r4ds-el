@@ -109,7 +109,6 @@ seattle_csv |> glimpse()
 Για παράδειγμα, αυτός ο κωδικός μας λέει τον συνολικό αριθμό δανεισμών ανά έτος:
 
 ```{r}
-#| cache: true
 seattle_csv |> 
   group_by(CheckoutYear) |> 
   summarise(Checkouts = sum(Checkouts)) |> 
