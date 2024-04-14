@@ -442,7 +442,7 @@ ordered(c("a", "b", "c"))
 
 Εάν θέλετε να μάθετε περισσότερα σχετικά με τους παράγοντες μετά την ανάγνωση αυτού του κεφαλαίου, σας συνιστούμε να διαβάσετε την εργασία της Amelia McNamara και του Nicholas Horton, [*Wrangling categorical data in R*](https://peerj.com/preprints/3163/).
 Αυτό το άρθρο παρουσιάζει μέρος της ιστορίας που συζητήθηκε στα [*stringsAsFactors: An unautorized biography*](https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/) και [*stringsAsFactors = \<sigh\>*](https://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh) και συγκρίνει τις tidy προσεγγίσεις των κατηγορικών δεδομένων που περιγράφονται σε αυτό το βιβλίο με τις μεθόδους του βασικού συνόλου λειτουργιών της R.
-Μια αρχική έκδοση αυτού του άρθρου συνέβαλε ως κίνητρο και προεργασία για το πακέτο forcats.
+Μία αρχική έκδοση αυτού του άρθρου συνέβαλε ως κίνητρο και προεργασία για το πακέτο forcats.
 Ευχαριστώ Amelia & Nick!
 
 Στο επόμενο κεφάλαιο θα αλλάξουμε ταχύτητα για να αρχίσουμε να μαθαίνουμε για τις ημερομηνίες και ώρες στην R.
