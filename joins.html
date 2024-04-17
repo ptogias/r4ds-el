@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund">
+<title>Η R για την Επιστήμη των Δεδομένων (2η έκδοση) - 19&nbsp; Ενώσεις</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./import.html" rel="next">
+<link href="./missing-values.html" rel="prev">
+<link href="./cover.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transform.html">Μετασχηματισμοί</a></li><li class="breadcrumb-item"><a href="./joins.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Η R για την Επιστήμη των Δεδομένων (2η έκδοση)</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Εναλλαγή λειτουργίας ανάγνωσης">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Αναζήτηση"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Καλώς ήλθατε</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Πρόλογος δεύτερης έκδοσης</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Η ολοκληρωμένη εικόνα</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Οπτικοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ροή εργασιών: Bασικές αρχές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Μετασχηματισμός Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ροή εργασιών: πρότυπα γραφής κώδικα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Τακτοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Ροή εργασιών: αρχεία κώδικα και projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Εισαγωγή δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ροή εργασίας: αναζητώντας βοήθεια</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Οπτικοποίηση</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./layers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Επίπεδα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Διερευνητική ανάλυση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Επικοινωνία</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Μετασχηματισμοί</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Λογικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Αριθμητικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Συμβολοσειρές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Λογικές εκφράσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Παράγοντες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Ημερομηνίες και ώρες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Κενές τιμές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή δεδομένων</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Arrow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Ιεραρχικά δεδομένα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Ιστοσυγκομιδή</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Προγραμματισμός</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Συναρτήσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Επανάληψη</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./base-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Επικοινωνία της πληροφορίας</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Επιλογές μορφοποίησης στο Quarto</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Πίνακας περιεχομένων</h2>
+   
+  <ul>
+<li>
+<a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE"><span class="header-section-number">19.1</span> Εισαγωγή</a>
+  <ul class="collapse">
+<li><a href="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1" id="toc-προαπαιτούμενα" class="nav-link" data-scroll-target="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1"><span class="header-section-number">19.1.1</span> Προαπαιτούμενα</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CE%AC" id="toc-κλειδιά" class="nav-link" data-scroll-target="#%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CE%AC"><span class="header-section-number">19.2</span> Κλειδιά</a>
+  <ul class="collapse">
+<li><a href="#%CF%80%CF%81%CF%89%CF%84%CE%B5%CF%8D%CE%BF%CE%BD%CF%84%CE%B1-%CE%BA%CE%B1%CE%B9-%CE%B4%CE%B5%CF%85%CF%84%CE%B5%CF%81%CE%B5%CF%8D%CE%BF%CE%BD%CF%84%CE%B1-%CE%BE%CE%AD%CE%BD%CE%B1-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CE%AC" id="toc-πρωτεύοντα-και-δευτερεύοντα-ξένα-κλειδιά" class="nav-link" data-scroll-target="#%CF%80%CF%81%CF%89%CF%84%CE%B5%CF%8D%CE%BF%CE%BD%CF%84%CE%B1-%CE%BA%CE%B1%CE%B9-%CE%B4%CE%B5%CF%85%CF%84%CE%B5%CF%81%CE%B5%CF%8D%CE%BF%CE%BD%CF%84%CE%B1-%CE%BE%CE%AD%CE%BD%CE%B1-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CE%AC"><span class="header-section-number">19.2.1</span> Πρωτεύοντα και δευτερεύοντα (ξένα) κλειδιά</a></li>
+  <li><a href="#%CE%AD%CE%BB%CE%B5%CE%B3%CF%87%CE%BF%CF%82-%CF%80%CF%81%CF%89%CF%84%CE%B5%CF%85%CF%8C%CE%BD%CF%84%CF%89%CE%BD-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CF%8E%CE%BD" id="toc-έλεγχος-πρωτευόντων-κλειδιών" class="nav-link" data-scroll-target="#%CE%AD%CE%BB%CE%B5%CE%B3%CF%87%CE%BF%CF%82-%CF%80%CF%81%CF%89%CF%84%CE%B5%CF%85%CF%8C%CE%BD%CF%84%CF%89%CE%BD-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CF%8E%CE%BD"><span class="header-section-number">19.2.2</span> Έλεγχος πρωτευόντων κλειδιών</a></li>
+  <li><a href="#%CF%85%CF%80%CE%BF%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%84%CE%B1-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CE%AC" id="toc-υποκατάστατα-κλειδιά" class="nav-link" data-scroll-target="#%CF%85%CF%80%CE%BF%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%84%CE%B1-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CE%AC"><span class="header-section-number">19.2.3</span> Υποκατάστατα κλειδιά</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82" id="toc-ασκήσεις" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">19.2.4</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-mutating-joins" id="toc-sec-mutating-joins" class="nav-link" data-scroll-target="#sec-mutating-joins"><span class="header-section-number">19.3</span> Βασικές ενώσεις</a>
+  <ul class="collapse">
+<li><a href="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CE%B1%CE%BB%CE%BB%CE%B1%CE%B3%CE%AE%CF%82" id="toc-ενώσεις-αλλαγής" class="nav-link" data-scroll-target="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CE%B1%CE%BB%CE%BB%CE%B1%CE%B3%CE%AE%CF%82"><span class="header-section-number">19.3.1</span> Ενώσεις αλλαγής</a></li>
+  <li><a href="#%CE%BA%CE%B1%CE%B8%CE%BF%CF%81%CE%B9%CF%83%CE%BC%CF%8C%CF%82-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CF%8E%CE%BD-%CE%AD%CE%BD%CF%89%CF%83%CE%B7%CF%82" id="toc-καθορισμός-κλειδιών-ένωσης" class="nav-link" data-scroll-target="#%CE%BA%CE%B1%CE%B8%CE%BF%CF%81%CE%B9%CF%83%CE%BC%CF%8C%CF%82-%CE%BA%CE%BB%CE%B5%CE%B9%CE%B4%CE%B9%CF%8E%CE%BD-%CE%AD%CE%BD%CF%89%CF%83%CE%B7%CF%82"><span class="header-section-number">19.3.2</span> Καθορισμός κλειδιών ένωσης</a></li>
+  <li><a href="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CF%86%CE%B9%CE%BB%CF%84%CF%81%CE%B1%CF%81%CE%AF%CF%83%CE%BC%CE%B1%CF%84%CE%BF%CF%82" id="toc-ενώσεις-φιλτραρίσματος" class="nav-link" data-scroll-target="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CF%86%CE%B9%CE%BB%CF%84%CF%81%CE%B1%CF%81%CE%AF%CF%83%CE%BC%CE%B1%CF%84%CE%BF%CF%82"><span class="header-section-number">19.3.3</span> Ενώσεις φιλτραρίσματος</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-1" id="toc-ασκήσεις-1" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-1"><span class="header-section-number">19.3.4</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%CF%80%CF%8E%CF%82-%CE%BB%CE%B5%CE%B9%CF%84%CE%BF%CF%85%CF%81%CE%B3%CE%BF%CF%8D%CE%BD-%CE%BF%CE%B9-%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82" id="toc-πώς-λειτουργούν-οι-ενώσεις" class="nav-link" data-scroll-target="#%CF%80%CF%8E%CF%82-%CE%BB%CE%B5%CE%B9%CF%84%CE%BF%CF%85%CF%81%CE%B3%CE%BF%CF%8D%CE%BD-%CE%BF%CE%B9-%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">19.4</span> Πώς λειτουργούν οι ενώσεις;</a>
+  <ul class="collapse">
+<li><a href="#%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%AF%CF%87%CE%B9%CF%83%CE%B7-%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CF%8E%CE%BD" id="toc-αντιστοίχιση-γραμμών" class="nav-link" data-scroll-target="#%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%AF%CF%87%CE%B9%CF%83%CE%B7-%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CF%8E%CE%BD"><span class="header-section-number">19.4.1</span> Αντιστοίχιση γραμμών</a></li>
+  <li><a href="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CF%86%CE%B9%CE%BB%CF%84%CF%81%CE%B1%CF%81%CE%AF%CF%83%CE%BC%CE%B1%CF%84%CE%BF%CF%82-1" id="toc-ενώσεις-φιλτραρίσματος-1" class="nav-link" data-scroll-target="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CF%86%CE%B9%CE%BB%CF%84%CF%81%CE%B1%CF%81%CE%AF%CF%83%CE%BC%CE%B1%CF%84%CE%BF%CF%82-1"><span class="header-section-number">19.4.2</span> Ενώσεις φιλτραρίσματος</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-non-equi-joins" id="toc-sec-non-equi-joins" class="nav-link" data-scroll-target="#sec-non-equi-joins"><span class="header-section-number">19.5</span> Non-equi ενώσεις</a>
+  <ul class="collapse">
+<li><a href="#%CE%B4%CE%B9%CE%B1%CF%83%CF%84%CE%B1%CF%85%CF%81%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B5%CF%82-%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82" id="toc-διασταυρούμενες-ενώσεις" class="nav-link" data-scroll-target="#%CE%B4%CE%B9%CE%B1%CF%83%CF%84%CE%B1%CF%85%CF%81%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B5%CF%82-%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">19.5.1</span> Διασταυρούμενες ενώσεις</a></li>
+  <li><a href="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CE%B1%CE%BD%CE%B9%CF%83%CF%8C%CF%84%CE%B7%CF%84%CE%B1%CF%82" id="toc-ενώσεις-ανισότητας" class="nav-link" data-scroll-target="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CE%B1%CE%BD%CE%B9%CF%83%CF%8C%CF%84%CE%B7%CF%84%CE%B1%CF%82"><span class="header-section-number">19.5.2</span> Ενώσεις ανισότητας</a></li>
+  <li><a href="#%CE%BA%CF%85%CE%BB%CE%B9%CF%8C%CE%BC%CE%B5%CE%BD%CE%B5%CF%82-%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82" id="toc-κυλιόμενες-ενώσεις" class="nav-link" data-scroll-target="#%CE%BA%CF%85%CE%BB%CE%B9%CF%8C%CE%BC%CE%B5%CE%BD%CE%B5%CF%82-%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">19.5.3</span> Κυλιόμενες ενώσεις</a></li>
+  <li><a href="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CE%B5%CF%80%CE%B9%CE%BA%CE%AC%CE%BB%CF%85%CF%88%CE%B7%CF%82" id="toc-ενώσεις-επικάλυψης" class="nav-link" data-scroll-target="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-%CE%B5%CF%80%CE%B9%CE%BA%CE%AC%CE%BB%CF%85%CF%88%CE%B7%CF%82"><span class="header-section-number">19.5.4</span> Ενώσεις επικάλυψης</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-2" id="toc-ασκήσεις-2" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-2"><span class="header-section-number">19.5.5</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li><a href="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7" id="toc-σύνοψη" class="nav-link" data-scroll-target="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7"><span class="header-section-number">19.6</span> Σύνοψη</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-joins" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="εισαγωγή" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="εισαγωγή">
+<span class="header-section-number">19.1</span> Εισαγωγή</h2>
+<p>Είναι σπάνιο μία ανάλυση δεδομένων να περιλαμβάνει μόνο ένα πλαίσιο δεδομένων. Συνήθως έχετε πολλά πλαίσια δεδομένων και πρέπει να τα <strong>ενώσετε</strong> για να απαντήσετε στις ερωτήσεις που σας ενδιαφέρουν. Αυτό το κεφάλαιο θα σας παρουσιάσει δύο σημαντικούς τύπους ενώσεων:</p>
+<ul>
+<li>Ενώσεις αλλαγής, οι οποίες προσθέτουν νέες μεταβλητές σε ένα πλαίσιο δεδομένων, οι οποίες προέρχονται από αντιστοιχισμένες παρατηρήσεις σε ένα άλλο πλαίσιο δεδομένων.</li>
+<li>Ενώσεις φιλτραρίσματος (filtering joins), οι οποίες φιλτράρουν τις παρατηρήσεις από ένα πλαίσιο δεδομένων με βάση το αν ταιριάζουν ή όχι με μία παρατήρηση σε ένα άλλο.</li>
+</ul>
+<p>Θα ξεκινήσουμε συζητώντας τα κλειδιά, τις μεταβλητές που χρησιμοποιούνται για να συνδέσουν ένα ζεύγος πλαισίων δεδομένων σε μία ένωση. Θα εδραιώσουμε τη θεωρία εξετάζοντας τα κλειδιά στα σύνολα δεδομένων του πακέτου nycflights13 και, στη συνέχεια, χρησιμοποιούμε αυτή τη γνώση για να αρχίσουμε να ενώνουμε πλαίσια δεδομένων μεταξύ τους. Στη συνέχεια θα συζητήσουμε το πώς λειτουργούν οι ενώσεις, εστιάζοντας στη δράση τους στις γραμμές. Τέλος, Θα ολοκληρώσουμε με μία συζήτηση για ενώσεις που δεν είναι ισοδύναμες, μία οικογένεια ενώσεων που παρέχουν έναν πιο ευέλικτο τρόπο αντιστοίχισης κλειδιών από την προεπιλεγμένη σχέση ισότητας.</p>
+<section id="προαπαιτούμενα" class="level3" data-number="19.1.1"><h3 data-number="19.1.1" class="anchored" data-anchor-id="προαπαιτούμενα">
+<span class="header-section-number">19.1.1</span> Προαπαιτούμενα</h3>
+<p>Σε αυτό το κεφάλαιο, θα εξερευνήσουμε τα πέντε σχετικά σύνολα δεδομένων από το nycflights13 χρησιμοποιώντας τις συναρτήσεις ένωσης (join) της dplyr.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="κλειδιά" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="κλειδιά">
+<span class="header-section-number">19.2</span> Κλειδιά</h2>
+<p>Για να κατανοήσετε τις ενώσεις, πρέπει πρώτα να κατανοήσετε πώς δύο πίνακες μπορούν να συνδεθούν μέσω ενός ζεύγους κλειδιών, που υπάρχουν σε κάθε πίνακα. Σε αυτήν την ενότητα, θα μάθετε για τους δύο τύπους κλειδιών και θα δείτε παραδείγματα και των δύο στα σύνολα δεδομένων του πακέτου nycflights13. Θα μάθετε επίσης πώς να ελέγχετε ότι τα κλειδιά σας είναι έγκυρα και τι να κάνετε εάν ο πίνακας σας δεν διαθέτει κλειδί.</p>
+<section id="πρωτεύοντα-και-δευτερεύοντα-ξένα-κλειδιά" class="level3" data-number="19.2.1"><h3 data-number="19.2.1" class="anchored" data-anchor-id="πρωτεύοντα-και-δευτερεύοντα-ξένα-κλειδιά">
+<span class="header-section-number">19.2.1</span> Πρωτεύοντα και δευτερεύοντα (ξένα) κλειδιά</h3>
+<p>Κάθε ένωση περιλαμβάνει ένα ζεύγος κλειδιών: ένα πρωτεύον (ή κύριο) κλειδί και ένα ξένο (ή δευτερεύον) κλειδί. Ένα <strong>πρωτεύον κλειδί</strong> είναι μία μεταβλητή ή ένα σύνολο μεταβλητών που προσδιορίζει μοναδικά κάθε παρατήρηση. Όταν χρειάζονται περισσότερες από μία μεταβλητές, το κλειδί ονομάζεται <strong>σύνθετο κλειδί.</strong> Για παράδειγμα, στο nycflights13:</p>
+<ul>
+<li>
+<p>Το πλαίσιο δεδομένων <code>airlines</code> καταγράφει για κάθε αεροπορική εταιρεία δύο στοιχεία: τον κωδικό της εταιρείας και το πλήρες όνομά της. Μπορείτε να προσδιορίσετε μία αεροπορική εταιρεία με τον κωδικό δύο γραμμάτων που της αντιστοιχεί, καθιστώντας τη μεταβλητή <code>carrier</code> το πρωτεύον κλειδί.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airlines</span></span>
+<span><span class="co">#&gt; # A tibble: 16 × 2</span></span>
+<span><span class="co">#&gt;   carrier name                    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;                   </span></span>
+<span><span class="co">#&gt; 1 9E      Endeavor Air Inc.       </span></span>
+<span><span class="co">#&gt; 2 AA      American Airlines Inc.  </span></span>
+<span><span class="co">#&gt; 3 AS      Alaska Airlines Inc.    </span></span>
+<span><span class="co">#&gt; 4 B6      JetBlue Airways         </span></span>
+<span><span class="co">#&gt; 5 DL      Delta Air Lines Inc.    </span></span>
+<span><span class="co">#&gt; 6 EV      ExpressJet Airlines Inc.</span></span>
+<span><span class="co">#&gt; # ℹ 10 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>Το <code>airports</code> καταγράφει δεδομένα για κάθε αεροδρόμιο. Μπορείτε να προσδιορίσετε κάθε αεροδρόμιο με τον κωδικό τριών γραμμάτων που του αντιστοιχεί, καθιστώντας τη μεταβλητή <code>faa</code> το πρωτεύον κλειδί.</p>
+<div class="cell" data-r.options="{&quot;width&quot;:67}">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span></span>
+<span><span class="co">#&gt; # A tibble: 1,458 × 8</span></span>
+<span><span class="co">#&gt;   faa   name                            lat   lon   alt    tz dst  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 04G   Lansdowne Airport              41.1 -80.6  1044    -5 A    </span></span>
+<span><span class="co">#&gt; 2 06A   Moton Field Municipal Airport  32.5 -85.7   264    -6 A    </span></span>
+<span><span class="co">#&gt; 3 06C   Schaumburg Regional            42.0 -88.1   801    -6 A    </span></span>
+<span><span class="co">#&gt; 4 06N   Randall Airport                41.4 -74.4   523    -5 A    </span></span>
+<span><span class="co">#&gt; 5 09J   Jekyll Island Airport          31.1 -81.4    11    -5 A    </span></span>
+<span><span class="co">#&gt; 6 0A9   Elizabethton Municipal Airpo…  36.4 -82.2  1593    -5 A    </span></span>
+<span><span class="co">#&gt; # ℹ 1,452 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: tzone &lt;chr&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>Το <code>planes</code> καταγράφει δεδομένα για κάθε αεροπλάνο. Μπορείτε να προσδιορίσετε ένα αεροπλάνο με τον αναγνωριστικό κωδικό του, καθιστώντας τη μεταβλητή <code>tailnum</code> το πρωτεύον κλειδί.</p>
+<div class="cell" data-r.options="{&quot;width&quot;:67}">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">planes</span></span>
+<span><span class="co">#&gt; # A tibble: 3,322 × 9</span></span>
+<span><span class="co">#&gt;   tailnum  year type              manufacturer    model     engines</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;             &lt;chr&gt;           &lt;chr&gt;       &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 N10156   2004 Fixed wing multi… EMBRAER         EMB-145XR       2</span></span>
+<span><span class="co">#&gt; 2 N102UW   1998 Fixed wing multi… AIRBUS INDUSTR… A320-214        2</span></span>
+<span><span class="co">#&gt; 3 N103US   1999 Fixed wing multi… AIRBUS INDUSTR… A320-214        2</span></span>
+<span><span class="co">#&gt; 4 N104UW   1999 Fixed wing multi… AIRBUS INDUSTR… A320-214        2</span></span>
+<span><span class="co">#&gt; 5 N10575   2002 Fixed wing multi… EMBRAER         EMB-145LR       2</span></span>
+<span><span class="co">#&gt; 6 N105UW   1999 Fixed wing multi… AIRBUS INDUSTR… A320-214        2</span></span>
+<span><span class="co">#&gt; # ℹ 3,316 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>Το <code>weather</code> καταγράφει δεδομένα για τον καιρό στο αεροδρόμιο αναχώρησης. Μπορείτε να προσδιορίσετε κάθε παρατήρηση από το συνδυασμό τοποθεσίας και ώρας, καθιστώντας τις μεταβλητές <code>origin</code> και <code>time_hour</code> το σύνθετο πρωτεύον κλειδί.</p>
+<div class="cell" data-r.options="{&quot;width&quot;:67}">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">weather</span></span>
+<span><span class="co">#&gt; # A tibble: 26,115 × 15</span></span>
+<span><span class="co">#&gt;   origin  year month   day  hour  temp  dewp humid wind_dir</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 EWR     2013     1     1     1  39.0  26.1  59.4      270</span></span>
+<span><span class="co">#&gt; 2 EWR     2013     1     1     2  39.0  27.0  61.6      250</span></span>
+<span><span class="co">#&gt; 3 EWR     2013     1     1     3  39.0  28.0  64.4      240</span></span>
+<span><span class="co">#&gt; 4 EWR     2013     1     1     4  39.9  28.0  62.2      250</span></span>
+<span><span class="co">#&gt; 5 EWR     2013     1     1     5  39.0  28.0  64.4      260</span></span>
+<span><span class="co">#&gt; 6 EWR     2013     1     1     6  37.9  28.0  67.2      240</span></span>
+<span><span class="co">#&gt; # ℹ 26,109 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 6 more variables: wind_speed &lt;dbl&gt;, wind_gust &lt;dbl&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+<p>Ένα <strong>ξένο κλειδί</strong> είναι μία μεταβλητή (ή σύνολο μεταβλητών) που αντιστοιχεί στο πρωτεύον κλειδί από έναν άλλο πίνακα. Για παράδειγμα:</p>
+<ul>
+<li>Η μεταβλητή <code>flights$tailnum</code> είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί <code>planes$tailnum</code>.</li>
+<li>Η μεταβλητή <code>flights$carrier</code> είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί <code>airlines$carrier</code>.</li>
+<li>Η μεταβλητή <code>flights$origin</code> είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί <code>airports$faa</code>.</li>
+<li>Η μεταβλητή <code>flights$dest</code> είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί <code>airports$faa</code>.</li>
+<li>Η μεταβλητή <code>flights$origin</code>-<code>flights$time_hour</code> είναι ένα σύνθετο ξένο κλειδί που αντιστοιχεί στο σύνθετο πρωτεύον κλειδί <code>weather$origin</code>-<code>weather$time_hour</code>.</li>
+</ul>
+<p>Αυτές οι σχέσεις συνοψίζονται και οπτικά στο <a href="#fig-flights-relationships">Σχήμα&nbsp;<span>19.1</span></a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-flights-relationships" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/relational.png" class="img-fluid figure-img" alt="Οι σχέσεις μεταξύ αεροδρομίων, αεροπλάνων, πτήσεων, καιρού και συνόλων δεδομένων αεροπορικών εταιρειών από το πακέτο nycflights13. Η airports$faa συνδέεται με τις flights$origin και flights$dest. Η planes$tailnum συνδέεται με τη flights$tailnum. Οι weather$time_hour weather$origin συνδέονται από κοινού με τις flights$time_hour και τις flights$origin. Η airlines$carrier είναι συνδεδεμένη με τη flights$carrier. Δεν υπάρχουν απευθείας συνδέσεις μεταξύ αεροδρομίων, αεροπλάνων, αεροπορικών εταιρειών και πλαισίων δεδομένων για τον καιρό." width="502"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.1: Συνδέσεις μεταξύ και των πέντε πλαισίων δεδομένων στο πακέτο nycflights13. Οι μεταβλητές που αποτελούν ένα πρωτεύον κλειδί έχουν γκρι χρώμα, και συνδέονται με τα αντίστοιχα ξένα κλειδιά τους με βέλη.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Θα παρατηρήσετε ένα ωραίο χαρακτηριστικό στο σχεδιασμό αυτών των κλειδιών: το πρωτεύον και το ξένο κλειδί έχουν σχεδόν πάντα τα ίδια ονόματα, κάτι που, όπως θα δείτε σύντομα, θα κάνει πολύ πιο εύκολη τη ζωή σας όταν κάνετε ενώσεις. Αξίζει επίσης να σημειωθεί και η αντίθετη σχέση: σχεδόν κάθε όνομα μεταβλητής που χρησιμοποιείται σε πολλούς πίνακες έχει την ίδια σημασία σε κάθε μέρος. Υπάρχει μόνο μία εξαίρεση: η μεταβλητή <code>year</code> υποδηλώνει το έτος αναχώρησης στο πλαίσιο δεδομένων <code>flights</code> το έτος του κατασκευαστή στο πλαίσιο δεδομένων <code>planes</code>. Αυτό θα γίνει σημαντικό όταν αρχίσουμε να ενώνουμε πίνακες μαζί.</p>
+</section><section id="έλεγχος-πρωτευόντων-κλειδιών" class="level3" data-number="19.2.2"><h3 data-number="19.2.2" class="anchored" data-anchor-id="έλεγχος-πρωτευόντων-κλειδιών">
+<span class="header-section-number">19.2.2</span> Έλεγχος πρωτευόντων κλειδιών</h3>
+<p>Τώρα που προσδιορίσαμε τα κύρια κλειδιά σε κάθε πίνακα, είναι καλή πρακτική να επαληθεύσουμε ότι όντως προσδιορίζουν μοναδικά κάθε παρατήρηση. Ένας τρόπος για να γίνει αυτό είναι να μετρώντας τις τιμές που αντιστοιχούν στα κύρια κλειδιά με την <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> και να εστιάσουμε σε παρατηρήσεις όπου το πλήθος τιμών (<code>n</code>) είναι μεγαλύτερο από ένα. Αυτός ο έλεγχος αποκαλύπτει ότι οι μεταβλητές <code>planes</code> και <code>weather</code> δείχνουν και οι δύο καλά:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">planes</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">tailnum</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span><span class="co">#&gt; # ℹ 2 variables: tailnum &lt;chr&gt;, n &lt;int&gt;</span></span>
+<span></span>
+<span><span class="va">weather</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">time_hour</span>, <span class="va">origin</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 0 × 3</span></span>
+<span><span class="co">#&gt; # ℹ 3 variables: time_hour &lt;dttm&gt;, origin &lt;chr&gt;, n &lt;int&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα πρέπει επίσης να ελέγξετε για την ύπαρξη κενών τιμών στα κύρια κλειδιά σας — εάν λείπει μία τιμή, αυτό σημαίνει ότι μία παρατήρηση δεν μπορεί να αναγνωριστεί!</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">planes</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">tailnum</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 0 × 9</span></span>
+<span><span class="co">#&gt; # ℹ 9 variables: tailnum &lt;chr&gt;, year &lt;int&gt;, type &lt;chr&gt;, manufacturer &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;, speed &lt;int&gt;, engine &lt;chr&gt;</span></span>
+<span></span>
+<span><span class="va">weather</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">time_hour</span><span class="op">)</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">origin</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 0 × 15</span></span>
+<span><span class="co">#&gt; # ℹ 15 variables: origin &lt;chr&gt;, year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   hour &lt;int&gt;, temp &lt;dbl&gt;, dewp &lt;dbl&gt;, humid &lt;dbl&gt;, wind_dir &lt;dbl&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="υποκατάστατα-κλειδιά" class="level3" data-number="19.2.3"><h3 data-number="19.2.3" class="anchored" data-anchor-id="υποκατάστατα-κλειδιά">
+<span class="header-section-number">19.2.3</span> Υποκατάστατα κλειδιά</h3>
+<p>Μέχρι στιγμής δεν έχουμε μιλήσει για το πρωτεύον κλειδί στο πλαίσιο δεδομένων <code>flights</code>. Δεν είναι πολύ σημαντικό εδώ, επειδή δεν υπάρχουν πλαίσια δεδομένων που να το χρησιμοποιούν ως ξένο κλειδί, αλλά παραμένει χρήσιμο να το αναφέρουμε γιατί είναι πιο εύκολο να εργαστούμε με παρατηρήσεις, αν έχουμε κάποιο τρόπο να τις περιγράψουμε σε άλλους.</p>
+<p>Μετά από λίγη σκέψη και πειραματισμό, αποφασίσαμε ότι υπάρχουν τρεις μεταβλητές που μαζί προσδιορίζουν μοναδικά κάθε πτήση:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">time_hour</span>, <span class="va">carrier</span>, <span class="va">flight</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 0 × 4</span></span>
+<span><span class="co">#&gt; # ℹ 4 variables: time_hour &lt;dttm&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, n &lt;int&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Κάνει αυτόματα η απουσία διπλότυπων τιμών τον συνδυασμό <code>time_hour</code>-<code>carrier</code>-<code>flight</code> ένα πρωτεύον κλειδί; Είναι σίγουρα μία καλή αρχή, ωστόσο δεν αποτελεί εγγύηση. Για παράδειγμα, είναι το υψόμετρο και το γεωγραφικό πλάτος ένα καλό πρωτεύον κλειδί για το πλαίσιο <code>airports</code>;</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">alt</span>, <span class="va">lat</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span><span class="co">#&gt;     alt   lat     n</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1    13  40.6     2</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η αναγνώριση ενός αεροδρομίου με βάση το υψόμετρο και το γεωγραφικό του πλάτος είναι σαφώς κακή ιδέα και γενικά δεν είναι δυνατό να γνωρίζουμε μόνο από τα δεδομένα εάν ένας συνδυασμός μεταβλητών αποτελεί ένα καλό πρωτεύον κλειδί ή όχι. Ωστόσο, για τις πτήσεις, ο συνδυασμός των μεταβλητών <code>time_hour</code>, <code>carrier</code>, και <code>flight</code> φαίνεται λογικός γιατί θα προκαλούσε σύγχυση για μία αεροπορική εταιρεία και τους πελάτες της εάν υπήρχαν πολλές πτήσεις με τον ίδιο αριθμό πτήσης στον αέρα ταυτόχρονα .</p>
+<p>Έχοντας ξεκαθαρίσει αυτό το σημείο, ίσως είναι καλύτερα να εισάγουμε ένα απλό αριθμητικό υποκατάστατο κλειδί χρησιμοποιώντας τον αριθμό κάθε γραμμής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html">row_number</a></span><span class="op">(</span><span class="op">)</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">flights2</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 20</span></span>
+<span><span class="co">#&gt;      id  year month   day dep_time sched_dep_time dep_delay arr_time</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1     1  2013     1     1      517            515         2      830</span></span>
+<span><span class="co">#&gt; 2     2  2013     1     1      533            529         4      850</span></span>
+<span><span class="co">#&gt; 3     3  2013     1     1      542            540         2      923</span></span>
+<span><span class="co">#&gt; 4     4  2013     1     1      544            545        -1     1004</span></span>
+<span><span class="co">#&gt; 5     5  2013     1     1      554            600        -6      812</span></span>
+<span><span class="co">#&gt; 6     6  2013     1     1      554            558        -4      740</span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τα υποκατάστατα κλειδιά μπορούν να είναι ιδιαίτερα χρήσιμα όταν επικοινωνείτε με άλλους ανθρώπους: είναι πολύ πιο εύκολο να πείτε σε κάποιον να ρίξει μία ματιά στην πτήση 2001 παρά να του πείτε να δει την UA430 που αναχώρησε στις 9 π.μ., στις 03-01-2013.</p>
+</section><section id="ασκήσεις" class="level3" data-number="19.2.4"><h3 data-number="19.2.4" class="anchored" data-anchor-id="ασκήσεις">
+<span class="header-section-number">19.2.4</span> Ασκήσεις</h3>
+<ol type="1">
+<li><p>Ξεχάσαμε να σχεδιάσουμε τη σχέση μεταξύ <code>weather</code> και <code>airports</code> στο <a href="#fig-flights-relationships">Σχήμα&nbsp;<span>19.1</span></a>. Ποια είναι η σχέση και πώς πρέπει να εμφανίζεται στο διάγραμμα;</p></li>
+<li><p>Η μεταβλητή <code>weather</code> περιέχει μόνο πληροφορίες για τα τρία αεροδρόμια αναχώρησης στη Νέα Υόρκη. Εάν περιείχε αρχεία καιρού για όλα τα αεροδρόμια των ΗΠΑ, ποια πρόσθετη σύνδεση θα έκανε με το πλαίσιο δεδομένων <code>flights</code>;</p></li>
+<li><p>Οι μεταβλητές <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, και <code>origin</code> σχεδόν σχηματίζουν ένα σύνθετο κλειδί για το πλαίσιο δεδομένων <code>weather</code>, ωστόσο υπάρχει μία τιμή ώρας που έχει διπλότυπες παρατηρήσεις. Μπορείτε να καταλάβετε τι το ιδιαίτερο έχει αυτή η ώρα;</p></li>
+<li><p>Γνωρίζουμε ότι κάποιες μέρες του χρόνου είναι ιδιαίτερες και λιγότεροι άνθρωποι από το συνηθισμένο επιλέγουν να πετάξουν αυτές τις μέρες (για παράδειγμα, παραμονή και ανήμερα Χριστουγέννων). Πώς μπορείτε να αναπαραστήσετε αυτά τα δεδομένα ως πλαίσιο δεδομένων; Ποιο θα ήταν το πρωτεύον κλειδί; Πώς θα συνδεόταν με τα υπάρχοντα πλαίσια δεδομένων;</p></li>
+<li><p>Σχεδιάστε ένα διάγραμμα που απεικονίζει τις συνδέσεις μεταξύ των πλαισίων δεδομένων <code>Batting</code>, <code>People</code>, και <code>Salaries</code>στο πακέτο Lahman. Σχεδιάστε ένα άλλο διάγραμμα που δείχνει τη σχέση μεταξύ των <code>People</code>, <code>Managers</code>, <code>AwardsManagers</code>. Πώς θα χαρακτηρίζατε τη σχέση μεταξύ των πλαισίων δεδομένων <code>Batting</code>, <code>Pitching</code>, και <code>Fielding</code>;</p></li>
+</ol></section></section><section id="sec-mutating-joins" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="sec-mutating-joins">
+<span class="header-section-number">19.3</span> Βασικές ενώσεις</h2>
+<p>Τώρα που καταλαβαίνετε πως συνδέονται τα πλαίσια δεδομένων με τη βοήθεια κλειδιών, μπορούμε να αρχίσουμε να χρησιμοποιούμε ενώσεις για να κατανοήσουμε καλύτερα το σύνολο δεδομένων <code>flights</code>. Η dplyr προσφέρει έξι συναρτήσεις ένωσης: <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">right_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join()</a></code>, και <code>anti_join().</code> Όλες έχουν την ίδια διεπαφή: παίρνουν ένα ζευγάρι πλαισίων δεδομένων (<code>x</code> και <code>y</code>) και επιστρέφουν ένα πλαίσιο δεδομένων. Η σειρά των γραμμών και στηλών στην έξοδο καθορίζεται κυρίως από το <code>x</code>.</p>
+<p>Σε αυτήν την ενότητα, θα μάθετε πώς να χρησιμοποιείτε μία ένωση αλλαγής, την <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code>, και δύο filtering ενώσεις, τις <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join()</a></code> και <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join()</a></code>. Στην επόμενη ενότητα, θα μάθετε πώς ακριβώς λειτουργούν αυτές οι συναρτήσεις, καθώς και για τις υπόλοιπες: <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">right_join()</a></code> και <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code>.</p>
+<section id="ενώσεις-αλλαγής" class="level3" data-number="19.3.1"><h3 data-number="19.3.1" class="anchored" data-anchor-id="ενώσεις-αλλαγής">
+<span class="header-section-number">19.3.1</span> Ενώσεις αλλαγής</h3>
+<p>Μία <strong>ένωση αλλαγής</strong> σας επιτρέπει να συνδυάσετε μεταβλητές από δύο πλαίσια δεδομένων: πρώτα αντιστοιχίζει παρατηρήσεις με βάση τα κλειδιά τους και μετά αντιγράφει παρατηρήσεις μεταξύ των μεταβλητών από το ένα πλαίσιο δεδομένων στο άλλο. Όπως και η <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, οι συναρτήσεις ένωσης προσθέτουν μεταβλητές στα δεξιά, οπότε αν το σύνολο δεδομένων σας έχει πολλές μεταβλητές, δεν θα δείτε τις νέες. Για αυτά τα παραδείγματα, θα διευκολύνουμε την παρατήρηση του τι συμβαίνει δημιουργώντας ένα πιο στενό σύνολο δεδομένων με έξι μόνο μεταβλητές<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">&lt;-</span> <span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">time_hour</span>, <span class="va">origin</span>, <span class="va">dest</span>, <span class="va">tailnum</span>, <span class="va">carrier</span><span class="op">)</span></span>
+<span><span class="va">flights2</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 6</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA     </span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA     </span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA     </span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6     </span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL     </span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA     </span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχουν τέσσερις τύποι ενώσεων αλλαγής, ωστόσο ένας είναι που θα χρησιμοποιείτε σχεδόν συνέχεια: <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code>. Αυτό είναι ιδιαίτερο γιατί η έξοδος θα έχει πάντα τις ίδιες γραμμές με το <code>x</code>, το πλαίσιο δεδομένων προς το οποίο συνδέετε<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Η κύρια χρήση του <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code> είναι η προσθήκη επιπλέον μεταδεδομένων. Για παράδειγμα, μπορούμε να χρησιμοποιήσουμε το <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code> για να προσθέσουμε το πλήρες όνομα της αεροπορικής εταιρείας στα δεδομένα του <code>flights2</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airlines</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(carrier)`</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 7</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier name                </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;               </span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA      United Air Lines In…</span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA      United Air Lines In…</span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA      American Airlines I…</span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6      JetBlue Airways     </span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL      Delta Air Lines Inc.</span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA      United Air Lines In…</span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ή θα μπορούσαμε να μάθουμε τη θερμοκρασία και την ταχύτητα του ανέμου όταν κάθε αεροπλάνο αναχωρούσε:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">weather</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">time_hour</span>, <span class="va">temp</span>, <span class="va">wind_speed</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(time_hour, origin)`</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 8</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier  temp wind_speed</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA       39.0       12.7</span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA       39.9       15.0</span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA       39.0       15.0</span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6       39.0       15.0</span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL       39.9       16.1</span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA       39.0       12.7</span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ή τι μέγεθος αεροπλάνου πετούσε:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">planes</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">tailnum</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(tailnum)`</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 9</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier type                </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;               </span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA      Fixed wing multi en…</span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA      Fixed wing multi en…</span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA      Fixed wing multi en…</span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6      Fixed wing multi en…</span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL      Fixed wing multi en…</span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA      Fixed wing multi en…</span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 2 more variables: engines &lt;int&gt;, seats &lt;int&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Όταν η <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code> δεν βρει ταίριασμα για μία γραμμή στο <code>x</code>, συμπληρώνει τις νέες μεταβλητές με κενές τιμές. Για παράδειγμα, δεν υπάρχουν πληροφορίες σχετικά με το αεροπλάνο με αναγνωριστικό κωδικό <code>N3ALAA</code>, οπότε οι τιμές στις στήλες <code>type</code>, <code>engines</code>, και <code>seats</code> θα λείπουν:</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">tailnum</span> <span class="op">==</span> <span class="st">"N3ALAA"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">planes</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">tailnum</span>, <span class="va">type</span>, <span class="va">engines</span>, <span class="va">seats</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(tailnum)`</span></span>
+<span><span class="co">#&gt; # A tibble: 63 × 9</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier type  engines seats</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 06:00:00 LGA    ORD   N3ALAA  AA      &lt;NA&gt;       NA    NA</span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-02 18:00:00 LGA    ORD   N3ALAA  AA      &lt;NA&gt;       NA    NA</span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-03 06:00:00 LGA    ORD   N3ALAA  AA      &lt;NA&gt;       NA    NA</span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-07 19:00:00 LGA    ORD   N3ALAA  AA      &lt;NA&gt;       NA    NA</span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-08 17:00:00 JFK    ORD   N3ALAA  AA      &lt;NA&gt;       NA    NA</span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-16 06:00:00 LGA    ORD   N3ALAA  AA      &lt;NA&gt;       NA    NA</span></span>
+<span><span class="co">#&gt; # ℹ 57 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα επανέλθουμε σε αυτό το πρόβλημα μερικές φορές στο υπόλοιπο αυτού του κεφαλαίου.</p>
+</section><section id="καθορισμός-κλειδιών-ένωσης" class="level3" data-number="19.3.2"><h3 data-number="19.3.2" class="anchored" data-anchor-id="καθορισμός-κλειδιών-ένωσης">
+<span class="header-section-number">19.3.2</span> Καθορισμός κλειδιών ένωσης</h3>
+<p>Από προεπιλογή, η <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code> θα χρησιμοποιεί όλες τις μεταβλητές που εμφανίζονται και στα δύο πλαίσια δεδομένων ως κλειδί ένωση, τη λεγόμενη <strong>φυσική</strong> (<strong>natural</strong>) ένωση. Αυτός είναι ένα χρήσιμος κανόνας, αλλά δεν λειτουργεί πάντα. Για παράδειγμα, τι θα συμβεί αν προσπαθήσουμε να ενώσουμε το <code>flights2</code> με το πλήρες σύνολο δεδομένων <code>planes</code>;</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(year, tailnum)`</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 13</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier type  manufacturer</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;       </span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA      &lt;NA&gt;  &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA      &lt;NA&gt;  &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA      &lt;NA&gt;  &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6      &lt;NA&gt;  &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL      &lt;NA&gt;  &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA      &lt;NA&gt;  &lt;NA&gt;        </span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 5 more variables: model &lt;chr&gt;, engines &lt;int&gt;, seats &lt;int&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα λάβουμε πολλές περιπτώσεις χωρίς αντιστοίχιση επειδή η ένωση μας προσπαθεί να χρησιμοποιήσει τις μεταβλητές <code>tailnum</code> και <code>year</code> ως σύνθετο κλειδί. Και τα δύο σύνολα, <code>flights</code> και <code>planes</code>, περιέχουν μία στήλη <code>year</code>, ωστόσο αυτή η στήλη έχει σημαίνει διαφορετικά πράγματα σε κάθε περίπτωση: η <code>flights$year</code> είναι το έτος που πραγματοποιήθηκε η πτήση και η <code>planes$year</code> είναι το έτος κατασκευής του αεροπλάνου. Θέλουμε να πραγματοποιήσουμε ένωση μόνο με βάση την <code>tailnum</code>, επομένως πρέπει να παρέχουμε μία ρητή προδιαγραφή με το <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">planes</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">tailnum</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 14</span></span>
+<span><span class="co">#&gt;   year.x time_hour           origin dest  tailnum carrier year.y</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1   2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA        1999</span></span>
+<span><span class="co">#&gt; 2   2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA        1998</span></span>
+<span><span class="co">#&gt; 3   2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA        1990</span></span>
+<span><span class="co">#&gt; 4   2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6        2012</span></span>
+<span><span class="co">#&gt; 5   2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL        1991</span></span>
+<span><span class="co">#&gt; 6   2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA        2012</span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 7 more variables: type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Σημειώστε ότι η προέλευση των μεταβλητών <code>year</code> αποσαφηνίζεται στην έξοδο με ένα επίθημα (<code>year.x</code> και <code>year.y</code>), το οποίο μας λέει εάν η μεταβλητή προήλθε από το όρισμα <code>x</code> ή <code>y</code>. Μπορείτε να παρακάμψετε τα προεπιλεγμένα επιθήματα με το όρισμα <code>suffix</code>.</p>
+<p>Το <code>join_by(tailnum)</code> είναι η σύντομη εκδοχή του <code>join_by(tailnum == tailnum)</code>. Είναι σημαντικό να γνωρίζετε αυτήν την πληρέστερη εκδοχή για δύο λόγους. Πρώτον, γιατί περιγράφει τη σχέση μεταξύ των δύο πινάκων: τα κλειδιά πρέπει να είναι ίσα (equal). Αυτός είναι ο λόγος για τον οποίο αυτός ο τύπος ένωσης ονομάζεται συχνά <strong>equi ένωση</strong>. Θα μάθετε για τις non-equi ενώσεις στην <a href="#sec-non-equi-joins"><span>Ενότητα&nbsp;19.5</span></a>.</p>
+<p>Δεύτερον, γιατί δείχνει τον τρόπο με τον οποίο καθορίζετε διαφορετικά κλειδιά ένωσης σε κάθε πίνακα. Για παράδειγμα, υπάρχουν δύο τρόποι για να ενώσετε τους πίνακες <code>flight2</code> και <code>airports</code>: είτε με βάση το <code>dest</code> (τον προορισμό) είτε το <code>origin</code> (την προέλευση):</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airports</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">dest</span> <span class="op">==</span> <span class="va">faa</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 13</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier name                </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;               </span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA      George Bush Interco…</span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA      George Bush Interco…</span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA      Miami Intl          </span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6      &lt;NA&gt;                </span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL      Hartsfield Jackson …</span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA      Chicago Ohare Intl  </span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 6 more variables: lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, …</span></span>
+<span></span>
+<span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">airports</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">origin</span> <span class="op">==</span> <span class="va">faa</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 13</span></span>
+<span><span class="co">#&gt;    year time_hour           origin dest  tailnum carrier name               </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;              </span></span>
+<span><span class="co">#&gt; 1  2013 2013-01-01 05:00:00 EWR    IAH   N14228  UA      Newark Liberty Intl</span></span>
+<span><span class="co">#&gt; 2  2013 2013-01-01 05:00:00 LGA    IAH   N24211  UA      La Guardia         </span></span>
+<span><span class="co">#&gt; 3  2013 2013-01-01 05:00:00 JFK    MIA   N619AA  AA      John F Kennedy Intl</span></span>
+<span><span class="co">#&gt; 4  2013 2013-01-01 05:00:00 JFK    BQN   N804JB  B6      John F Kennedy Intl</span></span>
+<span><span class="co">#&gt; 5  2013 2013-01-01 06:00:00 LGA    ATL   N668DN  DL      La Guardia         </span></span>
+<span><span class="co">#&gt; 6  2013 2013-01-01 05:00:00 EWR    ORD   N39463  UA      Newark Liberty Intl</span></span>
+<span><span class="co">#&gt; # ℹ 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 6 more variables: lat &lt;dbl&gt;, lon &lt;dbl&gt;, alt &lt;dbl&gt;, tz &lt;dbl&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Σε παλαιότερο κώδικα, ενδέχεται να δείτε έναν διαφορετικό τρόπο καθορισμού των κλειδιών ένωσης, χρησιμοποιώντας ένα διάνυσμα χαρακτήρων:</p>
+<ul>
+<li>Το <code>by = "x"</code> αντιστοιχεί στο <code>join_by(x)</code>.</li>
+<li>Το <code>by = c("a" = "x")</code> αντιστοιχεί στο <code>join_by(a == x)</code>.</li>
+</ul>
+<p>Ωστόσο, προτιμούμε το <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by()</a></code> που υπάρχει πλέον, αφού παρέχει ένα πιο ξεκάθαρο και πιο ευέλικτο τρόπο προσδιορισμού.</p>
+<p>Οι <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">right_join()</a></code>, και <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code> έχουν την ίδια διεπαφή με τη <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code>. Η διαφορά εντοπίζετε στο ποιες γραμμές διατηρούν: η αριστερή ένωση (<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code>) διατηρεί όλες τις γραμμές από το <code>x</code>, η δεξιά ένωση (<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">right_join()</a></code>) διατηρεί όλες τις γραμμές από το <code>y</code>, η πλήρης ένωση (<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code>) διατηρεί όλες τις γραμμές, είτε προέρχονται από το <code>x</code> είτε από το <code>y</code> και η εσωτερική ένωση (<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code>) διατηρεί μόνο τις γραμμές που εμφανίζονται και στο <code>x</code> και στο <code>y</code>. Θα επανέλθουμε σε αυτά με περισσότερες λεπτομέρειες αργότερα.</p>
+</section><section id="ενώσεις-φιλτραρίσματος" class="level3" data-number="19.3.3"><h3 data-number="19.3.3" class="anchored" data-anchor-id="ενώσεις-φιλτραρίσματος">
+<span class="header-section-number">19.3.3</span> Ενώσεις φιλτραρίσματος</h3>
+<p>Όπως μπορείτε να μαντέψετε, η κύρια ενέργεια μιας <strong>filtering ένωσης</strong> είναι το φιλτράρισμα των γραμμών Υπάρχουν δύο τύποι: ημι-ενώσεις και αντι-ενώσεις. Οι <strong>ημι-ενώσεις</strong> (<strong>semi-joins</strong>) διατηρούν όλες τις σειρές στο <code>x</code> που έχουν αντιστοιχία στο <code>y</code>. Για παράδειγμα, θα μπορούσαμε να χρησιμοποιήσουμε μία ημι-ένωση για να φιλτράρουμε το σύνολο δεδομένων <code>airports</code> για να διατηρήσουμε μόνο τα αεροδρόμια προέλευσης:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span><span class="op">(</span><span class="va">flights2</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">faa</span> <span class="op">==</span> <span class="va">origin</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 8</span></span>
+<span><span class="co">#&gt;   faa   name                  lat   lon   alt    tz dst   tzone           </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           </span></span>
+<span><span class="co">#&gt; 1 EWR   Newark Liberty Intl  40.7 -74.2    18    -5 A     America/New_York</span></span>
+<span><span class="co">#&gt; 2 JFK   John F Kennedy Intl  40.6 -73.8    13    -5 A     America/New_York</span></span>
+<span><span class="co">#&gt; 3 LGA   La Guardia           40.8 -73.9    22    -5 A     America/New_York</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ή μόνο τους προορισμούς:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span><span class="op">(</span><span class="va">flights2</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">faa</span> <span class="op">==</span> <span class="va">dest</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 101 × 8</span></span>
+<span><span class="co">#&gt;   faa   name                     lat    lon   alt    tz dst   tzone          </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 ABQ   Albuquerque Internati…  35.0 -107.   5355    -7 A     America/Denver </span></span>
+<span><span class="co">#&gt; 2 ACK   Nantucket Mem           41.3  -70.1    48    -5 A     America/New_Yo…</span></span>
+<span><span class="co">#&gt; 3 ALB   Albany Intl             42.7  -73.8   285    -5 A     America/New_Yo…</span></span>
+<span><span class="co">#&gt; 4 ANC   Ted Stevens Anchorage…  61.2 -150.    152    -9 A     America/Anchor…</span></span>
+<span><span class="co">#&gt; 5 ATL   Hartsfield Jackson At…  33.6  -84.4  1026    -5 A     America/New_Yo…</span></span>
+<span><span class="co">#&gt; 6 AUS   Austin Bergstrom Intl   30.2  -97.7   542    -6 A     America/Chicago</span></span>
+<span><span class="co">#&gt; # ℹ 95 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Οι <strong>αντι-ενώσεις</strong> (<strong>anti-joins</strong>) είναι το αντίθετο: επιστρέφουν όλες τις γραμμές από το <code>x</code> που δεν έχουν αντιστοιχία στο <code>y</code>. Είναι χρήσιμα για την εύρεση κενών τιμών που είναι <strong>έμμεσες</strong> στα δεδομένα, το θέμα του <a href="missing-values.html#sec-missing-implicit"><span>Ενότητα&nbsp;18.3</span></a>. Οι τιμές που λείπουν σιωπηρά δεν εμφανίζονται ως <code>NA</code> αλλά υπάρχουν μόνο ως απουσία. Για παράδειγμα, μπορούμε να βρούμε γραμμές που λείπουν από το <code>airports</code> αναζητώντας πτήσεις που δεν έχουν αντίστοιχο αεροδρόμιο προορισμού:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">airports</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">dest</span> <span class="op">==</span> <span class="va">faa</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 1</span></span>
+<span><span class="co">#&gt;   dest </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 BQN  </span></span>
+<span><span class="co">#&gt; 2 SJU  </span></span>
+<span><span class="co">#&gt; 3 STT  </span></span>
+<span><span class="co">#&gt; 4 PSE</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ή μπορούμε να βρούμε ποιες τιμές της μεταβλητής <code>tailnum</code> λείπουν από το <code>planes</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">planes</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">tailnum</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">tailnum</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 722 × 1</span></span>
+<span><span class="co">#&gt;   tailnum</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1 N3ALAA </span></span>
+<span><span class="co">#&gt; 2 N3DUAA </span></span>
+<span><span class="co">#&gt; 3 N542MQ </span></span>
+<span><span class="co">#&gt; 4 N730MQ </span></span>
+<span><span class="co">#&gt; 5 N9EAMQ </span></span>
+<span><span class="co">#&gt; 6 N532UA </span></span>
+<span><span class="co">#&gt; # ℹ 716 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="ασκήσεις-1" class="level3" data-number="19.3.4"><h3 data-number="19.3.4" class="anchored" data-anchor-id="ασκήσεις-1">
+<span class="header-section-number">19.3.4</span> Ασκήσεις</h3>
+<ol type="1">
+<li><p>Εντοπίστε τις 48 ώρες (κατά τη διάρκεια ολόκληρου του έτους) που έχουν τις χειρότερες καθυστερήσεις. Διασταυρώστε το με τα δεδομένα του <code>weather</code>. Μπορείτε να δείτε κάποιο μοτίβο;</p></li>
+<li>
+<p>Φανταστείτε ότι έχετε βρει τους 10 πιο δημοφιλείς προορισμούς χρησιμοποιώντας αυτόν τον κώδικα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">top_dest</span> <span class="op">&lt;-</span> <span class="va">flights2</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">dest</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Πώς μπορείτε να βρείτε όλες τις πτήσεις προς αυτούς τους προορισμούς;</p>
+</li>
+<li><p>Έχει κάθε πτήση που αναχωρεί αντίστοιχα δεδομένα καιρού για εκείνη την ώρα;</p></li>
+<li><p>Τι κοινό έχουν οι αναγνωριστικοί κωδικοί των αεροσκαφών που δεν έχουν αντίστοιχη εγγραφή στο <code>planes</code>; (Υπόδειξη: μία μεταβλητή εξηγεί ~90% των προβλημάτων.)</p></li>
+<li><p>Προσθέστε μία στήλη στο <code>planes</code> που αναφέρει κάθε <code>carrier</code> που έχει χρησιμοποιήσει αυτό το αεροπλάνο. Μπορεί να περιμένετε ότι υπάρχει μία έμμεση σχέση μεταξύ αεροπλάνου και αεροπορικής εταιρείας, επειδή κάθε αεροπλάνο πετά με μία μόνο αεροπορική εταιρεία. Επιβεβαιώστε ή απορρίψτε αυτήν την υπόθεση χρησιμοποιώντας τα εργαλεία που έχετε μάθει σε προηγούμενα κεφάλαια.</p></li>
+<li><p>Προσθέστε το γεωγραφικό πλάτος και μήκος του αεροδρομίου προέλευσης <em>και</em> προορισμού στο πλαίσιο δεδομένων <code>flights</code>. Είναι πιο εύκολο να μετονομάσετε τις στήλες πριν ή αφού κάνετε την ένωση;</p></li>
+<li>
+<p>Υπολογίστε τη μέση καθυστέρηση ανά προορισμό και, στη συνέχεια, ενώστε την πληροφορία στο <code>airports</code>, ώστε να μπορέσετε να παρουσιάσετε την κατανομή των καθυστερήσεων γεωγραφικά. Ακολουθεί ένας εύκολος τρόπος για να σχεδιάσετε έναν χάρτη των Ηνωμένων Πολιτειών:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span><span class="op">(</span><span class="va">flights</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">faa</span> <span class="op">==</span> <span class="va">dest</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/borders.html">borders</a></span><span class="op">(</span><span class="st">"state"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_map.html">coord_quickmap</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορεί να θέλετε να χρησιμοποιήσετε το <code>size</code> ή το <code>color</code> των σημείων για να εμφανίσετε τη μέση καθυστέρηση για κάθε αεροδρόμιο.</p>
+</li>
+<li><p>Τι συνέβη στις 13 Ιουνίου 2013; Σχεδιάστε έναν χάρτη με τις καθυστερήσεις και, στη συνέχεια, χρησιμοποιήστε το Google για να διασταυρώσετε τα δεδομένα για τον καιρό.</p></li>
+</ol></section></section><section id="πώς-λειτουργούν-οι-ενώσεις" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="πώς-λειτουργούν-οι-ενώσεις">
+<span class="header-section-number">19.4</span> Πώς λειτουργούν οι ενώσεις;</h2>
+<p>Τώρα που έχετε χρησιμοποιήσει ενώσεις κάποιες φορές, ήρθε η ώρα να μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας τους, εστιάζοντας στο πώς κάθε γραμμή στο <code>x</code> αντιστοιχίζεται με τις γραμμές στο <code>y</code>. Θα ξεκινήσουμε εισάγοντας μία οπτική αναπαράσταση των ενώσεων, χρησιμοποιώντας τα απλά tibbles που ορίζονται παρακάτω και εμφανίζονται στο <a href="#fig-join-setup">Σχήμα&nbsp;<span>19.2</span></a>. Σε αυτά τα παραδείγματα θα χρησιμοποιήσουμε ένα μόνο κλειδί που ονομάζεται <code>key</code> και μία στήλη με μία τιμή (<code>val_x</code> και <code>val_y</code>), αλλά όλες οι ιδέες που χρησιμοποιούνται εδώ γενικεύονται σε πολλά κλειδιά και πολλαπλές τιμές.</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">key</span>, <span class="op">~</span><span class="va">val_x</span>,</span>
+<span>     <span class="fl">1</span>, <span class="st">"x1"</span>,</span>
+<span>     <span class="fl">2</span>, <span class="st">"x2"</span>,</span>
+<span>     <span class="fl">3</span>, <span class="st">"x3"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">key</span>, <span class="op">~</span><span class="va">val_y</span>,</span>
+<span>     <span class="fl">1</span>, <span class="st">"y1"</span>,</span>
+<span>     <span class="fl">2</span>, <span class="st">"y2"</span>,</span>
+<span>     <span class="fl">4</span>, <span class="st">"y3"</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-setup" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/setup.png" class="img-fluid figure-img" alt="Τα x και y είναι δύο πλαίσια δεδομένων με 2 στήλες και 3 γραμμές, με περιεχόμενα όπως περιγράφοτναι στο κείμενο. Οι τιμές των κλειδιών είναι χρωματισμένες: το 1 αντιστοιχεί στο πράσινο, το 2 στο μωβ, το 3 στο πορτοκαλί και το 4 στο κίτρινο." width="160"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.2: Γραφική αναπαράσταση των δύο απλών πινάκων. Οι χρωματισμένες στήλες <code>key</code> αντιστοιχίζουν το χρώμα υποβάθρου στην τιμή του κλειδιού. Οι γκρι στήλες αντιπροσωπεύουν τις στήλες τιμών που μεταφέρονται στην πορεία.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Το <a href="#fig-join-setup2">Σχήμα&nbsp;<span>19.3</span></a> εισάγει τη βάση για την οπτική μας αναπαράσταση. Εμφανίζει όλες τις πιθανές αντιστοιχίσεις μεταξύ των <code>x</code> και <code>y</code> ως τομή μεταξύ των γραμμών που σχεδιάζονται από κάθε γραμμή του <code>x</code> και κάθε γραμμής του <code>y</code>. Οι γραμμές και οι στήλες στην έξοδο καθορίζονται κυρίως από το <code>x</code>, επομένως ο πίνακας <code>x</code> είναι οριζόντιος και ευθυγραμμίζεται με την έξοδο.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-setup2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/setup2.png" class="img-fluid figure-img" alt="Τα x και y σχηματίζουν ορθή γωνία, με οριζόντιες γραμμές να εκτείνονται από το x και κάθετες γραμμές να εκτείνονται από το y. Υπάρχουν 3 γραμμές στο x και 3 γραμμές στο y, που έχει σαν αποτέλεσμα 9 τομές, που αντιπροσωπεύουν 9 πιθανούς συνδυασμούς." width="170"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.3: Για να κατανοήσετε πως δουλεύουν οι ενώσεις, είναι χρήσιμο να σκεφτείτε κάθε πιθανό συνδυασμό. Εδώ το δείχνουμε αυτό με ένα πλέγμα συνδεόμενων γραμμών.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Για να περιγράψουμε έναν συγκεκριμένο τύπο ένωσης, υποδεικνύουμε τις αντιστοιχίσεις με τελείες. Οι αντιστοιχίσεις καθορίζουν τις γραμμές στην έξοδο, ένα νέο πλαίσιο δεδομένων που περιέχει το κλειδί, τις τιμές x και τις τιμές y. Για παράδειγμα, το <a href="#fig-join-inner">Σχήμα&nbsp;<span>19.4</span></a> δείχνει μία εσωτερική ένωση, όπου οι γραμμές διατηρούνται εάν και μόνο εάν τα κλειδιά είναι ίσα.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-inner" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/inner.png" class="img-fluid figure-img" alt="Τα x και y σχηματίζουν ορθή γωνία με γραμμές που σχηματίζουν ένα πλέγμα πιθανών συνδυασμών. Τα κλειδιά 1 και 2 εμφανίζονται τόσο στο x όσο και στο y, οπότε παίρνουμε έναν συνδυασμό που υποδεικνεύται από μία κουκίδα. Κάθε κουκίδα αντιστοιχεί σε μια γραμμή της εξόδου, οπότε το πλαίσιο δεδομένων που προκύπτει μετά την ένωση έχει δύο γραμμές." width="363"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.4: Μία εσωτερική ένωση αντιστοιχίζει κάθε γραμμή του <code>x</code> στη γραμμή του <code>y</code> που έχει την ίδια τιμή στο <code>key</code>. Κάθε συνδυασμός γίνεται μια γραμμή στην έξοδο.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Μπορούμε να εφαρμόσουμε τις ίδιες αρχές για να εξηγήσουμε τις <strong>εξωτερικές ενώσεις</strong> (<strong>outer joins</strong>), οι οποίες διατηρούν τις παρατηρήσεις που εμφανίζονται σε τουλάχιστον ένα από τα πλαίσια δεδομένων. Αυτές οι ενώσεις λειτουργούν προσθέτοντας μία πρόσθετη “εικονική” παρατήρηση σε κάθε πλαίσιο δεδομένων. Αυτή η παρατήρηση έχει ένα κλειδί που ταιριάζει αν δεν ταιριάζει άλλο κλειδί, και τιμές γεμάτες με <code>NA</code>. Υπάρχουν τρεις τύποι εξωτερικών ενώσεων:</p>
+<ul>
+<li>
+<p>Μία <strong>αριστερή ένωση</strong> (<strong>left join</strong>) διατηρεί όλες τις παρατηρήσεις του <code>x</code>, <a href="#fig-join-left">Σχήμα&nbsp;<span>19.5</span></a>. Κάθε γραμμή του <code>x</code> διατηρείται στην έξοδο, μιας και μπορεί να αντιστοιχιστεί σε μία γραμμή με <code>NA</code> του <code>y</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-left" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/left.png" class="img-fluid figure-img" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που δείχνει μια εσωτερική ένωση, ο y πίνακας αποκτά μια νέα εικονική γραμμή που περιέχει NA, η οποία θα ταιριάξει με κάθε γραμμή του x, η οποία δεν έχει ταιριάξει με κάποιο άλλο τρόπο. Αυτό σημαίνει ότι η έξοδος πλέον έχει 3 γραμμές. Για την περίπτωση του key = 3, που ταιριάζει με αυτή την εικονική γραμμή, η στήλη val_y παίρνει την τιμή NA." width="385"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.5: Μία οπτική αναπαράσταση της αριστερής ένωσης όπου κάθε γραμμή του <code>x</code> εμφανίζεται στην έξοδο.</figcaption></figure>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Μία <strong>δεξιά ένωση</strong> (<strong>right join</strong>) διατηρεί όλες τις παρατηρήσεις του <code>y</code>, <a href="#fig-join-right">Σχήμα&nbsp;<span>19.6</span></a>. Κάθε γραμμή του <code>y</code> διατηρείται στην έξοδο, επειδή μπορεί να αντιστοιχιστεί σε μία γραμμή με <code>NA</code> του <code>x</code>. Η έξοδος εξακολουθεί να ταιριάζει με το <code>x</code> όσο το δυνατόν περισσότερο, ενώ τυχόν επιπλέον σειρές από το <code>y</code> προστίθενται στο τέλος.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-right" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/right.png" class="img-fluid figure-img" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που έδειχνε μια αριστερή ένωση, ο x πίνακας θα αποκτήσει πλέον μια εικονική γραμμή, ώστε κάθε γραμμή του y να έχει ένα ταίρι στον x. Η στήλη val_x περιέχει NA για κάθε γραμμή του y που δεν έχει ταιριάξει με κάποια γραμμή του x." width="380"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.6: Μία οπτική αναπαράσταση της δεξιάς ένωσης όπου κάθε γραμμή του <code>y</code> εμφανίζεται στην έξοδο.</figcaption></figure>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Μία <strong>πλήρης ένωση</strong> (<strong>full join</strong>) διατηρεί όλες τις παρατηρήσεις που εμφανίζονται είτε στο <code>x</code> είτε στο <code>y</code>, <a href="#fig-join-full">Σχήμα&nbsp;<span>19.7</span></a>. Κάθε γραμμή των <code>x</code> και <code>y</code> περιλαμβάνεται στην έξοδο επειδή και τα <code>x</code> και <code>y</code> περιλαμβάνουν μία εναλλακτική γραμμή με <code>NA</code>. Και πάλι, η έξοδος ξεκινά με όλες τις γραμμές από το <code>x</code>, ακολουθούμενες από τις υπόλοιπες γραμμές του <code>y</code> που δεν αντιστοιχίστηκαν σε συγκεκριμένη γραμμή του <code>x</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-full" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/full.png" class="img-fluid figure-img" alt="Τώρα τόσο το x όσο και το y έχουν μια εικονική γραμμή που θα ταιριάζει πάντα. Το αποτέλεσμα έχει 4 γραμμές: τα κλειδιά (keys) 1, 2, 3 και 4, με όλες τις τιμές από τις val_x και val_y. Ωστόσο, το κλειδί 2 στην val_y και το κλειδί 4 στην val_x είναι NA, καθώς αυτά τα κλειδιά δεν έχουν αντιστοιχισθεί με το άλλο πλαίσιο δεδομένων." width="388"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.7: Μία οπτική αναπαράσταση της πλήρους ένωσης όπου κάθε γραμμή του<code>x</code> και του <code>y</code> εμφανίζεται στην έξοδο.</figcaption></figure>
+</div>
+</div>
+</div>
+</li>
+</ul>
+<p>Ένας άλλος τρόπος για να δείξετε τις διαφορές ανάμεσα στους διάφορους τύπους της εξωτερικής ένωσης είναι με ένα διάγραμμα Venn, όπως στο <a href="#fig-join-venn">Σχήμα&nbsp;<span>19.8</span></a>. Ωστόσο, αυτή δεν είναι μία καλή αναπαράσταση, επειδή, ενώ μπορεί να φρεσκάρει τη μνήμη σας σχετικά με το ποιες γραμμές διατηρούνται, αποτυγχάνει όμως να επεξηγήσει τι συμβαίνει με τις στήλες.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-venn" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/venn.png" class="img-fluid figure-img" alt="Διαγράμματα Venn για εσωτερικές, πλήρεις, αριστερές και δεξιές ενώσεις. Κάθε ένωση αναπαριστάται με δύο κύκλους που τέμνονται και αντιστοιχούν στα πλαίσια δεδομένανω x και y, με το x στα δεξιά και το y στα αριστερά. Η σκίαση υποδεικνύει το αποτέλεσμα της ένωσης." width="385"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.8: Διαγάμματα Venn που δείχνουν τη διαφορά ανάμεσα σε εσωτερικές, αριστερές, δεξιές και πλήρεις ενώσεις.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Οι ενώσεις που φαίνονται εδώ είναι οι λεγόμενες <strong>equi</strong> <strong>ενωσεις (ενώσεις ισοτιμίας)</strong>, όπου οι γραμμές αντιστοιχίζονται εάν τα κλειδιά είναι ίσα. Οι ενώσεις ισοτιμίας είναι ο πιο συνηθισμένος τύπος ένωσης, επομένως συνήθως παραλείπουμε το πρόθεμα equi και απλώς λέμε “inner join” αντί για “equi inner join”. Θα επανέλθουμε στις non-equi ενώσεις στην <a href="#sec-non-equi-joins"><span>Ενότητα&nbsp;19.5</span></a>.</p>
+<section id="αντιστοίχιση-γραμμών" class="level3" data-number="19.4.1"><h3 data-number="19.4.1" class="anchored" data-anchor-id="αντιστοίχιση-γραμμών">
+<span class="header-section-number">19.4.1</span> Αντιστοίχιση γραμμών</h3>
+<p>Μέχρι στιγμής έχουμε εξερευνήσει τι συμβαίνει εάν μία γραμμή από το <code>x</code> ταιριάζει με μία ή καμμία γραμμή στο <code>y</code>. Τι συμβαίνει όμως αν ταιριάζει με περισσότερες από μία γραμμές; Για να κατανοήσουμε τι συμβαίνει, ας εστιάσουμε την προσοχή μας στο <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code> και ας σχεδιάσουμε μία εικόνα, <a href="#fig-join-match-types">Σχήμα&nbsp;<span>19.9</span></a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-match-types" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/match-types.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης όπου το x έχει τιμές κλειδιών 1, 2 και 3, ενώ το y έχει τιμές κλειδιών 1, 2 και 2. Η έξοδος έχει τρεις γραμμές, επειδή το κλειδί 1 ταιριάζει με μία γραμμή, το κλειδί 2 ταιριάζει με 2 γραμμές και το κλειδί 3 δεν ταιριάζει με κάποια γραμμή." width="348"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.9: Οι τρεις τρόποι με τους οποίους μπορεί να αντιστοιχιστεί μια γραμμή στο <code>x</code>. Το <code>x1</code> αντιστοιχεί σε μία γραμμή στο <code>y</code>, το <code>x2</code> αντιστοιχεί σε δύο γραμμές στο <code>y</code>, το <code>x3</code> δεν αντιστοιχεί σε καμία γραμμή στο y. Σημειώστε ότι ενώ υπάρχουν τρεις γραμμές στο <code>x</code> και τρεις γραμμές στην έξοδο, δεν υπάρχει άμεση αντιστοιχία μεταξύ των γραμμών.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Υπάρχουν τρία πιθανά αποτελέσματα για μία γραμμή στο <code>x</code>:</p>
+<ul>
+<li>Αν δεν ταιριάζει με τίποτα, απορρίπτεται.</li>
+<li>Εάν ταιριάζει με 1 γραμμή στο <code>y</code>, διατηρείται.</li>
+<li>Εάν αντιστοιχεί σε περισσότερες από 1 γραμμές στο <code>y</code>, γίνεται διπλότυπη μία φορά για κάθε αντιστοίχιση</li>
+</ul>
+<p>Κατ’ αρχήν, αυτό σημαίνει ότι δεν υπάρχει εγγυημένη αντιστοιχία μεταξύ των γραμμών στην έξοδο και των γραμμών στο <code>x</code>, αλλά πρακτικά, αυτό σπάνια προκαλεί προβλήματα. Υπάρχει, ωστόσο, μία ιδιαίτερα επικίνδυνη περίπτωση που μπορεί να προκαλέσει μία συνδυαστική έκρηξη γραμμών. Φανταστείτε ότι ενώνετε τους παρακάτω δύο πίνακες:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, val_x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x1"</span>, <span class="st">"x2"</span>, <span class="st">"x3"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, val_y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"y1"</span>, <span class="st">"y2"</span>, <span class="st">"y3"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ενώ η πρώτη γραμμή του <code>df1</code> αντιστοιχίζεται με μία μόνο γραμμή του <code>df2</code>, η δεύτερη και η τρίτη γραμμή αντιστοιχίζονται με από δύο γραμμές η καθεμία. Αυτό μπορεί να το συναντήσετε ως ένωση <code>πολλά-με-πολλά</code>, και θα έχει ως αποτέλεσμα το πακέτο dplyr να επιστρέψει μία προειδοποίηση:</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df1</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">df2</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">key</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in inner_join(df1, df2, join_by(key)): Detected an unexpected many-to-many relationship between `x` and `y`.</span></span>
+<span><span class="co">#&gt; ℹ Row 2 of `x` matches multiple rows in `y`.</span></span>
+<span><span class="co">#&gt; ℹ Row 2 of `y` matches multiple rows in `x`.</span></span>
+<span><span class="co">#&gt; ℹ If a many-to-many relationship is expected, set `relationship =</span></span>
+<span><span class="co">#&gt;   "many-to-many"` to silence this warning.</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 3</span></span>
+<span><span class="co">#&gt;     key val_x val_y</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1     1 x1    y1   </span></span>
+<span><span class="co">#&gt; 2     2 x2    y2   </span></span>
+<span><span class="co">#&gt; 3     2 x2    y3   </span></span>
+<span><span class="co">#&gt; 4     2 x3    y2   </span></span>
+<span><span class="co">#&gt; 5     2 x3    y3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν το κάνετε αυτό σκόπιμα, μπορείτε να ορίσετε <code>relationship = "many-to-many"</code>,, όπως προτείνει η προειδοποίηση.</p>
+</section><section id="ενώσεις-φιλτραρίσματος-1" class="level3" data-number="19.4.2"><h3 data-number="19.4.2" class="anchored" data-anchor-id="ενώσεις-φιλτραρίσματος-1">
+<span class="header-section-number">19.4.2</span> Ενώσεις φιλτραρίσματος</h3>
+<p>Ο αριθμός των αντιστοιχιών καθορίζει επίσης τη συμπεριφορά των ενώσεων φιλτραρίσματος. Η ημι-ένωση (semi-join) διατηρεί γραμμές στο <code>x</code> που έχουν μία ή περισσότερες αντιστοιχίσεις στο <code>y</code>, όπως στο <a href="#fig-join-semi">Σχήμα&nbsp;<span>19.10</span></a>. Η αντι-ένωση (anti-join) διατηρεί γραμμές στο <code>x</code> που δεν ταιριάζουν με καμία γραμμή στο <code>y</code>, όπως στο <a href="#fig-join-anti">Σχήμα&nbsp;<span>19.11</span></a>. Και στις δύο περιπτώσεις, μόνο η ύπαρξη μιας αντιστοίχισης είναι σημαντική, και όχι το πλήθος των αντιστοιχίσεων. Αυτό σημαίνει ότι οι ενώσεις φιλτραρίσματος δεν δημιουργούν ποτέ διπλότυπες γραμμές όπως κάνουν οι ενώσεις αλλαγής.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-semi" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/semi.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης με τους παλιούς γνωστούς μας x και y. Σε μια ημι-ένωση, μόνο η παρουσία μιας αντιστοίχισης έχει σημασία, οπότε η έξοδος έχει τις ίδιες στήλες με το x." width="318"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.10: Σε μια ημι-ένωση το μόνο που έχει σημασία είναι να υπάρχει μια αντιστοίχιση, διαφορετικά οι τιμές στο πλαίσιο δεδομένων <code>y</code> δεν επηρεάζουν την έξοδο.</figcaption></figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-anti" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/anti.png" class="img-fluid figure-img" alt="Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, οπότε οι αντιστοιχίσεις σχεδιάζονται με κόκκινες γραμμές, που υποδεικνύουν ότι αυτές οι γραμμές δεν θα εμφανιστούν στην έξοδο." width="317"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.11: Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, αφαιρώντας γραμμές από το <code>x</code> που αντιστοιχίζονται με το <code>y</code>.</figcaption></figure>
+</div>
+</div>
+</div>
+</section></section><section id="sec-non-equi-joins" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="sec-non-equi-joins">
+<span class="header-section-number">19.5</span> Non-equi ενώσεις</h2>
+<p>Μέχρι στιγμής έχετε δει μόνο ενώσεις ισοτιμίας, ενώσεις όπου οι γραμμές ταιριάζουν εάν το κλειδί του <code>x</code> ισούται με το κλειδί στο <code>y</code>. Τώρα θα χαλαρώσουμε αυτόν τον περιορισμό και θα συζητήσουμε άλλους τρόπους για να προσδιορίσουμε εάν ένα ζευγάρι γραμμών ταιριάζει.</p>
+<p>Αλλά προτού μπορέσουμε να το κάνουμε αυτό, πρέπει να επανεξετάσουμε μία απλοποίηση που κάναμε παραπάνω. Σε ισότιμες ενώσεις (equi joins) τα κλειδιά των <code>x</code> και <code>y</code> είναι πάντα ίσα, οπότε αρκεί να εμφανίσουμε μόνο ένα στην έξοδο. Μπορούμε να ζητήσουμε από το πακέτο dplyr να διατηρήσει και τα δύο κλειδιά με το όρισμα <code>keep = TRUE</code>, οδηγώντας στον παρακάτω κώδικα και στο επανασχεδιασμένο <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code> στο <a href="#fig-inner-both">Σχήμα&nbsp;<span>19.12</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">key</span> <span class="op">==</span> <span class="va">key</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span><span class="co">#&gt;   key.x val_x key.y val_y</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1     1 x1        1 y1   </span></span>
+<span><span class="co">#&gt; 2     2 x2        2 y2</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-inner-both" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/inner-both.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που δείχνει μια εσωτερική ένωση μεταξύ των x και y. Η έξοδος περιλαμβάνει πλέον τέσσερις στήλες: τις key.x, val_x, key.y και val_y. Οι τιμές των key.x και key.y είναι πανομοιότυπες, γι' αυτό συνήθως δείχνουμε μόνο μία από αυτές. " width="415"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.12: Μία εσωτερική ένωση που δείνει τα κλειδιά των <code>x</code> και <code>y</code> στην έξοδο.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Όταν απομακρυνόμαστε από τις equi ενώσεις, θα εμφανίζουμε πάντα τα κλειδιά, επειδή οι τιμές των κλειδιών συχνά θα είναι διαφορετικές. Για παράδειγμα, αντί να κάνουμε την αντιστοίχιση μόνο όταν το <code>x$key</code> και το <code>y$key</code> είναι ίσα, θα μπορούσαμε να κάνουμε την αντιστοίχιση κάθε φορά που το <code>x$key</code> είναι μεγαλύτερο ή ίσο με το <code>y$key</code>, που οδηγεί στο <a href="#fig-join-gte">Σχήμα&nbsp;<span>19.13</span></a>. Οι συναρτήσεις ένωσης της dplyr κατανοούν αυτή τη διάκριση ανάμεσα σε ισοδύναμες και μη ισοδύναμες ενώσεις, επομένως θα εμφανίζουν πάντα και τα δύο κλειδιά όταν εκτελείτε μία ένωση χωρίς ισοδυναμία.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-gte" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/gte.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που απεικονίζει το αποτέλεσμα της join_by(key >= key). Η πρώτη γραμμή του x ταιριάζει με μία γραμμή του y, ενώ η δεύτερη και τρίτη γραμμή αντιστοιχίζονται με από δύο γραμμές η καθεμία. Αυτό σημαίνει ότι η έξοδος έχει πέντε γραμμές που περιέχουν κάθε ένα από τα ακόλουθα ζεύγη (key.x, key.y): (1, 1), (2, 1), (2, 2), (3, 1), (3, 2)." width="385"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.13: Μία non-equi ένωση, όπου το κλειδί του <code>x</code> πρέπει να είναι μεγαλύτερο ή ίσο του κλειδιού του <code>y</code>. Πολλές γραμμές δημιουργούν πολλαπλές αντιστοιχίσεις.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Ο όρος “non-equi” ενώσεις δεν είναι ιδιαίτερα χρήσιμος, επειδή μας λέει μόνο τι δεν είναι η ένωση, όχι τι είναι. Η dplyr βοηθά προσδιορίζοντας τέσσερις ιδιαίτερα χρήσιμους τύπους non-equi join:</p>
+<ul>
+<li>Οι <strong>διασταυρούμενες ενώσεις</strong> (<strong>Cross joins</strong>) αντιστοιχίζουν κάθε ζεύγος γραμμών</li>
+<li>Οι <strong>ενώσεις ανισότητας</strong> (<strong>Inequality joins</strong>) χρησιμοποιούν τα <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, και <code>&gt;=</code> αντί του <code>==</code>.</li>
+<li>Οι <strong>κυλιόμενες ενώσεις</strong> (<strong>Rolling joins</strong>) είναι παρόμοιες με τις ενώσεις ανισότητας αλλά βρίσκουν μόνο την πλησιέστερη αντιστοιχία.</li>
+<li>Οι <strong>ενώσεις επικάλυψης</strong> (<strong>Overlap joins</strong>) είναι ένας ειδικός τύπος ένωσης ανισότητας που έχει σχεδιαστεί για να λειτουργεί με εύρη.</li>
+</ul>
+<p>Κάθε μία από αυτές περιγράφεται λεπτομερέστερα στις επόμενες ενότητες.</p>
+<section id="διασταυρούμενες-ενώσεις" class="level3" data-number="19.5.1"><h3 data-number="19.5.1" class="anchored" data-anchor-id="διασταυρούμενες-ενώσεις">
+<span class="header-section-number">19.5.1</span> Διασταυρούμενες ενώσεις</h3>
+<p>Μία διασταυρούμενη ένωση ταιριάζει με τα πάντα, όπως στο <a href="#fig-join-cross">Σχήμα&nbsp;<span>19.14</span></a>, δημιουργώντας το καρτεσιανό γινόμενο των γραμμών. Αυτό σημαίνει ότι η έξοδος θα έχει <code>nrow(x) * nrow(y)</code> γραμμές.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-cross" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/cross.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που δείνει μια κουκίδα για κάθε συνδυασμό των x και y." width="155"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.14: Μία διασταυρούμενη ένωησ αντιστοιχίζει κάθε γραμμή του <code>x</code> με κάθε γραμμή του <code>y</code>.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Οι διασταυρούμενες ενώσεις είναι χρήσιμες κατά τη δημιουργία συνδυασμών. Για παράδειγμα, ο παρακάτω κώδικας δημιουργεί κάθε πιθανό ζεύγος ονομάτων. Εφόσον ενώνουμε το <code>df</code> με τον εαυτό του, αυτό μερικές φορές ονομάζεται <strong>αυτο-ένωση</strong> (<strong>self-join</strong>). Οι διασταυρούμενες ενώσεις χρησιμοποιούν διαφορετική συνάρτηση ένωσης επειδή δεν υπάρχει διάκριση μεταξύ εσωτερικές/αριστερές/δεξιές/πλήρεις ενώσεις όταν η αντιστοίχιση αφορά κάθε γραμμή.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"John"</span>, <span class="st">"Simon"</span>, <span class="st">"Tracy"</span>, <span class="st">"Max"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/cross_join.html">cross_join</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 16 × 2</span></span>
+<span><span class="co">#&gt;   name.x name.y</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 John   John  </span></span>
+<span><span class="co">#&gt; 2 John   Simon </span></span>
+<span><span class="co">#&gt; 3 John   Tracy </span></span>
+<span><span class="co">#&gt; 4 John   Max   </span></span>
+<span><span class="co">#&gt; 5 Simon  John  </span></span>
+<span><span class="co">#&gt; 6 Simon  Simon </span></span>
+<span><span class="co">#&gt; # ℹ 10 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="ενώσεις-ανισότητας" class="level3" data-number="19.5.2"><h3 data-number="19.5.2" class="anchored" data-anchor-id="ενώσεις-ανισότητας">
+<span class="header-section-number">19.5.2</span> Ενώσεις ανισότητας</h3>
+<p>Οι ενώσεις ανισότητας χρησιμοποιούν τους τελεστές <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, ή <code>&gt;</code> για να περιορίσουν το σύνολο των πιθανών αντιστοιχίσεων, όπως στο <a href="#fig-join-gte">Σχήμα&nbsp;<span>19.13</span></a> και το <a href="#fig-join-lt">Σχήμα&nbsp;<span>19.15</span></a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-lt" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/lt.png" class="img-fluid figure-img" alt="Ένα διάγραμμα που απεικονίζει μια ένωση ανισότητας όπου το πλαίδιο δεδομένων x ενώνεται με το πλαίσιο δεδομένων y όπου το κλειδί του x είναι μικρότερο από το κλειδί του y, δημιουργώντας έτσι ένα τριγωνικό σχήμα στην πάνω αριστερή γωνία." width="185"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.15: Μία ένωση ανισότητας όπου το <code>x</code> ενώνεται με το <code>y</code> στις γραμμές όπου το κλειδί του <code>x</code> είναι μικρότερο από το κλειδί του <code>y</code>. Αυτό δημιουργεί ένα τριγωνικό σχήμα στην πάρω αριστερή γωνία.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Οι ενώσεις ανισότητας είναι εξαιρετικά γενικές, τόσο γενικές που είναι δύσκολο να βρούμε ουσιαστικές συγκεκριμένες περιπτώσεις χρήσης. Μία μικρή χρήσιμη τεχνική είναι να τις χρησιμοποιούμε για να περιορίσουμε τη διασταυρούμενη ένωση έτσι ώστε αντί να δημιουργούμε όλες τις μεταθέσεις, να δημιουργούμε όλους τους συνδυασμούς:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"John"</span>, <span class="st">"Simon"</span>, <span class="st">"Tracy"</span>, <span class="st">"Max"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">id</span> <span class="op">&lt;</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;    id.x name.x  id.y name.y</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1     1 John       2 Simon </span></span>
+<span><span class="co">#&gt; 2     1 John       3 Tracy </span></span>
+<span><span class="co">#&gt; 3     1 John       4 Max   </span></span>
+<span><span class="co">#&gt; 4     2 Simon      3 Tracy </span></span>
+<span><span class="co">#&gt; 5     2 Simon      4 Max   </span></span>
+<span><span class="co">#&gt; 6     3 Tracy      4 Max</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="κυλιόμενες-ενώσεις" class="level3" data-number="19.5.3"><h3 data-number="19.5.3" class="anchored" data-anchor-id="κυλιόμενες-ενώσεις">
+<span class="header-section-number">19.5.3</span> Κυλιόμενες ενώσεις</h3>
+<p>Οι κυλιόμενες ενώσεις είναι ένας ειδικός τύπος ένωσης ανισότητας όπου αντί να λαμβάνουμε <em>κάθε</em> γραμμή που ικανοποιεί την ανισότητα, παίρνουμε μόνο την πλησιέστερη γραμμή, όπως στο <a href="#fig-join-closest">Σχήμα&nbsp;<span>19.16</span></a>. Μπορείτε να μετατρέψετε οποιαδήποτε ένωση ανισότητας σε κυλιόμενη ένωση προσθέτοντας το όρισμα <code>closest()</code>. Για παράδειγμα, το <code>join_by(closest(x &lt;= y))</code> αντιστοιχεί στο μικρότερο <code>y</code> που είναι μεγαλύτερο ή ίσο με το <code>x</code> και το <code>join_by(closest(x &gt; y))</code> αντιστοιχεί στο μεγαλύτερο <code>y</code> που είναι μικρότερο από το <code>x</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-join-closest" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/join/closest.png" class="img-fluid figure-img" alt="Μία κυλιώμενη ένωση είναι υποσύνολο μιας ένωσης ανισότητας, οπότε μερικές αντιστοιχίσεις είναι γκριζαρισμένες, υποδεικνύοντας ότι δεν χρησιμοποιούνται, μιας και δεν είναι οι &quot;κοντινότερες&quot;." width="262"></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;19.16: Μία κυλιώμενη ένωση είναι παρόμοια με μία μεγαλύτερο-από-ή-ίσο ένωση ανισότητας, αλλά αντιστοιχίζει μόνο την πρώτη τιμή.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Οι κυλιόμενες ενώσεις είναι ιδιαίτερα χρήσιμες όταν έχετε δύο πίνακες ημερομηνιών που δεν ευθυγραμμίζονται τέλεια και θέλετε να βρείτε (για παράδειγμα) την πλησιέστερη ημερομηνία στον πίνακα 1 που είναι πριν (ή μετά) κάποια ημερομηνία στον πίνακα 2.</p>
+<p>Για παράδειγμα, φανταστείτε ότι είστε υπεύθυνος της επιτροπής σχεδιασμού εορτασμών για το γραφείο σας. Η εταιρεία σας θέλει να μην ξοδέψει πολλά χρήματα, επομένως αντί να κάνετε μεμονωμένα πάρτι, θα κάνετε ένα πάρτι μόνο, μία φορά το τρίμηνο. Οι κανόνες για τον καθορισμό του πότε θα γίνει ένα πάρτι είναι λίγο περίπλοκοι: τα πάρτι γίνονται πάντα Δευτέρα, παραλείπετε την πρώτη εβδομάδα του Ιανουαρίου, καθώς πολλοί είναι σε διακοπές, ενώ και η πρώτη Δευτέρα του τρίτου τριμήνου 2022 είναι στις 4 Ιουλίου, οπότε και σε αυτή την περίπτωση η ημερομηνία του πάρτι θα πρέπει να μεταφερθεί κατά μία εβδομάδα αργότερα. Αυτό οδηγεί στις ακόλουθες διαθέσιμες ημέρες για τα πάρτι:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parties</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  q <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span>
+<span>  party <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-10"</span>, <span class="st">"2022-04-04"</span>, <span class="st">"2022-07-11"</span>, <span class="st">"2022-10-03"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τώρα φανταστείτε ότι έχετε έναν πίνακα με τα γενέθλια των εργαζομένων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">employees</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu">babynames</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames</a></span><span class="op">$</span><span class="va">name</span>, <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  birthday <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2022-01-01"</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">365</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">employees</span></span>
+<span><span class="co">#&gt; # A tibble: 100 × 2</span></span>
+<span><span class="co">#&gt;   name     birthday  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;date&gt;    </span></span>
+<span><span class="co">#&gt; 1 Kemba    2022-01-22</span></span>
+<span><span class="co">#&gt; 2 Orean    2022-06-26</span></span>
+<span><span class="co">#&gt; 3 Kirstyn  2022-02-11</span></span>
+<span><span class="co">#&gt; 4 Amparo   2022-11-11</span></span>
+<span><span class="co">#&gt; 5 Belen    2022-03-25</span></span>
+<span><span class="co">#&gt; 6 Rayshaun 2022-01-11</span></span>
+<span><span class="co">#&gt; # ℹ 94 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Και για κάθε εργαζόμενο θέλουμε να βρούμε τη πρώτη διαθέσιμη ημερομηνία για πάρτι που έρχεται μετά (ή πάνω στα) γενέθλιά του. Μπορούμε να το εκφράσουμε με μία κυλιόμενη ένωση:</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">employees</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">parties</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="fu">closest</span><span class="op">(</span><span class="va">birthday</span> <span class="op">&gt;=</span> <span class="va">party</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 100 × 4</span></span>
+<span><span class="co">#&gt;   name     birthday       q party     </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;date&gt;     &lt;int&gt; &lt;date&gt;    </span></span>
+<span><span class="co">#&gt; 1 Kemba    2022-01-22     1 2022-01-10</span></span>
+<span><span class="co">#&gt; 2 Orean    2022-06-26     2 2022-04-04</span></span>
+<span><span class="co">#&gt; 3 Kirstyn  2022-02-11     1 2022-01-10</span></span>
+<span><span class="co">#&gt; 4 Amparo   2022-11-11     4 2022-10-03</span></span>
+<span><span class="co">#&gt; 5 Belen    2022-03-25     1 2022-01-10</span></span>
+<span><span class="co">#&gt; 6 Rayshaun 2022-01-11     1 2022-01-10</span></span>
+<span><span class="co">#&gt; # ℹ 94 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχει, ωστόσο, ένα πρόβλημα με αυτήν την προσέγγιση: οι άνθρωποι με γενέθλια πριν από τις 10 Ιανουαρίου δεν κάνουν πάρτι:</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">employees</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">parties</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="fu">closest</span><span class="op">(</span><span class="va">birthday</span> <span class="op">&gt;=</span> <span class="va">party</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span><span class="co">#&gt;   name   birthday  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;date&gt;    </span></span>
+<span><span class="co">#&gt; 1 Maks   2022-01-07</span></span>
+<span><span class="co">#&gt; 2 Nalani 2022-01-04</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Για να το λύσουμε αυτό, θα χρειαστεί να αντιμετωπίσουμε το πρόβλημα με διαφορετικό τρόπο, χρησιμοποιώντας ενώσεις επικάλυψης.</p>
+</section><section id="ενώσεις-επικάλυψης" class="level3" data-number="19.5.4"><h3 data-number="19.5.4" class="anchored" data-anchor-id="ενώσεις-επικάλυψης">
+<span class="header-section-number">19.5.4</span> Ενώσεις επικάλυψης</h3>
+<p>Οι ενώσεις επικάλυψης παρέχουν τρεις βοηθητικές συναρτήσεις που χρησιμοποιούν ενώσεις ανισότητας για να διευκολύνουν την εργασία με διαστήματα:</p>
+<ul>
+<li>Η <code>between(x, y_lower, y_upper)</code> είναι η συντομογραφία του <code>x &gt;= y_lower, x &lt;= y_upper</code>.</li>
+<li>Η <code>within(x_lower, x_upper, y_lower, y_upper)</code> είναι η συντομογραφία του <code>x_lower &gt;= y_lower, x_upper &lt;= y_upper</code>.</li>
+<li>Η <code>overlaps(x_lower, x_upper, y_lower, y_upper)</code> είναι η συντομογραφία του <code>x_lower &lt;= y_upper, x_upper &gt;= y_lower</code>.</li>
+</ul>
+<p>Ας συνεχίσουμε με το παράδειγμα γενεθλίων για να δούμε πώς μπορείτε να τα χρησιμοποιήσετε. Υπάρχει ένα πρόβλημα με τη στρατηγική που χρησιμοποιήσαμε παραπάνω: δεν υπάρχει πάρτι που να προηγείται των γενεθλίων που είναι μεταξύ 1-9 Ιανουαρίου. Επομένως, ίσως είναι καλύτερο να είμαστε σαφείς σχετικά με το εύρος ημερομηνιών που καλύπτει κάθε πάρτι και να κάνουμε μία ειδική περίπτωση για αυτά τα πρώιμα γενέθλια:</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parties</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  q <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span>
+<span>  party <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-10"</span>, <span class="st">"2022-04-04"</span>, <span class="st">"2022-07-11"</span>, <span class="st">"2022-10-03"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  start <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-01"</span>, <span class="st">"2022-04-04"</span>, <span class="st">"2022-07-11"</span>, <span class="st">"2022-10-03"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  end <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-04-03"</span>, <span class="st">"2022-07-11"</span>, <span class="st">"2022-10-02"</span>, <span class="st">"2022-12-31"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">parties</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 4</span></span>
+<span><span class="co">#&gt;       q party      start      end       </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    </span></span>
+<span><span class="co">#&gt; 1     1 2022-01-10 2022-01-01 2022-04-03</span></span>
+<span><span class="co">#&gt; 2     2 2022-04-04 2022-04-04 2022-07-11</span></span>
+<span><span class="co">#&gt; 3     3 2022-07-11 2022-07-11 2022-10-02</span></span>
+<span><span class="co">#&gt; 4     4 2022-10-03 2022-10-03 2022-12-31</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ο Hadley είναι απελπιστικά κακός στην εισαγωγή δεδομένων, έτσι ήθελε επίσης να ελέγξει ότι οι περίοδοι που οργανώνονται τα πάρτι δεν αλληλεπικαλύπτονται. Ένας τρόπος για να το κάνετε αυτό είναι χρησιμοποιώντας μία αυτο-ένωση για να ελέγξετε εάν κάποιο διάστημα έναρξης-λήξης επικαλύπτεται με κάποιο άλλο:</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parties</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">parties</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="fu">overlaps</span><span class="op">(</span><span class="va">start</span>, <span class="va">end</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span>, <span class="va">q</span> <span class="op">&lt;</span> <span class="va">q</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">start.x</span>, <span class="va">end.x</span>, <span class="va">start.y</span>, <span class="va">end.y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span><span class="co">#&gt;   start.x    end.x      start.y    end.y     </span></span>
+<span><span class="co">#&gt;   &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    </span></span>
+<span><span class="co">#&gt; 1 2022-04-04 2022-07-11 2022-07-11 2022-10-02</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχει μία επικάλυψη, οπότε ας διορθώσουμε αυτό το πρόβλημα και ας συνεχίσουμε:</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parties</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  q <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span>
+<span>  party <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-10"</span>, <span class="st">"2022-04-04"</span>, <span class="st">"2022-07-11"</span>, <span class="st">"2022-10-03"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  start <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-01"</span>, <span class="st">"2022-04-04"</span>, <span class="st">"2022-07-11"</span>, <span class="st">"2022-10-03"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  end <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-04-03"</span>, <span class="st">"2022-07-10"</span>, <span class="st">"2022-10-02"</span>, <span class="st">"2022-12-31"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τώρα μπορούμε να ταιριάξουμε κάθε εργαζόμενο με το πάρτι του. Αυτό είναι ένα καλό παράδειγμα για να χρησιμοποιήσετε το όρισμα <code>unmatched = "error"</code>, επειδή θέλουμε να μάθουμε γρήγορα εάν σε κάποιους υπαλλήλους δεν ανατέθηκε πάρτι.</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">employees</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">parties</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">birthday</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span><span class="op">)</span>, unmatched <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 100 × 6</span></span>
+<span><span class="co">#&gt;   name     birthday       q party      start      end       </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;date&gt;     &lt;int&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    </span></span>
+<span><span class="co">#&gt; 1 Kemba    2022-01-22     1 2022-01-10 2022-01-01 2022-04-03</span></span>
+<span><span class="co">#&gt; 2 Orean    2022-06-26     2 2022-04-04 2022-04-04 2022-07-10</span></span>
+<span><span class="co">#&gt; 3 Kirstyn  2022-02-11     1 2022-01-10 2022-01-01 2022-04-03</span></span>
+<span><span class="co">#&gt; 4 Amparo   2022-11-11     4 2022-10-03 2022-10-03 2022-12-31</span></span>
+<span><span class="co">#&gt; 5 Belen    2022-03-25     1 2022-01-10 2022-01-01 2022-04-03</span></span>
+<span><span class="co">#&gt; 6 Rayshaun 2022-01-11     1 2022-01-10 2022-01-01 2022-04-03</span></span>
+<span><span class="co">#&gt; # ℹ 94 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="ασκήσεις-2" class="level3" data-number="19.5.5"><h3 data-number="19.5.5" class="anchored" data-anchor-id="ασκήσεις-2">
+<span class="header-section-number">19.5.5</span> Ασκήσεις</h3>
+<ol type="1">
+<li>
+<p>Μπορείτε να εξηγήσετε τι συμβαίνει με τα κλειδιά σε αυτή την ένωση ισοδυναμίας; Γιατί είναι διαφορετικά;</p>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">key</span> <span class="op">==</span> <span class="va">key</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span><span class="co">#&gt;     key val_x val_y</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1     1 x1    y1   </span></span>
+<span><span class="co">#&gt; 2     2 x2    y2   </span></span>
+<span><span class="co">#&gt; 3     3 x3    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 4     4 &lt;NA&gt;  y3</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">key</span> <span class="op">==</span> <span class="va">key</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 4</span></span>
+<span><span class="co">#&gt;   key.x val_x key.y val_y</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1     1 x1        1 y1   </span></span>
+<span><span class="co">#&gt; 2     2 x2        2 y2   </span></span>
+<span><span class="co">#&gt; 3     3 x3       NA &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 4    NA &lt;NA&gt;      4 y3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li><p>Για να βρούμε εάν οι περίοδοι των πάρτι επικαλύπτονται με άλλα πάρτι χρησιμοποιήσαμε το <code>q &lt; q</code> στην <code><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by()</a></code>. Γιατί; Τι συμβαίνει εάν αφαιρέσουμε αυτή την ανισότητα;</p></li>
+</ol></section></section><section id="σύνοψη" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="σύνοψη">
+<span class="header-section-number">19.6</span> Σύνοψη</h2>
+<p>Σε αυτό το κεφάλαιο, μάθατε πώς να χρησιμοποιείτε ενώσεις αλλαγής και ενώσεις φιλτραρίσματος για να συνδυάσετε δεδομένα από ένα ζεύγος πλαισίων δεδομένων. Στην πορεία μάθατε πώς να αναγνωρίζετε κλειδιά και τη διαφορά μεταξύ πρωτεύοντος και ξένου κλειδιού. Καταλαβαίνετε επίσης πώς λειτουργούν οι ενώσεις και πώς να υπολογίσετε πόσες γραμμές θα έχει η έξοδος. Τέλος, ρίξατε μία ματιά στη δύναμη των non-equi ενώσεων και έχετε δει μερικές ενδιαφέρουσες περιπτώσεις χρήσης.</p>
+<p>Αυτό το κεφάλαιο ολοκληρώνει το μέρος “Μετασχηματισμός” αυτού του βιβλίου, όπου η το ενδιαφέρον μας ήταν στα εργαλεία που θα μπορούσατε να χρησιμοποιήσετε με μεμονωμένες στήλες και tibbles. Μάθατε για συναρτήσεις από το πακέτο dplyr και από το βασικό σύνολο συναρτήσεων της R για εργασία με λογικά διανύσματα, αριθμούς και πλήρεις πίνακες, τις συναρτήσεις του πακέτου stringr για εργασία με συμβολοσειρές, τις συναρτήσεις του πακέτου lubridate για εργασία με ημερομηνίες-ώρες και τις συναρτήσεις του forcats για εργασία με παράγοντες.</p>
+<p>Στο επόμενο μέρος του βιβλίου, θα μάθετε περισσότερα σχετικά με τη μετατροπή διαφόρων τύπων δεδομένων στην R σε μία τακτοποιημένη (tidy) μορφή.</p>
+
+
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Να θυμάστε ότι στο RStudio μπορείτε επίσης να χρησιμοποιήσετε το <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> για να αποφύγετε αυτό το πρόβλημα.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Αυτό δεν είναι 100% αλήθεια, αλλά θα λαμβάνετε μία προειδοποίηση όποτε δεν είναι.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Αντιγράφηκε!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./missing-values.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Κενές τιμές</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./import.html" class="pagination-link">
+        <span class="nav-page-text">Εισαγωγή δεδομένων</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

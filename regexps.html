@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund">
+<title>Η R για την Επιστήμη των Δεδομένων (2η έκδοση) - 15&nbsp; Λογικές εκφράσεις</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./factors.html" rel="next">
+<link href="./strings.html" rel="prev">
+<link href="./cover.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transform.html">Μετασχηματισμοί</a></li><li class="breadcrumb-item"><a href="./regexps.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Λογικές εκφράσεις</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Η R για την Επιστήμη των Δεδομένων (2η έκδοση)</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Εναλλαγή λειτουργίας ανάγνωσης">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Αναζήτηση"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Καλώς ήλθατε</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Πρόλογος δεύτερης έκδοσης</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Η ολοκληρωμένη εικόνα</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Οπτικοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ροή εργασιών: Bασικές αρχές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Μετασχηματισμός Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ροή εργασιών: πρότυπα γραφής κώδικα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Τακτοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Ροή εργασιών: αρχεία κώδικα και projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Εισαγωγή δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ροή εργασίας: αναζητώντας βοήθεια</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Οπτικοποίηση</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./layers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Επίπεδα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Διερευνητική ανάλυση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Επικοινωνία</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Μετασχηματισμοί</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Λογικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Αριθμητικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Συμβολοσειρές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Λογικές εκφράσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Παράγοντες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Ημερομηνίες και ώρες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Κενές τιμές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή δεδομένων</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Arrow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Ιεραρχικά δεδομένα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Ιστοσυγκομιδή</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Προγραμματισμός</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Συναρτήσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Επανάληψη</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./base-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Επικοινωνία της πληροφορίας</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Επιλογές μορφοποίησης στο Quarto</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Πίνακας περιεχομένων</h2>
+   
+  <ul>
+<li>
+<a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE"><span class="header-section-number">15.1</span> Εισαγωγή</a>
+  <ul class="collapse">
+<li><a href="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1" id="toc-προαπαιτούμενα" class="nav-link" data-scroll-target="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1"><span class="header-section-number">15.1.1</span> Προαπαιτούμενα</a></li>
+  </ul>
+</li>
+  <li><a href="#sec-reg-basics" id="toc-sec-reg-basics" class="nav-link" data-scroll-target="#sec-reg-basics"><span class="header-section-number">15.2</span> Βασικές αρχές των μοτίβων</a></li>
+  <li>
+<a href="#sec-stringr-regex-funs" id="toc-sec-stringr-regex-funs" class="nav-link" data-scroll-target="#sec-stringr-regex-funs"><span class="header-section-number">15.3</span> Βασικές συναρτήσεις</a>
+  <ul class="collapse">
+<li><a href="#%CE%B1%CE%BD%CE%AF%CF%87%CE%BD%CE%B5%CF%85%CF%83%CE%B7-%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B9%CF%8E%CE%BD" id="toc-ανίχνευση-αντιστοιχιών" class="nav-link" data-scroll-target="#%CE%B1%CE%BD%CE%AF%CF%87%CE%BD%CE%B5%CF%85%CF%83%CE%B7-%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B9%CF%8E%CE%BD"><span class="header-section-number">15.3.1</span> Ανίχνευση αντιστοιχιών</a></li>
+  <li><a href="#%CE%BC%CE%B5%CF%84%CF%81%CE%AE%CF%83%CE%B5%CE%B9%CF%82-%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%AF%CF%83%CE%B5%CF%89%CE%BD" id="toc-μετρήσεις-αντιστοιχίσεων" class="nav-link" data-scroll-target="#%CE%BC%CE%B5%CF%84%CF%81%CE%AE%CF%83%CE%B5%CE%B9%CF%82-%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%AF%CF%83%CE%B5%CF%89%CE%BD"><span class="header-section-number">15.3.2</span> Μετρήσεις αντιστοιχίσεων</a></li>
+  <li><a href="#%CE%B1%CE%BD%CF%84%CE%B9%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7-%CF%84%CE%B9%CE%BC%CF%8E%CE%BD" id="toc-αντικατάσταση-τιμών" class="nav-link" data-scroll-target="#%CE%B1%CE%BD%CF%84%CE%B9%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7-%CF%84%CE%B9%CE%BC%CF%8E%CE%BD"><span class="header-section-number">15.3.3</span> Αντικατάσταση τιμών</a></li>
+  <li><a href="#sec-extract-variables" id="toc-sec-extract-variables" class="nav-link" data-scroll-target="#sec-extract-variables"><span class="header-section-number">15.3.4</span> Εξαγωγή μεταβλητών</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82" id="toc-ασκήσεις" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">15.3.5</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%CE%BB%CE%B5%CF%80%CF%84%CE%BF%CE%BC%CE%AD%CF%81%CE%B5%CE%B9%CE%B5%CF%82-%CF%84%CF%89%CE%BD-%CE%BC%CE%BF%CF%84%CE%AF%CE%B2%CF%89%CE%BD" id="toc-λεπτομέρειες-των-μοτίβων" class="nav-link" data-scroll-target="#%CE%BB%CE%B5%CF%80%CF%84%CE%BF%CE%BC%CE%AD%CF%81%CE%B5%CE%B9%CE%B5%CF%82-%CF%84%CF%89%CE%BD-%CE%BC%CE%BF%CF%84%CE%AF%CE%B2%CF%89%CE%BD"><span class="header-section-number">15.4</span> Λεπτομέρειες των μοτίβων</a>
+  <ul class="collapse">
+<li><a href="#sec-regexp-escaping" id="toc-sec-regexp-escaping" class="nav-link" data-scroll-target="#sec-regexp-escaping"><span class="header-section-number">15.4.1</span> Διαφυγή</a></li>
+  <li><a href="#%CE%B1%CE%B3%CE%BA%CE%B9%CF%83%CF%84%CF%81%CF%8E%CF%83%CE%B5%CE%B9%CF%82" id="toc-αγκιστρώσεις" class="nav-link" data-scroll-target="#%CE%B1%CE%B3%CE%BA%CE%B9%CF%83%CF%84%CF%81%CF%8E%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">15.4.2</span> Αγκιστρώσεις</a></li>
+  <li><a href="#%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%AF%CE%B5%CF%82-%CF%87%CE%B1%CF%81%CE%B1%CE%BA%CF%84%CE%AE%CF%81%CF%89%CE%BD" id="toc-κατηγορίες-χαρακτήρων" class="nav-link" data-scroll-target="#%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%AF%CE%B5%CF%82-%CF%87%CE%B1%CF%81%CE%B1%CE%BA%CF%84%CE%AE%CF%81%CF%89%CE%BD"><span class="header-section-number">15.4.3</span> Κατηγορίες χαρακτήρων</a></li>
+  <li><a href="#sec-quantifiers" id="toc-sec-quantifiers" class="nav-link" data-scroll-target="#sec-quantifiers"><span class="header-section-number">15.4.4</span> Ποσοτικοί δείκτες</a></li>
+  <li><a href="#%CE%B9%CE%B5%CF%81%CE%B1%CF%81%CF%87%CE%AF%CE%B1-%CF%84%CE%B5%CE%BB%CE%B5%CF%83%CF%84%CE%AE-%CE%BA%CE%B1%CE%B9-%CF%80%CE%B1%CF%81%CE%B5%CE%BD%CE%B8%CE%AD%CF%83%CE%B5%CE%B9%CF%82" id="toc-ιεραρχία-τελεστή-και-παρενθέσεις" class="nav-link" data-scroll-target="#%CE%B9%CE%B5%CF%81%CE%B1%CF%81%CF%87%CE%AF%CE%B1-%CF%84%CE%B5%CE%BB%CE%B5%CF%83%CF%84%CE%AE-%CE%BA%CE%B1%CE%B9-%CF%80%CE%B1%CF%81%CE%B5%CE%BD%CE%B8%CE%AD%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">15.4.5</span> Ιεραρχία τελεστή και παρενθέσεις</a></li>
+  <li><a href="#%CE%BF%CE%BC%CE%B1%CE%B4%CE%BF%CF%80%CE%BF%CE%AF%CE%B7%CF%83%CE%B7-%CE%BA%CE%B1%CE%B9-%CE%B1%CF%80%CE%BF%CF%84%CF%8D%CF%80%CF%89%CF%83%CE%B7" id="toc-ομαδοποίηση-και-αποτύπωση" class="nav-link" data-scroll-target="#%CE%BF%CE%BC%CE%B1%CE%B4%CE%BF%CF%80%CE%BF%CE%AF%CE%B7%CF%83%CE%B7-%CE%BA%CE%B1%CE%B9-%CE%B1%CF%80%CE%BF%CF%84%CF%8D%CF%80%CF%89%CF%83%CE%B7"><span class="header-section-number">15.4.6</span> Ομαδοποίηση και αποτύπωση</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-1" id="toc-ασκήσεις-1" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-1"><span class="header-section-number">15.4.7</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%CE%AD%CE%BB%CE%B5%CE%B3%CF%87%CE%BF%CF%82-%CE%BC%CE%BF%CF%84%CE%AF%CE%B2%CF%89%CE%BD" id="toc-έλεγχος-μοτίβων" class="nav-link" data-scroll-target="#%CE%AD%CE%BB%CE%B5%CE%B3%CF%87%CE%BF%CF%82-%CE%BC%CE%BF%CF%84%CE%AF%CE%B2%CF%89%CE%BD"><span class="header-section-number">15.5</span> Έλεγχος μοτίβων</a>
+  <ul class="collapse">
+<li><a href="#sec-flags" id="toc-sec-flags" class="nav-link" data-scroll-target="#sec-flags"><span class="header-section-number">15.5.1</span> Δείκτες regex</a></li>
+  <li><a href="#%CF%83%CF%84%CE%B1%CE%B8%CE%B5%CF%81%CE%AD%CF%82-%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%AF%CF%83%CE%B5%CE%B9%CF%82" id="toc-σταθερές-αντιστοιχίσεις" class="nav-link" data-scroll-target="#%CF%83%CF%84%CE%B1%CE%B8%CE%B5%CF%81%CE%AD%CF%82-%CE%B1%CE%BD%CF%84%CE%B9%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%AF%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">15.5.2</span> Σταθερές αντιστοιχίσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%CE%B5%CE%BE%CE%AC%CF%83%CE%BA%CE%B7%CF%83%CE%B7" id="toc-εξάσκηση" class="nav-link" data-scroll-target="#%CE%B5%CE%BE%CE%AC%CF%83%CE%BA%CE%B7%CF%83%CE%B7"><span class="header-section-number">15.6</span> Εξάσκηση</a>
+  <ul class="collapse">
+<li><a href="#%CE%B5%CE%BB%CE%AD%CE%B3%CE%BE%CF%84%CE%B5-%CF%84%CE%B7%CE%BD-%CE%B5%CF%81%CE%B3%CE%B1%CF%83%CE%AF%CE%B1-%CF%83%CE%B1%CF%82" id="toc-ελέγξτε-την-εργασία-σας" class="nav-link" data-scroll-target="#%CE%B5%CE%BB%CE%AD%CE%B3%CE%BE%CF%84%CE%B5-%CF%84%CE%B7%CE%BD-%CE%B5%CF%81%CE%B3%CE%B1%CF%83%CE%AF%CE%B1-%CF%83%CE%B1%CF%82"><span class="header-section-number">15.6.1</span> Ελέγξτε την εργασία σας</a></li>
+  <li><a href="#sec-boolean-operations" id="toc-sec-boolean-operations" class="nav-link" data-scroll-target="#sec-boolean-operations"><span class="header-section-number">15.6.2</span> Boolean λειτουργίες</a></li>
+  <li><a href="#%CE%B4%CE%B7%CE%BC%CE%B9%CE%BF%CF%85%CF%81%CE%B3%CE%AF%CE%B1-%CE%BC%CE%BF%CF%84%CE%AF%CE%B2%CE%BF%CF%85-%CE%BC%CE%B5-%CE%BA%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1" id="toc-δημιουργία-μοτίβου-με-κώδικα" class="nav-link" data-scroll-target="#%CE%B4%CE%B7%CE%BC%CE%B9%CE%BF%CF%85%CF%81%CE%B3%CE%AF%CE%B1-%CE%BC%CE%BF%CF%84%CE%AF%CE%B2%CE%BF%CF%85-%CE%BC%CE%B5-%CE%BA%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1"><span class="header-section-number">15.6.3</span> Δημιουργία μοτίβου με κώδικα</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-2" id="toc-ασκήσεις-2" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-2"><span class="header-section-number">15.6.4</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%CE%BA%CE%B1%CE%BD%CE%BF%CE%BD%CE%B9%CE%BA%CE%AD%CF%82-%CE%B5%CE%BA%CF%86%CF%81%CE%AC%CF%83%CE%B5%CE%B9%CF%82-%CF%83%CE%B5-%CE%AC%CE%BB%CE%BB%CE%B1-%CE%BC%CE%AD%CF%81%CE%B7" id="toc-κανονικές-εκφράσεις-σε-άλλα-μέρη" class="nav-link" data-scroll-target="#%CE%BA%CE%B1%CE%BD%CE%BF%CE%BD%CE%B9%CE%BA%CE%AD%CF%82-%CE%B5%CE%BA%CF%86%CF%81%CE%AC%CF%83%CE%B5%CE%B9%CF%82-%CF%83%CE%B5-%CE%AC%CE%BB%CE%BB%CE%B1-%CE%BC%CE%AD%CF%81%CE%B7"><span class="header-section-number">15.7</span> Κανονικές εκφράσεις σε άλλα μέρη</a>
+  <ul class="collapse">
+<li><a href="#tidyverse" id="toc-tidyverse" class="nav-link" data-scroll-target="#tidyverse"><span class="header-section-number">15.7.1</span> tidyverse</a></li>
+  <li><a href="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CF%8C-%CF%83%CF%8D%CE%BD%CE%BF%CE%BB%CE%BF-%CE%BB%CE%B5%CE%B9%CF%84%CE%BF%CF%85%CF%81%CE%B3%CE%B9%CF%8E%CE%BD-%CF%84%CE%B7%CF%82-r" id="toc-βασικό-σύνολο-λειτουργιών-της-r" class="nav-link" data-scroll-target="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CF%8C-%CF%83%CF%8D%CE%BD%CE%BF%CE%BB%CE%BF-%CE%BB%CE%B5%CE%B9%CF%84%CE%BF%CF%85%CF%81%CE%B3%CE%B9%CF%8E%CE%BD-%CF%84%CE%B7%CF%82-r"><span class="header-section-number">15.7.2</span> Βασικό σύνολο λειτουργιών της R</a></li>
+  </ul>
+</li>
+  <li><a href="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7" id="toc-σύνοψη" class="nav-link" data-scroll-target="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7"><span class="header-section-number">15.8</span> Σύνοψη</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-regular-expressions" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Λογικές εκφράσεις</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="εισαγωγή" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="εισαγωγή">
+<span class="header-section-number">15.1</span> Εισαγωγή</h2>
+<p>Στο <a href="strings.html"><span>Κεφάλαιο&nbsp;14</span></a>, μάθατε αρκετές χρήσιμες συναρτήσεις για να εργάζεστε με συμβολοσειρές. Το κεφάλαιο αυτό θα επικεντρωθεί σε συναρτήσεις που χρησιμοποιούν <strong>κανονικές εκφράσεις</strong>, μία συνοπτική και ισχυρή γλώσσα για την περιγραφή μοτίβων μέσα σε συμβολοσειρές. Ο όρος “κανονική έκφραση” είναι στα αγγλικά είναι “regular expression” και θεωρείται γλωσσοδέτης, επομένως οι περισσότεροι τον συντομεύουν σε “regex”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> ή “regexp”.</p>
+<p>Το κεφάλαιο ξεκινά με τα βασικά των κανονικών εκφράσεων και τις πιο χρήσιμες συναρτήσεις του πακέτου stringr για ανάλυση δεδομένων. Στη συνέχεια, θα επεκτείνουμε τις γνώσεις σας σχετικά με τα μοτίβα και θα καλύψουμε επτά σημαντικά νέες θεματολογίες (διαφυγή, αγκύστρωση, κατηγορίες χαρακτήρων, κατηγορίες συντομογραφίας, ποσοτικοί δείκτες, ιεραρχία και ομαδοποίηση). Στη συνέχεια, θα μιλήσουμε για μερικούς από τους άλλους τύπους μοτίβων με τους οποίους οι συναρτήσεις του πακέτου stringr μπορούν να λειτουργήσουν και για τους διάφορους “δείκτες” που σας επιτρέπουν να τροποποιήσετε τη λειτουργία των κανονικών εκφράσεων. Θα ολοκληρώσουμε με μία επισκόπηση άλλων σημείων στο tidyverse και το βασικό σύνολο λειτουργιών της R όπου μπορείτε να χρησιμοποιήσετε regex.</p>
+<section id="προαπαιτούμενα" class="level3" data-number="15.1.1"><h3 data-number="15.1.1" class="anchored" data-anchor-id="προαπαιτούμενα">
+<span class="header-section-number">15.1.1</span> Προαπαιτούμενα</h3>
+<p>Σε αυτό το κεφάλαιο, θα χρησιμοποιήσουμε συναρτήσεις κανονικής έκφρασης από το πακέτο stringr και το πακέτο tidyr, δύο βασικά μέλη του tidyverse, καθώς και δεδομένα από το πακέτο babynames.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μέσα από αυτό το κεφάλαιο, θα χρησιμοποιήσουμε έναν συνδυασμό πολύ απλών παραδειγμάτων ώστε να μπορείτε να πάρετε τη βασική ιδέα, τα δεδομένα ονομάτων μωρών και τρία διανύσματα χαρακτήρων από το πακέτο stringr:</p>
+<ul>
+<li>Το διάνυσμα <code>fruit</code> περιέχει τα ονόματα 80 φρούτων.</li>
+<li>Το <code>words</code> περιέχει 980 συχνές αγγλικές λέξεις.</li>
+<li>Το <code>sentences</code> περιέχει 720 σύντομες προτάσεις.</li>
+</ul></section></section><section id="sec-reg-basics" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="sec-reg-basics">
+<span class="header-section-number">15.2</span> Βασικές αρχές των μοτίβων</h2>
+<p>Θα χρησιμοποιήσουμε την <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> για να μάθουμε πώς λειτουργούν τα μοτίβα σε regex. Χρησιμοποιήσαμε την <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> στο προηγούμενο κεφάλαιο για να κατανοήσουμε καλύτερα μία συμβολοσειρά έναντι της εκτυπωμένης αναπαράστασής της, και τώρα θα τη χρησιμοποιήσουμε με το δεύτερο όρισμα της, μία κανονική έκφραση. Όταν παρέχεται, η <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> θα εμφανίσει μόνο τα στοιχεία του διανύσματος συμβολοσειράς που ταιριάζουν, περιβάλλοντας κάθε αντιστοιχία με <code>&lt;&gt;</code> και, όπου είναι δυνατόν, επισημαίνοντας την αντιστοίχιση με μπλε χρώμα.</p>
+<p>Τα πιο απλά μοτίβα αποτελούνται από γράμματα και αριθμούς που ταιριάζουν ακριβώς με αυτούς τους χαρακτήρες:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"berry"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [6] │ bil&lt;berry&gt;</span></span>
+<span><span class="co">#&gt;  [7] │ black&lt;berry&gt;</span></span>
+<span><span class="co">#&gt; [10] │ blue&lt;berry&gt;</span></span>
+<span><span class="co">#&gt; [11] │ boysen&lt;berry&gt;</span></span>
+<span><span class="co">#&gt; [19] │ cloud&lt;berry&gt;</span></span>
+<span><span class="co">#&gt; [21] │ cran&lt;berry&gt;</span></span>
+<span><span class="co">#&gt; ... and 8 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τα γράμματα και οι αριθμοί που ταιριάζουν ακριβώς ονομάζονται <strong>σταθεροί χαρακτήρες</strong>. Οι περισσότεροι χαρακτήρες στίξης, όπως οι <code>.</code>, <code>+</code>, <code>*</code>, <code>[</code>, <code>]</code> και <code>?</code>, έχουν ειδικές έννοιες<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> και ονομάζονται <strong>μεταχαρακτήρες</strong>. Για παράδειγμα, ο χαρακτήρας <code>.</code> θα ταιριάζει με οποιονδήποτε χαρακτήρα<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, οπότε το <code>a</code> <code>.</code> θα ταιριάζει με κάθε συμβολοσειρά που περιέχει ένα <code>a</code> ακολουθούμενο από έναν άλλο χαρακτήρα :</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"ae"</span>, <span class="st">"bd"</span>, <span class="st">"ea"</span>, <span class="st">"eab"</span><span class="op">)</span>, <span class="st">"a."</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [2] │ &lt;ab&gt;</span></span>
+<span><span class="co">#&gt; [3] │ &lt;ae&gt;</span></span>
+<span><span class="co">#&gt; [6] │ e&lt;ab&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ή θα μπορούσαμε να βρούμε όλα τα φρούτα που περιέχουν ένα “a”, ακολουθούμενο από τρία γράμματα και ένα “e”:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a...e"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] │ &lt;apple&gt;</span></span>
+<span><span class="co">#&gt;  [7] │ bl&lt;ackbe&gt;rry</span></span>
+<span><span class="co">#&gt; [48] │ mand&lt;arine&gt;</span></span>
+<span><span class="co">#&gt; [51] │ nect&lt;arine&gt;</span></span>
+<span><span class="co">#&gt; [62] │ pine&lt;apple&gt;</span></span>
+<span><span class="co">#&gt; [64] │ pomegr&lt;anate&gt;</span></span>
+<span><span class="co">#&gt; ... and 2 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Οι ποσοτικοί δείκτες</strong> ελέγχουν πόσες φορές μπορεί να ταιριάξει ένα μοτίβο:</p>
+<ul>
+<li>Το <code>?</code> κάνει ένα μοτίβο προαιρετικό (να ταιριάζει δηλαδή 0 ή 1 φορές)</li>
+<li>Το <code>+</code> επιτρέπει σε ένα μοτίβο να επαναλαμβάνεται (να ταιριάζει δηλαδή τουλάχιστον μία φορά)</li>
+<li>Το <code>*</code> επιτρέπει σε ένα μοτίβο να είναι προαιρετικό ή να επαναλαμβάνεται (να ταιριάζει δηλαδή με οποιονδήποτε αριθμό φορών, συμπεριλαμβανομένου του 0).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Το ab? αντιστοιχίζει ένα "a", που ακολουθείται προαιρετικά από ένα "b".</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"abb"</span><span class="op">)</span>, <span class="st">"ab?"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;a&gt;</span></span>
+<span><span class="co">#&gt; [2] │ &lt;ab&gt;</span></span>
+<span><span class="co">#&gt; [3] │ &lt;ab&gt;b</span></span>
+<span></span>
+<span><span class="co"># Το ab+ αντιστοιχίζει ένα "a", που ακολουθείται από τουλάχιστον ένα "b"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"abb"</span><span class="op">)</span>, <span class="st">"ab+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [2] │ &lt;ab&gt;</span></span>
+<span><span class="co">#&gt; [3] │ &lt;abb&gt;</span></span>
+<span></span>
+<span><span class="co"># Το ab* αντιστοιχίζει ένα "a", που ακολουθείται από οποιονδήποτε αριθμό "b" (ακόμα και 0).</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"abb"</span><span class="op">)</span>, <span class="st">"ab*"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;a&gt;</span></span>
+<span><span class="co">#&gt; [2] │ &lt;ab&gt;</span></span>
+<span><span class="co">#&gt; [3] │ &lt;abb&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Οι κατηγορίες χαρακτήρων</strong> ορίζονται από το <code>[]</code> και σας επιτρέπουν να αντιστοιχίσετε ένα σύνολο χαρακτήρων. Για παράδειγμα, το <code>[abcd]</code> ταιριάζει με τους χαρακτήρες “a”, “b”, “c” ή “d”. Μπορείτε επίσης να αντιστρέψετε την αντιστοίχιση ξεκινώντας με το <code>^</code>: Το <code>[^abcd]</code> αντιστοιχεί σε οτιδήποτε <strong>εκτός</strong> των “a”, “b”, “c” ή “d”. Μπορούμε να χρησιμοποιήσουμε αυτήν την ιδέα για να βρούμε τις λέξεις που περιέχουν ένα “x” που περιβάλλεται από φωνήεντα ή ένα “y” που περιβάλλεται από σύμφωνα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"[aeiou]x[aeiou]"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [284] │ &lt;exa&gt;ct</span></span>
+<span><span class="co">#&gt; [285] │ &lt;exa&gt;mple</span></span>
+<span><span class="co">#&gt; [288] │ &lt;exe&gt;rcise</span></span>
+<span><span class="co">#&gt; [289] │ &lt;exi&gt;st</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"[^aeiou]y[^aeiou]"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [836] │ &lt;sys&gt;tem</span></span>
+<span><span class="co">#&gt; [901] │ &lt;typ&gt;e</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορείτε να χρησιμοποιήσετε την <strong>εναλλαγή</strong>, <code>|</code>, για να επιλέξετε ανάμεσα σε ένα ή περισσότερα εναλλακτικά μοτίβα. Για παράδειγμα, τα ακόλουθα μοτίβα αναζητούν φρούτα που περιέχουν “apple”, “melon” ή “nut” ή ένα επαναλαμβανόμενο φωνήεν.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"apple|melon|nut"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] │ &lt;apple&gt;</span></span>
+<span><span class="co">#&gt; [13] │ canary &lt;melon&gt;</span></span>
+<span><span class="co">#&gt; [20] │ coco&lt;nut&gt;</span></span>
+<span><span class="co">#&gt; [52] │ &lt;nut&gt;</span></span>
+<span><span class="co">#&gt; [62] │ pine&lt;apple&gt;</span></span>
+<span><span class="co">#&gt; [72] │ rock &lt;melon&gt;</span></span>
+<span><span class="co">#&gt; ... and 1 more</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"aa|ee|ii|oo|uu"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [9] │ bl&lt;oo&gt;d orange</span></span>
+<span><span class="co">#&gt; [33] │ g&lt;oo&gt;seberry</span></span>
+<span><span class="co">#&gt; [47] │ lych&lt;ee&gt;</span></span>
+<span><span class="co">#&gt; [66] │ purple mangost&lt;ee&gt;n</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Οι κανονικές εκφράσεις είναι πολύ συμπαγείς και χρησιμοποιούν πολλούς χαρακτήρες στίξης, έτσι μπορεί να φαίνονται δύσκολες και δυσανάγνωστες στην αρχή. Μην ανησυχείτε. θα γίνετε καλύτεροι με την εξάσκηση και τα απλά μοτίβα σύντομα θα γίνουν συνήθεια. Ας ξεκινήσουμε αυτή τη διαδικασία εξασκώντας μερικές χρήσιμες συναρτήσεις του πακέτου stringr.</p>
+</section><section id="sec-stringr-regex-funs" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="sec-stringr-regex-funs">
+<span class="header-section-number">15.3</span> Βασικές συναρτήσεις</h2>
+<p>Τώρα που έχετε εμπεδώσει τα βασικά των κανονικών εκφράσεων, ας τις χρησιμοποιήσουμε με ορισμένες συναρτήσεις από το πακέτο stringr και το πακέτο tidyr. Στην επόμενη ενότητα, θα μάθετε πώς να ανιχνεύετε την παρουσία ή την απουσία μιας αντιστοίχισης, πώς να μετράτε τον αριθμό των αντιστοιχιών, πώς να αντικαθιστάτε μία αντιστοίχιση με σταθερό κείμενο και πώς να εξάγετε κείμενο χρησιμοποιώντας ένα μοτίβο.</p>
+<section id="ανίχνευση-αντιστοιχιών" class="level3" data-number="15.3.1"><h3 data-number="15.3.1" class="anchored" data-anchor-id="ανίχνευση-αντιστοιχιών">
+<span class="header-section-number">15.3.1</span> Ανίχνευση αντιστοιχιών</h3>
+<p>Η <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> επιστρέφει ένα λογικό διάνυσμα που είναι <code>TRUE</code> εάν το μοτίβο ταιριάζει με ένα στοιχείο του διανύσματος χαρακτήρων και <code>FALSE</code> σε διαφορετική περίπτωση:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>, <span class="st">"[aeiou]"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE FALSE FALSE</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εφόσον η <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> επιστρέφει ένα λογικό διάνυσμα ίδιου μήκους με το αρχικό διάνυσμα, συνδυάζεται καλά με την <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>. Για παράδειγμα, αυτός ο κώδικας βρίσκει όλα τα πιο δημοφιλή ονόματα που περιέχουν ένα πεζό “x”:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">name</span>, wt <span class="op">=</span> <span class="va">n</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 974 × 2</span></span>
+<span><span class="co">#&gt;   name           n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Alexander 665492</span></span>
+<span><span class="co">#&gt; 2 Alexis    399551</span></span>
+<span><span class="co">#&gt; 3 Alex      278705</span></span>
+<span><span class="co">#&gt; 4 Alexandra 232223</span></span>
+<span><span class="co">#&gt; 5 Max       148787</span></span>
+<span><span class="co">#&gt; 6 Alexa     123032</span></span>
+<span><span class="co">#&gt; # ℹ 968 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορούμε επίσης να χρησιμοποιήσουμε την <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> με την <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> συνδυάζοντάς το με την <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code> ή την <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>: Το <code>sum(str_detect(x, pattern))</code> σας λέει τον αριθμό των παρατηρήσεων που ταιριάζουν, και η <code>mean(str_detect(x, pattern))</code> σας λέει την αναλογία που ταιριάζει. Για παράδειγμα, το ακόλουθο απόσπασμα υπολογίζει και απεικονίζει την αναλογία των ονομάτων μωρών<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> που περιέχουν το γράμμα “x”, ανά έτος. Φαίνεται ότι έχουν αυξηθεί πάρα πολύ σε δημοτικότητα τον τελευταίο καιρό!</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>prop_x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">prop_x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="regexps_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" alt="Μία χρονοσειρά που δείχνει το ποσοστό των ονομάτων που δίνονται σε μωρά και περιέχουν το γράμμα x. Το ποσοστό αυτό μειώνεται σταδιακά από τα 8 κάθε 1000 το 1880 σε 4 κάθε 1000 το 1980, και στη συνέχεια αυξάνεται γρήγορα μέχρι τα 16 κάθε 1000 το 2019." width="576"></p>
+</div>
+</div>
+<p>Υπάρχουν δύο συναρτήσεις που σχετίζονται στενά με την <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>: η <code><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset()</a></code> και η <code><a href="https://stringr.tidyverse.org/reference/str_which.html">str_which()</a></code>. Η <code><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset()</a></code> επιστρέφει ένα διάνυσμα χαρακτήρων που περιέχει μόνο τις συμβολοσειρές που ταιριάζουν. Η <code><a href="https://stringr.tidyverse.org/reference/str_which.html">str_which()</a></code> επιστρέφει ένα ακέραιο διάνυσμα δίνοντας τις θέσεις των συμβολοσειρών που ταιριάζουν.</p>
+</section><section id="μετρήσεις-αντιστοιχίσεων" class="level3" data-number="15.3.2"><h3 data-number="15.3.2" class="anchored" data-anchor-id="μετρήσεις-αντιστοιχίσεων">
+<span class="header-section-number">15.3.2</span> Μετρήσεις αντιστοιχίσεων</h3>
+<p>Το επόμενο βήμα στην πολυπλοκότητα από την <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> είναι η <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code>: αντί να επιστρέψει κάποιο true ή false, σας λέει πόσες αντιστοιχίσεις υπάρχουν σε κάθε συμβολοσειρά.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"p"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2 0 1</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Σημειώστε ότι κάθε αντιστοίχιση ξεκινά στο τέλος της προηγούμενης αντιστοίχισης, δηλαδή οι αντιστοιχήσεις των regex δεν επικαλύπτονται ποτέ. Για παράδειγμα, στη συμβολοσειρά <code>"abababa"</code>, πόσες φορές θα ταιριάξει το μοτίβο <code>"aba"</code>;<br>
+Οι κανονικές εκφράσεις λένε δύο, όχι τρεις:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="st">"abababa"</span>, <span class="st">"aba"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"abababa"</span>, <span class="st">"aba"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;aba&gt;b&lt;aba&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Είναι αναμενόμενο να χρησιμοποιείτε την <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code> με την <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. Το παρακάτω παράδειγμα χρησιμοποιεί την <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code> με κατηγορίες χαρακτήρων για να μετρήσει τον αριθμό των φωνηέντων και των συμφώνων σε κάθε όνομα.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    vowels <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>,</span>
+<span>    consonants <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"[^aeiou]"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 97,310 × 4</span></span>
+<span><span class="co">#&gt;   name          n vowels consonants</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;  &lt;int&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Aaban        10      2          3</span></span>
+<span><span class="co">#&gt; 2 Aabha         5      2          3</span></span>
+<span><span class="co">#&gt; 3 Aabid         2      2          3</span></span>
+<span><span class="co">#&gt; 4 Aabir         1      2          3</span></span>
+<span><span class="co">#&gt; 5 Aabriella     5      4          5</span></span>
+<span><span class="co">#&gt; 6 Aada          1      2          2</span></span>
+<span><span class="co">#&gt; # ℹ 97,304 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αν κοιτάξετε προσεκτικά, θα παρατηρήσετε ότι κάτι δεν πάει καλά με τους υπολογισμούς μας: η συμβολοσειρά “Aaban” περιέχει τρία “a”, αλλά η σύνοψή μας αναφέρει μόνο δύο φωνήεντα. Αυτό συμβαίνει επειδή οι κανονικές εκφράσεις κάνουν διάκριση μεταξύ πεζών και κεφαλαίων. Υπάρχουν τρεις τρόποι με τους οποίους μπορούμε να το διορθώσουμε:</p>
+<ul>
+<li>Προσθέστε τα κεφαλαία φωνήεντα στην κατηγορία χαρακτήρων: <code>str_count(name, "[aeiouAEIOU]")</code>.</li>
+<li>Πείτε στην κανονική έκφραση να αγνοήσει τα πεζά γράμματα: <code>str_count(name, regex("[aeiou]", ignore_case = TRUE))</code>. Θα μιλήσουμε για περισσότερα στην <a href="#sec-flags"><span>Ενότητα&nbsp;15.5.1</span></a>.</li>
+<li>Χρησιμοποιήστε την <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower()</a></code> για να μετατρέψετε τα ονόματα σε πεζά: <code>str_count(str_to_lower(name), "[aeiou]")</code>.</li>
+</ul>
+<p>Αυτή η ποικιλία προσεγγίσεων είναι αρκετά χαρακτηριστική όταν εργάζεστε με συμβολοσειρές — υπάρχουν συχνά πολλοί τρόποι για να πετύχετε τον στόχο σας, είτε κάνοντας το μοτίβο σας πιο περίπλοκο είτε κάνοντας κάποια προεπεξεργασία στη συμβολοσειρά σας. Εάν κολλήσετε δοκιμάζοντας μία προσέγγιση, μπορεί συχνά να είναι χρήσιμο να μειώσετε ρυθμούς και να αντιμετωπίσετε το πρόβλημα με διαφορετική οπτική.</p>
+<p>Σε αυτήν την περίπτωση, καθώς εφαρμόζουμε δύο συναρτήσεις στο όνομα, νομίζω ότι είναι πιο εύκολο να το μετασχηματίσουμε πρώτα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>    vowels <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>,</span>
+<span>    consonants <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"[^aeiou]"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 97,310 × 4</span></span>
+<span><span class="co">#&gt;   name          n vowels consonants</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;  &lt;int&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 aaban        10      3          2</span></span>
+<span><span class="co">#&gt; 2 aabha         5      3          2</span></span>
+<span><span class="co">#&gt; 3 aabid         2      3          2</span></span>
+<span><span class="co">#&gt; 4 aabir         1      3          2</span></span>
+<span><span class="co">#&gt; 5 aabriella     5      5          4</span></span>
+<span><span class="co">#&gt; 6 aada          1      3          1</span></span>
+<span><span class="co">#&gt; # ℹ 97,304 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="αντικατάσταση-τιμών" class="level3" data-number="15.3.3"><h3 data-number="15.3.3" class="anchored" data-anchor-id="αντικατάσταση-τιμών">
+<span class="header-section-number">15.3.3</span> Αντικατάσταση τιμών</h3>
+<p>Εκτός από τον εντοπισμό και την καταμέτρηση αντιστοιχιών, μπορούμε και να τις τροποποιήσουμε με τις <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace()</a></code> και <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code>. Η <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace()</a></code> αντικαθιστά την πρώτη αντιστοίχιση και, όπως υποδηλώνει το όνομα, η <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code> αντικαθιστά όλες τις αντιστοιχίσεις.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"pear"</span>, <span class="st">"banana"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[aeiou]"</span>, <span class="st">"-"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "-ppl-"  "p--r"   "b-n-n-"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove()</a></code> και η <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all()</a></code> είναι εύχρηστες συντομεύσεις για την <code>str_replace(x, pattern, "")</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"pear"</span>, <span class="st">"banana"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[aeiou]"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "ppl" "pr"  "bnn"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αυτές οι συναρτήσεις μπορούν να συνδυαστούν με την <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> καθώς καθαρίζετε δεδομένα, και συχνά θα τις εφαρμόζετε επανειλημμένα για να αφαιρέσετε επίπεδα κακής μορφοποίησης.</p>
+</section><section id="sec-extract-variables" class="level3" data-number="15.3.4"><h3 data-number="15.3.4" class="anchored" data-anchor-id="sec-extract-variables">
+<span class="header-section-number">15.3.4</span> Εξαγωγή μεταβλητών</h3>
+<p>Η τελευταία συνάρτηση που θα συζητήσουμε χρησιμοποιεί κανονικές εκφράσεις για την εξαγωγή δεδομένων από μία στήλη σε μία ή περισσότερες νέες στήλες: η <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code>. Η συνάρτηση αυτή συγγενεύει με τις συναρτήσεις <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_position()</a></code> και <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code>, για τις οποίες μάθατε στην <a href="strings.html#sec-string-columns"><span>Ενότητα&nbsp;14.4.2</span></a>. Αυτές οι συναρτήσεις υπάρχουν στο πακέτο tidyr επειδή λειτουργούν σε (στήλες απο) πλαίσια δεδομένων και όχι σε μεμονωμένα διανύσματα.</p>
+<p>Ας δημιουργήσουμε ένα απλό σύνολο δεδομένων για να δείξουμε πώς λειτουργεί. Εδώ έχουμε λίγα δεδομένα που προέρχονται από το <code>babynames</code>, όπου έχουμε το όνομα, το φύλο και την ηλικία πολλών ανθρώπων σε μία μάλλον περίεργη μορφή<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">str</span>,</span>
+<span>  <span class="st">"&lt;Sheryl&gt;-F_34"</span>,</span>
+<span>  <span class="st">"&lt;Kisha&gt;-F_45"</span>, </span>
+<span>  <span class="st">"&lt;Brandon&gt;-N_33"</span>,</span>
+<span>  <span class="st">"&lt;Sharon&gt;-F_38"</span>, </span>
+<span>  <span class="st">"&lt;Penny&gt;-F_58"</span>,</span>
+<span>  <span class="st">"&lt;Justin&gt;-M_41"</span>, </span>
+<span>  <span class="st">"&lt;Patricia&gt;-F_84"</span>, </span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Για να εξαγάγουμε αυτά τα δεδομένα χρησιμοποιώντας την <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code> πρέπει απλώς να δημιουργήσουμε μία ακολουθία κανονικών εκφράσεων που να ταιριάζουν με κάθε κομμάτι. Αν θέλουμε τα περιεχόμενα αυτού του κομματιού να εμφανίζονται στην έξοδο, του δίνουμε ένα όνομα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex</a></span><span class="op">(</span></span>
+<span>    <span class="va">str</span>,</span>
+<span>    patterns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"&lt;"</span>, </span>
+<span>      name <span class="op">=</span> <span class="st">"[A-Za-z]+"</span>, </span>
+<span>      <span class="st">"&gt;-"</span>, </span>
+<span>      gender <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>      <span class="st">"_"</span>,</span>
+<span>      age <span class="op">=</span> <span class="st">"[0-9]+"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 7 × 3</span></span>
+<span><span class="co">#&gt;   name    gender age  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 Sheryl  F      34   </span></span>
+<span><span class="co">#&gt; 2 Kisha   F      45   </span></span>
+<span><span class="co">#&gt; 3 Brandon N      33   </span></span>
+<span><span class="co">#&gt; 4 Sharon  F      38   </span></span>
+<span><span class="co">#&gt; 5 Penny   F      58   </span></span>
+<span><span class="co">#&gt; 6 Justin  M      41   </span></span>
+<span><span class="co">#&gt; # ℹ 1 more row</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν η αντιστοίχιση αποτύχει, μπορείτε να χρησιμοποιήσετε το <code>too_few = "debug"</code> για να καταλάβετε τι πήγε στραβά, όπως ακριβώς στην <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code> και στην <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_position()</a></code>.</p>
+</section><section id="ασκήσεις" class="level3" data-number="15.3.5"><h3 data-number="15.3.5" class="anchored" data-anchor-id="ασκήσεις">
+<span class="header-section-number">15.3.5</span> Ασκήσεις</h3>
+<ol type="1">
+<li><p>Ποιο όνομα μωρού έχει τα περισσότερα φωνήεντα;<br>
+Ποιο όνομα έχει την υψηλότερη αναλογία φωνηέντων;<br>
+(Υπόδειξη: ποιος είναι ο παρονομαστής;)</p></li>
+<li><p>Αντικαταστήστε όλες τις μπροστινές κάθετες στο <code>"a/b/c/d/e"</code> με ανάστροφες κάθετες. Τι συμβαίνει εάν επιχειρήσετε να αναιρέσετε τον μετασχηματισμό αντικαθιστώντας όλες τις ανάστροφες κάθετες με κάθετες προς τα εμπρός;<br>
+(Θα συζητήσουμε το πρόβλημα πολύ σύντομα.)</p></li>
+<li><p>Υλοποιήστε μία απλή έκδοση της <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower()</a></code> χρησιμοποιώντας την <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code>.</p></li>
+<li><p>Δημιουργήστε μία κανονική έκφραση που θα ταιριάζει με τους αριθμούς τηλεφώνου, όπως συνήθως γράφονται στη χώρα σας.</p></li>
+</ol></section></section><section id="λεπτομέρειες-των-μοτίβων" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="λεπτομέρειες-των-μοτίβων">
+<span class="header-section-number">15.4</span> Λεπτομέρειες των μοτίβων</h2>
+<p>Τώρα που καταλαβαίνετε τα βασικά της γλώσσας μοτίβων και πώς να τη χρησιμοποιήσετε με ορισμένες λειτουργίες του πακέτου stringr και του πακέτου tidyr, ήρθε η ώρα να εμβαθύνετε σε περισσότερες λεπτομέρειες. Αρχικά, θα ξεκινήσουμε με τη <strong>διαφυγή</strong>, η οποία σας επιτρέπει να αντιστοιχίσετε μεταχαρακτήρες, που διαφορετικά θα αντιμετώπιζαν με ειδικό τρόπο. Μετά, θα μάθετε για τις <strong>αγκιστρώσεις</strong> που σας επιτρέπουν να ταιριάξετε την αρχή ή το τέλος της συμβολοσειράς. Στη συνέχεια, θα μάθετε περισσότερα για τις <strong>κατηγορίες χαρακτήρων</strong> και τις συντομεύσεις τους, οι οποίες σας επιτρέπουν να ταιριάξετε οποιονδήποτε χαρακτήρα από ένα σύνολο. Ακολούθως, θα μάθετε τις τελευταίες λεπτομέρειες των <strong>ποσοτικών δεικτών</strong> οι οποίοι ελέγχουν πόσες φορές μπορεί να ταιριάζει ένα μοτίβο. Επιπλέον, πρέπει να καλύψουμε το σημαντικό (αλλά πολύπλοκο) θέμα της <strong>ιεραρχίας τελεστή</strong> και τις παρενθέσεις. Και θα ολοκληρώσουμε με λίγες λεπτομέρειες σχετικά με την <strong>ομαδοποίηση</strong> των στοιχείων του μοτίβου.</p>
+<p>Οι όροι που χρησιμοποιούμε εδώ είναι οι τεχνικές ονομασίες για κάθε στοιχείο. Δεν θυμίζουν πάντα τον σκοπό τους, αλλά είναι πολύ χρήσιμο να γνωρίζετε τους σωστούς όρους εάν αργότερα θέλετε να τους γκουγκλάρετε για περισσότερες λεπτομέρειες.</p>
+<section id="sec-regexp-escaping" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="sec-regexp-escaping">
+<span class="header-section-number">15.4.1</span> Διαφυγή</h3>
+<p>Για να αντιστοιχίσετε ένα σταθερό <code>.</code>, χρειάζεστε μία <strong>διαφυγή</strong>, η οποία λέει στην τυπική έκφραση να ταιριάζει κυριολεκτικά με μεταχαρακτήρες<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Όπως οι συμβολοσειρές, έτσι και οι κανονικές εκφράσεις, χρησιμοποιούν την ανάστροφη κάθετο για διαφυγή. Έτσι, για να αντιστοιχίσετε ένα <code>.</code>, χρειάζεστε το regexp <code>\.</code>. Δυστυχώς αυτό δημιουργεί πρόβλημα. Χρησιμοποιούμε συμβολοσειρές για να αναπαραστήσουμε κανονικές εκφράσεις και το <code>\</code> χρησιμοποιείται ως σύμβολο διαφυγής σε συμβολοσειρές. Για να δημιουργήσουμε λοιπόν την κανονική έκφραση <code>\.</code> χρειαζόμαστε τη συμβολοσειρά <code>"\\."</code>, όπως δείχνει το παρακάτω παράδειγμα.</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Για να δημιουργήσετε την κανονική έκραση \., πρέπει να χρησιμοποιήσουμε \\.</span></span>
+<span><span class="va">dot</span> <span class="op">&lt;-</span> <span class="st">"\\."</span></span>
+<span></span>
+<span><span class="co"># Η ίδια η έφραση, όμως, περιέχει ένα \</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">dot</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ \.</span></span>
+<span></span>
+<span><span class="co"># Και έτσι, αυτό λέει στην R να ψάξει για ένα κυριολεκτικό .</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="st">"a.c"</span>, <span class="st">"bef"</span><span class="op">)</span>, <span class="st">"a\\.c"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [2] │ &lt;a.c&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Σε αυτό το βιβλίο, συνήθως γράφουμε κανονικές εκφράσεις χωρίς εισαγωγικά, όπως η <code>\.</code>. Εάν πρέπει να τονίσουμε τι θα πληκτρολογήσετε στην πραγματικότητα, θα το περιβάλουμε με εισαγωγικά και θα προσθέσουμε επιπλέον διαφυγές, όπως η <code>"\\."</code>.</p>
+<p>Εάν το <code>\</code> χρησιμοποιείται ως χαρακτήρας διαφυγής σε κανονικές εκφράσεις, πώς αντιστοιχίζετε ένα σταθερό <code>\</code>;<br>
+Πρέπει να το διαφύγετε, δημιουργώντας την κανονική έκφραση <code>\\</code>. Για να δημιουργήσετε αυτήν την κανονική έκφραση, πρέπει να χρησιμοποιήσετε μία συμβολοσειρά, η οποία πρέπει επίσης να διαφύγει από το <code>\</code>. Αυτό σημαίνει ότι για να ταιριάξετε ένα κυριολεκτικό <code>\</code> πρέπει να γράψετε <code>"\\\\"</code> — χρειάζεστε δηλαδή τέσσερις ανάστροφες κάθετες για να ταιριάξετε μία!</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"a\\b"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ a\b</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\\\"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ a&lt;\&gt;b</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εναλλακτικά, μπορεί να είναι πιο εύκολο να χρησιμοποιήσετε τις ακατέργαστες συμβολοσειρές που μάθατε στην <a href="strings.html#sec-raw-strings"><span>Ενότητα&nbsp;14.2.2</span></a>). Αυτό σας επιτρέπει να αποφύγετε ένα επίπεδο διαφυγής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">r"{\\}"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ a&lt;\&gt;b</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν προσπαθείτε να αντιστοιχίσετε ένα σταθερό <code>.</code>, <code>$</code>, <code>|</code>, <code>*</code>, <code>+</code>, <code>?</code>, <code>{</code>, <code>}</code>, <code>(</code>, <code>)</code>, υπάρχει μία εναλλακτική από τη χρήση μιας διαφυγής ανάστροφης κάθετου: μπορείτε να χρησιμοποιήσετε μία κατηγορία χαρακτήρων: <code>[.]</code>, <code>[$]</code>, <code>[|]</code>, …, όπου όλα ταιριάζουν με τις σταθερές τιμές.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="st">"a.c"</span>, <span class="st">"a*c"</span>, <span class="st">"a c"</span><span class="op">)</span>, <span class="st">"a[.]c"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [2] │ &lt;a.c&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="st">"a.c"</span>, <span class="st">"a*c"</span>, <span class="st">"a c"</span><span class="op">)</span>, <span class="st">".[*]c"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [3] │ &lt;a*c&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="αγκιστρώσεις" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="αγκιστρώσεις">
+<span class="header-section-number">15.4.2</span> Αγκιστρώσεις</h3>
+<p>Από προεπιλογή, οι κανονικές εκφράσεις θα ταιριάζουν με οποιοδήποτε μέρος μιας συμβολοσειράς. Εάν θέλετε να ταιριάξετε στην αρχή ή στο τέλος, πρέπει να <strong>αγκιστρώσετε</strong> την κανονική έκφραση χρησιμοποιώντας το <code>^</code> για να ταιριάζει με την αρχή, ή το <code>$</code> για να ταιριάζει με το τέλος:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;a&gt;pple</span></span>
+<span><span class="co">#&gt; [2] │ &lt;a&gt;pricot</span></span>
+<span><span class="co">#&gt; [3] │ &lt;a&gt;vocado</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a$"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [4] │ banan&lt;a&gt;</span></span>
+<span><span class="co">#&gt; [15] │ cherimoy&lt;a&gt;</span></span>
+<span><span class="co">#&gt; [30] │ feijo&lt;a&gt;</span></span>
+<span><span class="co">#&gt; [36] │ guav&lt;a&gt;</span></span>
+<span><span class="co">#&gt; [56] │ papay&lt;a&gt;</span></span>
+<span><span class="co">#&gt; [74] │ satsum&lt;a&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Είναι δελεαστικό να πιστεύουμε ότι το <code>$</code> πρέπει να ταιριάζει με την αρχή μιας συμβολοσειράς, γιατί έτσι συμβολίζουμε ποσά σε δολάρια, αλλά δεν είναι αυτός ο τρόπος που λειτουργούν οι κανονικές εκφράσεις.</p>
+<p>Για να αναγκάσετε μία κανονική έκφραση να ταιριάζει μόνο με την πλήρη συμβολοσειρά, αγκιστρώστε την και με το <code>^</code> και με το <code>$</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"apple"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] │ &lt;apple&gt;</span></span>
+<span><span class="co">#&gt; [62] │ pine&lt;apple&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^apple$"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;apple&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορείτε επίσης να αντιστοιχίσετε το όριο μεταξύ των λέξεων (δηλαδή την αρχή ή το τέλος μιας λέξης) με <code>\b</code>. Αυτό μπορεί να είναι ιδιαίτερα χρήσιμο όταν χρησιμοποιείτε το εργαλείο εύρεσης και αντικατάστασης του RStudio. Για παράδειγμα, για να βρείτε όλες τις χρήσεις της <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>, μπορείτε να αναζητήσετε <code>\bsum\b</code> για να αποφύγετε την αντιστοίχιση με τα <code>summarize</code>, <code>summary</code>, <code>rowsum</code> και ούτω καθεξής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"summary(x)"</span>, <span class="st">"summarize(df)"</span>, <span class="st">"rowsum(x)"</span>, <span class="st">"sum(x)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sum"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;sum&gt;mary(x)</span></span>
+<span><span class="co">#&gt; [2] │ &lt;sum&gt;marize(df)</span></span>
+<span><span class="co">#&gt; [3] │ row&lt;sum&gt;(x)</span></span>
+<span><span class="co">#&gt; [4] │ &lt;sum&gt;(x)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\bsum\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [4] │ &lt;sum&gt;(x)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Όταν χρησιμοποιούνται μόνες τους, οι αγκιστρώσεις θα παράγουν μία αντιστοίχιση μηδενικού πλάτους:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"$"</span>, <span class="st">"^"</span>, <span class="st">"\\b"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ abc&lt;&gt;</span></span>
+<span><span class="co">#&gt; [2] │ &lt;&gt;abc</span></span>
+<span><span class="co">#&gt; [3] │ &lt;&gt;abc&lt;&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αυτό σας βοηθά να κατανοήσετε τι συμβαίνει όταν αντικαθιστάτε μία αυτόνομη αγκίστρωση:</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"$"</span>, <span class="st">"^"</span>, <span class="st">"\\b"</span><span class="op">)</span>, <span class="st">"--"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "abc--"   "--abc"   "--abc--"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="κατηγορίες-χαρακτήρων" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="κατηγορίες-χαρακτήρων">
+<span class="header-section-number">15.4.3</span> Κατηγορίες χαρακτήρων</h3>
+<p>Μία <strong>κατηγορία χαρακτήρων</strong> ή <strong>σύνολο χαρακτήρων</strong>, σας επιτρέπει να αντιστοιχίσετε οποιονδήποτε χαρακτήρα σε ένα σύνολο. Όπως συζητήσαμε παραπάνω, μπορείτε να δημιουργήσετε τα δικά σας σύνολα με το <code>[]</code>, όπου το <code>[abc]</code> ταιριάζει με τα “a”, “b” ή “c”, και το <code>[^abc]</code> ταιριάζει με οποιονδήποτε χαρακτήρα εκτός από το “a” , “b” ή “c”. Εκτός από το <code>^</code>, υπάρχουν δύο άλλοι χαρακτήρες που έχουν ιδιαίτερη σημασία μέσα στο <code>[]:</code></p>
+<ul>
+<li>Το <code>-</code> ορίζει ένα εύρος, π.χ., το <code>[a-z]</code> αντιστοιχεί σε οποιοδήποτε πεζό γράμμα και το <code>[0-9]</code> αντιστοιχεί σε οποιονδήποτε αριθμό.</li>
+<li>Το <code>\</code> διαφεύγει ειδικούς χαρακτήρες, επομένως το <code>[\^\-\]]</code> ταιριάζει με τα <code>^</code>, <code>-</code> ή <code>]</code>.</li>
+</ul>
+<p>Ακολουθούν μερικά παραδείγματα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"abcd ABCD 12345 -!@#%."</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[abc]+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;abc&gt;d ABCD 12345 -!@#%.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[a-z]+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;abcd&gt; ABCD 12345 -!@#%.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[^a-z0-9]+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ abcd&lt; ABCD &gt;12345&lt; -!@#%.&gt;</span></span>
+<span></span>
+<span><span class="co"># You need an escape to match characters that are otherwise</span></span>
+<span><span class="co"># special inside of []</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"a-b-c"</span>, <span class="st">"[a-c]"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;a&gt;-&lt;b&gt;-&lt;c&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"a-b-c"</span>, <span class="st">"[a\\-c]"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;a&gt;&lt;-&gt;b&lt;-&gt;&lt;c&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ορισμένες κατηγορίες χαρακτήρων χρησιμοποιούνται τόσο συχνά που έχουν τη δική τους συντόμευση. Έχετε ήδη δει το <code>.</code>, το οποίο ταιριάζει με οποιονδήποτε χαρακτήρα εκτός από μία νέα γραμμή. Υπάρχουν άλλα τρία ιδιαίτερα χρήσιμα ζεύγη<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>:</p>
+<ul>
+<li>Το <code>\d</code> αντιστοιχεί σε οποιοδήποτε ψηφίο. Το <code>\D</code> αντιστοιχεί σε οτιδήποτε δεν είναι ψηφίο.</li>
+<li>Το <code>\s</code> αντιστοιχεί σε οποιοδήποτε κενό διάστημα (π.χ. κενό, tab, νέα γραμμή). Το <code>\S</code> αντιστοιχεί σε οτιδήποτε δεν είναι κενό.</li>
+<li>Το <code>\w</code> ταιριάζει με οποιονδήποτε χαρακτήρα “λέξης”, π.χ. γράμματα και αριθμούς. Το <code>\W</code> αντιστοιχεί σε οποιονδήποτε χαρακτήρα “μη λέξης”.</li>
+</ul>
+<p>Ο παρακάτω κώδικας δείχνει τις έξι συντομεύσεις με μία επιλογή από γράμματα, αριθμούς και χαρακτήρες στίξης.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"abcd ABCD 12345 -!@#%."</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\d+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ abcd ABCD &lt;12345&gt; -!@#%.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\D+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;abcd ABCD &gt;12345&lt; -!@#%.&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\s+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ abcd&lt; &gt;ABCD&lt; &gt;12345&lt; &gt;-!@#%.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\S+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;abcd&gt; &lt;ABCD&gt; &lt;12345&gt; &lt;-!@#%.&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\w+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;abcd&gt; &lt;ABCD&gt; &lt;12345&gt; -!@#%.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\W+"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ abcd&lt; &gt;ABCD&lt; &gt;12345&lt; -!@#%.&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="sec-quantifiers" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="sec-quantifiers">
+<span class="header-section-number">15.4.4</span> Ποσοτικοί δείκτες</h3>
+<p>Οι <strong>ποσοτικοί δείκτες</strong> ελέγχουν πόσες φορές ταιριάζει ένα μοτίβο. Στην <a href="#sec-reg-basics"><span>Ενότητα&nbsp;15.2</span></a> μάθατε για το <code>?</code> (0 ή 1 αντιστοιχίσεις), το <code>+</code> (1 ή περισσότερες αντιστοιχίσεις) και το <code>*</code> (0 ή περισσότερες αντιστοιχίσεις). Για παράδειγμα, το <code>colou?r</code> θα ταιριάζει με την αμερικανική ή τη βρετανική ορθογραφία, το <code>\d+</code> θα ταιριάζει με ένα ή περισσότερα ψηφία και το <code>\s?</code> θα ταιριάζει προαιρετικά με ένα μόνο στοιχείο κενού διαστήματος. Μπορείτε επίσης να καθορίσετε τον αριθμό των αντιστοιχιών με ακρίβεια με το <code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code>:</p>
+<ul>
+<li>Το <code>{n}</code> αντιστοιχεί ακριβώς n φορές.</li>
+<li>Το <code>{n,}</code> αντιστοιχεί τουλάχιστον n φορές.</li>
+<li>Το <code>{n,m}</code> αντιστοιχεί μεταξύ n και m φορών.</li>
+</ul></section><section id="ιεραρχία-τελεστή-και-παρενθέσεις" class="level3" data-number="15.4.5"><h3 data-number="15.4.5" class="anchored" data-anchor-id="ιεραρχία-τελεστή-και-παρενθέσεις">
+<span class="header-section-number">15.4.5</span> Ιεραρχία τελεστή και παρενθέσεις</h3>
+<p>Με τι ταιριάζει το <code>ab+</code>;<br>
+Ταιριάζει με το “a” ακολουθούμενο από ένα ή περισσότερα “b”, ή με το “ab” που επαναλαμβάνεται πολλές φορές;<br>
+Με τι ταιριάζει το <code>^a|b$</code>;<br>
+Ταιριάζει με την πλήρη συμβολοσειρά a, την πλήρη συμβολοσειρά b, ή μήπως ταιριάζει με μία συμβολοσειρά που αρχίζει με a, ή μία συμβολοσειρά που τελειώνει με b;<br></p>
+<p>Η απάντηση σε αυτές τις ερωτήσεις καθορίζεται από την ιεραρχία του τελεστή, παρόμοια με τους κανόνες PEMDAS ή BEDMAS, που μπορεί να έχετε μάθει στο σχολείο. (Αυτό ισχυεί για την Αμερική. Στην Ελλάδα έχουμε απλά την προτεραιότητα των πράξεων). Γνωρίζετε ότι το <code>a + b * c</code> είναι ισοδύναμο με το <code>a + (b * c)</code>, κι όχι με το <code>(a + b) * c</code>, επειδή το <code>*</code> έχει μεγαλύτερη προτεραιότητα, και το <code>+</code> έχει χαμηλότερη προτεραιότητα: άρα υπολογίζετε το <code>*</code> (πολλαπλασιασμό) πριν από το <code>+</code> (πρόσθεση).</p>
+<p>Ομοίως, οι κανονικές εκφράσεις έχουν τους δικούς τους κανόνες προτεραιότητας: οι ποσοτικοί δείκτες έχουν υψηλή προτεραιότητα και η εναλλαγή έχει χαμηλή προτεραιότητα που σημαίνει ότι το <code>ab+</code> είναι ισοδύναμο με το <code>a(b+)</code> και το <code>^a|b$</code> είναι ισοδύναμο με το <code>(^a )|(b$)</code>. Όπως και με την άλγεβρα, μπορείτε να χρησιμοποιήσετε παρενθέσεις για να παρακάμψετε τη συνήθη σειρά. Αλλά σε αντίθεση με την άλγεβρα, στις κανονικές εκφράσεις, είναι απίθανο να θυμάστε τους κανόνες προτεραιότητας, γι’ αυτό μη διστάσετε να χρησιμοποιήσετε τις παρενθέσεις ελεύθερα.</p>
+</section><section id="ομαδοποίηση-και-αποτύπωση" class="level3" data-number="15.4.6"><h3 data-number="15.4.6" class="anchored" data-anchor-id="ομαδοποίηση-και-αποτύπωση">
+<span class="header-section-number">15.4.6</span> Ομαδοποίηση και αποτύπωση</h3>
+<p>Εκτός από την υπέρβαση της προτεραιότητας τελεστή, οι παρενθέσεις έχουν ένα άλλο σημαντικό αποτέλεσμα: δημιουργούν <strong>ομάδες καταγραφής</strong> που σας επιτρέπουν να χρησιμοποιείτε δευτερεύοντα στοιχεία της αντιστοίχισης.</p>
+<p>Ο πρώτος τρόπος για να χρησιμοποιήσετε μία ομάδα καταγραφής είναι να ανατρέξετε σε αυτήν μέσα σε μία αντιστοίχιση με την <strong>οπίσθια αναφορά</strong>: το <code>\1</code> αναφέρεται στην αντιστοίχιση που περιέχεται στην πρώτη παρένθεση, το <code>\2</code> στη δεύτερη παρένθεση και ούτω καθεξής. Για παράδειγμα, το ακόλουθο μοτίβο βρίσκει όλα τα φρούτα που έχουν ένα επαναλαμβανόμενο ζευγάρι γραμμάτων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"(..)\\1"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [4] │ b&lt;anan&gt;a</span></span>
+<span><span class="co">#&gt; [20] │ &lt;coco&gt;nut</span></span>
+<span><span class="co">#&gt; [22] │ &lt;cucu&gt;mber</span></span>
+<span><span class="co">#&gt; [41] │ &lt;juju&gt;be</span></span>
+<span><span class="co">#&gt; [56] │ &lt;papa&gt;ya</span></span>
+<span><span class="co">#&gt; [73] │ s&lt;alal&gt; berry</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Και αυτό βρίσκει όλες τις λέξεις που ξεκινούν και τελειώνουν με το ίδιο ζεύγος γραμμάτων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"^(..).*\\1$"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [152] │ &lt;church&gt;</span></span>
+<span><span class="co">#&gt; [217] │ &lt;decide&gt;</span></span>
+<span><span class="co">#&gt; [617] │ &lt;photograph&gt;</span></span>
+<span><span class="co">#&gt; [699] │ &lt;require&gt;</span></span>
+<span><span class="co">#&gt; [739] │ &lt;sense&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορείτε επίσης να χρησιμοποιήσετε οπίσθιες αναφορά στην <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace()</a></code>. Για παράδειγμα, αυτός ο κώδικας αλλάζει τη σειρά της δεύτερης και της τρίτης λέξης στο <code>sentences</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="st">"(\\w+) (\\w+) (\\w+)"</span>, <span class="st">"\\1 \\3 \\2"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ The canoe birch slid on the smooth planks.</span></span>
+<span><span class="co">#&gt; [2] │ Glue sheet the to the dark blue background.</span></span>
+<span><span class="co">#&gt; [3] │ It's to easy tell the depth of a well.</span></span>
+<span><span class="co">#&gt; [4] │ These a days chicken leg is a rare dish.</span></span>
+<span><span class="co">#&gt; [5] │ Rice often is served in round bowls.</span></span>
+<span><span class="co">#&gt; [6] │ The of juice lemons makes fine punch.</span></span>
+<span><span class="co">#&gt; ... and 714 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν θέλετε να εξάγετε τις αντιστοιχίσεις για κάθε ομάδα, μπορείτε να χρησιμοποιήσετε την <code><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match()</a></code>. Η <code><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match()</a></code> όμως επιστρέφει ένα μητρώο, επομένως δεν είναι ιδιαίτερα εύκολη στη χρήση της<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="st">"the (\\w+) (\\w+)"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]                [,2]     [,3]    </span></span>
+<span><span class="co">#&gt; [1,] "the smooth planks" "smooth" "planks"</span></span>
+<span><span class="co">#&gt; [2,] "the sheet to"      "sheet"  "to"    </span></span>
+<span><span class="co">#&gt; [3,] "the depth of"      "depth"  "of"    </span></span>
+<span><span class="co">#&gt; [4,] NA                  NA       NA      </span></span>
+<span><span class="co">#&gt; [5,] NA                  NA       NA      </span></span>
+<span><span class="co">#&gt; [6,] NA                  NA       NA</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα μπορούσατε όμως να το μετατρέψετε σε ένα tibble και να ονομάσετε τις στήλες κατάλληλα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="st">"the (\\w+) (\\w+)"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>.name_repair <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="st">"match"</span>, <span class="st">"word1"</span>, <span class="st">"word2"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 720 × 3</span></span>
+<span><span class="co">#&gt;   match             word1  word2 </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 the smooth planks smooth planks</span></span>
+<span><span class="co">#&gt; 2 the sheet to      sheet  to    </span></span>
+<span><span class="co">#&gt; 3 the depth of      depth  of    </span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt;              &lt;NA&gt;   &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; 5 &lt;NA&gt;              &lt;NA&gt;   &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; 6 &lt;NA&gt;              &lt;NA&gt;   &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; # ℹ 714 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Στην ουσία έχετε δημιουργήσει ξανά τη δική σας έκδοση της <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code>. Πράγματι, στο παρασκήνιο, η <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code> μετατρέπει το διάνυσμα των μοτίβων σας σε μία ενιαία κανονική έκφραση που χρησιμοποιεί ομαδοποίηση για την καταγραφή των ονομαζόμενων στοιχείων.</p>
+<p>Περιστασιακά, θα θέλετε να χρησιμοποιήσετε παρενθέσεις χωρίς να δημιουργήσετε αντίστοιχες ομάδες. Μπορείτε να δημιουργήσετε μία ομάδα χωρίς καταγραφή με το <code>(?:)</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a gray cat"</span>, <span class="st">"a grey dog"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"gr(e|a)y"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]   [,2]</span></span>
+<span><span class="co">#&gt; [1,] "gray" "a" </span></span>
+<span><span class="co">#&gt; [2,] "grey" "e"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"gr(?:e|a)y"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]  </span></span>
+<span><span class="co">#&gt; [1,] "gray"</span></span>
+<span><span class="co">#&gt; [2,] "grey"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="ασκήσεις-1" class="level3" data-number="15.4.7"><h3 data-number="15.4.7" class="anchored" data-anchor-id="ασκήσεις-1">
+<span class="header-section-number">15.4.7</span> Ασκήσεις</h3>
+<ol type="1">
+<li><p>Πώς θα αντιστοιχίζατε με την σταθερή συμβολοσειρά <code>"'\</code>;<br>
+Πώς με την <code>"$^$"</code>;</p></li>
+<li><p>Εξηγήστε γιατί καθένα από αυτά τα μοτίβα δεν ταιριάζει με ένα <code>\</code>: <code>"\"</code>, <code>"\\"</code>, <code>"\\\"</code>.</p></li>
+<li>
+<p>Δεδομένου του κειμένου των κοινών λέξεων στο <code><a href="https://stringr.tidyverse.org/reference/stringr-data.html">stringr::words</a></code>, δημιουργήστε κανονικές εκφράσεις που βρίσκουν όλες τις λέξεις που:</p>
+<ol type="a">
+<li>Ξεκινούν με “y”.</li>
+<li>Δεν ξεκινούν με “y”.</li>
+<li>Τελειώνουν με “x”.</li>
+<li>Είναι ακριβώς τρία γράμματα. (Μην κλέψετε χρησιμοποιώντας την εύκολη λύση με την<code><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length()</a></code>!)</li>
+<li>Έχουν επτά γράμματα ή περισσότερα.</li>
+<li>Περιέχουν ένα ζεύγος φωνήεντος-σύμφωνου.</li>
+<li>Περιέχουν τουλάχιστον δύο ζεύγη φωνήεντος-συμφώνου στη σειρά.</li>
+<li>Αποτελούνται μόνο από επαναλαμβανόμενα ζεύγη φωνήεντος-συμφώνου.</li>
+</ol>
+</li>
+<li><p>Δημιουργήστε 11 κανονικές εκφράσεις που να ταιριάζουν με τη βρετανική ή την αμερικανική ορθογραφία για καθεμία από τις ακόλουθες λέξεις: airplane/aeroplane, aluminum/aluminium, analog/analogue, ass/arse, center/centre, defense/defence, donut/doughnut, gray/grey, modeling/modelling, skeptic/sceptic, summarize/summarise. Δοκιμάστε και κατασκευάστε το συντομότερο δυνατό regex!</p></li>
+<li><p>Αλλάξτε το πρώτο και το τελευταίο γράμμα στο <code>words</code>. Ποιες από αυτές τις συμβολοσειρές είναι ακόμα στο <code>words</code>;</p></li>
+<li>
+<p>Περιγράψτε με λέξεις τι ταιριάζουν οι ακόλουθες κανονικές εκφράσεις: (Διαβάστε προσεκτικά για να δείτε αν κάθε καταχώρηση είναι μία κανονική έκφραση ή μία συμβολοσειρά που ορίζει μία κανονική έκφραση.)</p>
+<ol type="a">
+<li><code>^.*$</code></li>
+<li><code>"\\{.+\\}"</code></li>
+<li><code>\d{4}-\d{2}-\d{2}</code></li>
+<li><code>"\\\\{4}"</code></li>
+<li><code>\..\..\..</code></li>
+<li><code>(.)\1\1</code></li>
+<li><code>"(..)\\1"</code></li>
+</ol>
+</li>
+<li><p>Λύστε τα σταυρόλεξα για αρχάριους regexp στη διεύθυνση <a href="https://regexcrossword.com/challenges/beginner" class="uri">https://regexcrossword.com/challenges/beginner</a>.</p></li>
+</ol></section></section><section id="έλεγχος-μοτίβων" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="έλεγχος-μοτίβων">
+<span class="header-section-number">15.5</span> Έλεγχος μοτίβων</h2>
+<p>Είναι εφικτό να ασκήσετε επιπλέον έλεγχο στις λεπτομέρειες της αντιστοίχισης χρησιμοποιώντας ένα αντικείμενο μοτίβου αντί απλώς μία συμβολοσειρά. Αυτό σας επιτρέπει να ελέγχετε τους λεγόμενους δείκτες regex και να ταιριάζετε διάφορους τύπους σταθερών συμβολοσειρών, όπως περιγράφεται παρακάτω.</p>
+<section id="sec-flags" class="level3" data-number="15.5.1"><h3 data-number="15.5.1" class="anchored" data-anchor-id="sec-flags">
+<span class="header-section-number">15.5.1</span> Δείκτες regex</h3>
+<p>Υπάρχει ένας αριθμός ρυθμίσεων που μπορούν να χρησιμοποιηθούν για τον έλεγχο των λεπτομερειών του regexp. Αυτές οι ρυθμίσεις ονομάζονται συχνά <strong>δείκτες</strong> σε άλλες γλώσσες προγραμματισμού. Στο πακέτο stringr, μπορείτε να τα χρησιμοποιήσετε ενθυλακώνοντας το μοτίβο σε μία κλήση της <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code>. Ο πιο χρήσιμος δείκτης είναι πιθανώς το <code>ignore_case = TRUE</code>, επειδή επιτρέπει στους χαρακτήρες να ταιριάζουν είτε με κεφαλαία είτε με πεζά γράμματα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bananas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"banana"</span>, <span class="st">"Banana"</span>, <span class="st">"BANANA"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">bananas</span>, <span class="st">"banana"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;banana&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">bananas</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"banana"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;banana&gt;</span></span>
+<span><span class="co">#&gt; [2] │ &lt;Banana&gt;</span></span>
+<span><span class="co">#&gt; [3] │ &lt;BANANA&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν δουλεύετε αρκετά με συμβολοσειρές πολλαπλών γραμμών (δηλαδή συμβολοσειρές που περιέχουν <code>\n</code>), το <code>dotall</code> και το <code>multiline</code> μπορούν επίσης να είναι χρήσιμα:</p>
+<ul>
+<li>
+<p>Το <code>dotall = TRUE</code> επιτρέπει στο <code>.</code> να ταιριάζει με τα πάντα, συμπεριλαμβανομένου του <code>\n</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"Line 1\nLine 2\nLine 3"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">".Line"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">".Line"</span>, dotall <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ Line 1&lt;</span></span>
+<span><span class="co">#&gt;     │ Line&gt; 2&lt;</span></span>
+<span><span class="co">#&gt;     │ Line&gt; 3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>Το <code>multiline = TRUE</code> κάνει τα <code>^</code> και <code>$</code> να ταιριάζουν με την αρχή και το τέλος κάθε γραμμής αντί για την αρχή και το τέλος της πλήρους συμβολοσειράς:</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"Line 1\nLine 2\nLine 3"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^Line"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;Line&gt; 1</span></span>
+<span><span class="co">#&gt;     │ Line 2</span></span>
+<span><span class="co">#&gt;     │ Line 3</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"^Line"</span>, multiline <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;Line&gt; 1</span></span>
+<span><span class="co">#&gt;     │ &lt;Line&gt; 2</span></span>
+<span><span class="co">#&gt;     │ &lt;Line&gt; 3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+<p>Τέλος, εάν γράφετε μία περίπλοκη κανονική έκφραση και ανησυχείτε ότι μπορεί να μην την καταλάβετε στο μέλλον, μπορείτε να δοκιμάσετε το <code>comments = TRUE</code>. Προσαρμόζει τη γλώσσα του μοτίβου ώστε να αγνοεί τα κενά και τις νέες γραμμές, καθώς και τα πάντα μετά το <code>#</code>. Αυτό σας επιτρέπει να χρησιμοποιείτε σχόλια και κενά διαστήματα για να κάνετε πιο κατανοητές σύνθετες κανονικές εκφράσεις<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, όπως στο ακόλουθο παράδειγμα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span></span>
+<span>  <span class="st">r"(</span></span>
+<span><span class="st">    \(?     # optional opening parens</span></span>
+<span><span class="st">    (\d{3}) # area code</span></span>
+<span><span class="st">    [)\-]?  # optional closing parens or dash</span></span>
+<span><span class="st">    \ ?     # optional space</span></span>
+<span><span class="st">    (\d{3}) # another three numbers</span></span>
+<span><span class="st">    [\ -]?  # optional space or dash</span></span>
+<span><span class="st">    (\d{4}) # four more numbers</span></span>
+<span><span class="st">  )"</span>, </span>
+<span>  comments <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_extract.html">str_extract</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"514-791-8141"</span>, <span class="st">"(123) 456 7890"</span>, <span class="st">"123456"</span><span class="op">)</span>, <span class="va">phone</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "514-791-8141"   "(123) 456 7890" NA</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν χρησιμοποιείτε σχόλια και θέλετε να αντιστοιχίσετε ένα κενό διάστημα, μία νέα γραμμή ή ένα <code>#</code>, θα πρέπει να τα διαφύγετε με το <code>\</code>.</p>
+</section><section id="σταθερές-αντιστοιχίσεις" class="level3" data-number="15.5.2"><h3 data-number="15.5.2" class="anchored" data-anchor-id="σταθερές-αντιστοιχίσεις">
+<span class="header-section-number">15.5.2</span> Σταθερές αντιστοιχίσεις</h3>
+<p>Μπορείτε να επιλέξετε να μην χρησιμοποιήσετε κανονικές εκφράσεις με το <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"a"</span>, <span class="st">"."</span><span class="op">)</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [3] │ &lt;.&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Το <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code> σας δίνει επίσης τη δυνατότητα να αγνοήσετε πεζά και κεφαλαία:</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"x X"</span>, <span class="st">"X"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ x &lt;X&gt;</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"x X"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="st">"X"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;x&gt; &lt;X&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν εργάζεστε με μη αγγλικό κείμενο, πιθανότατα θα θέλετε το <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll()</a></code> αντί για το <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>, καθώς εφαρμόζει τους πλήρεις κανόνες για τη χρήση κεφαλαίων, όπως χρησιμοποιείται από τις <code>τοπικές ρυθμίσεις γλώσσας</code> που καθορίζετε. Δείτε την <a href="strings.html#sec-other-languages"><span>Ενότητα&nbsp;14.6</span></a> για περισσότερες λεπτομέρειες σχετικά με τις τοπικές ρυθμίσεις γλώσσας.</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"i İ ı I"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="st">"İ"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ i &lt;İ&gt; ı I</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"i İ ı I"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">coll</a></span><span class="op">(</span><span class="st">"İ"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span>, locale <span class="op">=</span> <span class="st">"tr"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ &lt;i&gt; &lt;İ&gt; ı I</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="εξάσκηση" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="εξάσκηση">
+<span class="header-section-number">15.6</span> Εξάσκηση</h2>
+<p>Για να εφαρμόσουμε αυτές τις ιδέες θα λύσουμε στη συνέχεια μερικά ημι-αυθεντικά προβλήματα. Θα συζητήσουμε τρεις γενικές τεχνικές:</p>
+<ol type="1">
+<li>Έλεγχος της εργασία σας δημιουργώντας απλούς θετικούς και αρνητικούς ελέγχους.</li>
+<li>Συνδυασμός κανονικών εκφράσεων με άλγεβρα Boole.</li>
+<li>Δημιουργία σύνθετων μοτίβων χρησιμοποιώντας με τον χειρισμό συμβολοσειρών.</li>
+</ol>
+<section id="ελέγξτε-την-εργασία-σας" class="level3" data-number="15.6.1"><h3 data-number="15.6.1" class="anchored" data-anchor-id="ελέγξτε-την-εργασία-σας">
+<span class="header-section-number">15.6.1</span> Ελέγξτε την εργασία σας</h3>
+<p>Αρχικά, ας βρούμε όλες τις προτάσεις που ξεκινούν με “The”. Η χρήση του αγκίστρου <code>^</code> από μόνο του δεν αρκεί:</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^The"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] │ &lt;The&gt; birch canoe slid on the smooth planks.</span></span>
+<span><span class="co">#&gt;  [4] │ &lt;The&gt;se days a chicken leg is a rare dish.</span></span>
+<span><span class="co">#&gt;  [6] │ &lt;The&gt; juice of lemons makes fine punch.</span></span>
+<span><span class="co">#&gt;  [7] │ &lt;The&gt; box was thrown beside the parked truck.</span></span>
+<span><span class="co">#&gt;  [8] │ &lt;The&gt; hogs were fed chopped corn and garbage.</span></span>
+<span><span class="co">#&gt; [11] │ &lt;The&gt; boy was there when the sun rose.</span></span>
+<span><span class="co">#&gt; ... and 271 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Επειδή αυτό το μοτίβο ταιριάζει επίσης με προτάσεις που ξεκινούν με λέξεις όπως <code>They</code> ή <code>These</code>. Πρέπει να βεβαιωθούμε ότι το “e” είναι το τελευταίο γράμμα της λέξης, το οποίο μπορούμε να κάνουμε προσθέτοντας ένα όριο λέξης:</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^The\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] │ &lt;The&gt; birch canoe slid on the smooth planks.</span></span>
+<span><span class="co">#&gt;  [6] │ &lt;The&gt; juice of lemons makes fine punch.</span></span>
+<span><span class="co">#&gt;  [7] │ &lt;The&gt; box was thrown beside the parked truck.</span></span>
+<span><span class="co">#&gt;  [8] │ &lt;The&gt; hogs were fed chopped corn and garbage.</span></span>
+<span><span class="co">#&gt; [11] │ &lt;The&gt; boy was there when the sun rose.</span></span>
+<span><span class="co">#&gt; [13] │ &lt;The&gt; source of the huge river is the clear spring.</span></span>
+<span><span class="co">#&gt; ... and 250 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τι γίνεται με την εύρεση όλων των προτάσεων που ξεκινούν με μία αντωνυμία;</p>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^She|He|It|They\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [3] │ &lt;It&gt;'s easy to tell the depth of a well.</span></span>
+<span><span class="co">#&gt; [15] │ &lt;He&gt;lp the woman get back to her feet.</span></span>
+<span><span class="co">#&gt; [27] │ &lt;He&gt;r purse was full of useless trash.</span></span>
+<span><span class="co">#&gt; [29] │ &lt;It&gt; snowed, rained, and hailed the same morning.</span></span>
+<span><span class="co">#&gt; [63] │ &lt;He&gt; ran half way to the hardware store.</span></span>
+<span><span class="co">#&gt; [90] │ &lt;He&gt; lay prone and hardly moved a limb.</span></span>
+<span><span class="co">#&gt; ... and 57 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μία γρήγορη επιθεώρηση των αποτελεσμάτων δείχνει ότι παίρνουμε κάποιες λάθος αντιστοιχίσεις. Αυτό συμβαίνει επειδή έχουμε ξεχάσει να χρησιμοποιήσουμε παρενθέσεις:</p>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^(She|He|It|They)\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [3] │ &lt;It&gt;'s easy to tell the depth of a well.</span></span>
+<span><span class="co">#&gt;  [29] │ &lt;It&gt; snowed, rained, and hailed the same morning.</span></span>
+<span><span class="co">#&gt;  [63] │ &lt;He&gt; ran half way to the hardware store.</span></span>
+<span><span class="co">#&gt;  [90] │ &lt;He&gt; lay prone and hardly moved a limb.</span></span>
+<span><span class="co">#&gt; [116] │ &lt;He&gt; ordered peach pie with ice cream.</span></span>
+<span><span class="co">#&gt; [127] │ &lt;It&gt; caught its hind paw in a rusty trap.</span></span>
+<span><span class="co">#&gt; ... and 51 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ίσως αναρωτιέστε πώς θα μπορούσατε να εντοπίσετε ένα τέτοιο λάθος αν δεν συνέβαινε στις πρώτες αντιστοιχίσεις. Μία καλή τεχνική είναι να δημιουργήσετε μερικές θετικές και αρνητικές αντιστοιχίσεις και να τις χρησιμοποιήσετε για να ελέγξετε ότι το μοτίβο σας λειτουργεί όπως αναμένεται:</p>
+<div class="cell">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"He is a boy"</span>, <span class="st">"She had a good time"</span><span class="op">)</span></span>
+<span><span class="va">neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Shells come from the sea"</span>, <span class="st">"Hadley said 'It's a great day'"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"^(She|He|It|They)\\b"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">pos</span>, <span class="va">pattern</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE TRUE</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">neg</span>, <span class="va">pattern</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE FALSE</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Συνήθως είναι πολύ πιο εύκολο να βρείτε καλά θετικά παραδείγματα, παρά αρνητικά, μιας και χρειάζεται χρόνος για να είστε αρκετά καλοί με τις κανονικές εκφράσεις, έτσι ώστε να προβλέψετε πού βρίσκονται οι αδυναμίες σας. Ωστόσο, εξακολουθούν να είναι χρήσιμα: καθώς εργάζεστε πάνω στο πρόβλημα, μπορείτε σιγά-σιγά να συγκεντρώσετε μία συλλογή από τα λάθη σας, διασφαλίζοντας ότι δεν θα κάνετε ποτέ το ίδιο λάθος δύο φορές.</p>
+</section><section id="sec-boolean-operations" class="level3" data-number="15.6.2"><h3 data-number="15.6.2" class="anchored" data-anchor-id="sec-boolean-operations">
+<span class="header-section-number">15.6.2</span> Boolean λειτουργίες</h3>
+<p>Φανταστείτε ότι θέλουμε να βρούμε λέξεις που περιέχουν μόνο σύμφωνα. Μία τεχνική είναι να δημιουργήσετε μία κατηγορία χαρακτήρων που περιέχει όλα τα γράμματα εκτός από τα φωνήεντα (<code>[^aeiou]</code>), στη συνέχεια να επιτρέψετε να ταιριάζει με οποιονδήποτε αριθμό γραμμάτων (<code>[^aeiou]+</code>) και στη συνέχεια να την αναγκάσετε να ταιριάζει με ολόκληρη τη συμβολοσειρά αγκιστρώνοντας στην αρχή και στο τέλος (<code>^[^aeiou]+$</code>):</p>
+<div class="cell">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"^[^aeiou]+$"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [123] │ &lt;by&gt;</span></span>
+<span><span class="co">#&gt; [249] │ &lt;dry&gt;</span></span>
+<span><span class="co">#&gt; [328] │ &lt;fly&gt;</span></span>
+<span><span class="co">#&gt; [538] │ &lt;mrs&gt;</span></span>
+<span><span class="co">#&gt; [895] │ &lt;try&gt;</span></span>
+<span><span class="co">#&gt; [952] │ &lt;why&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορείτε όμως να κάνετε αυτό το πρόβλημα λίγο πιο εύκολο αναστρέφοντάς το. Αντί να αναζητούμε λέξεις που περιέχουν μόνο σύμφωνα, θα μπορούσαμε να αναζητήσουμε λέξεις που δεν περιέχουν φωνήεντα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"[aeiou]"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ by</span></span>
+<span><span class="co">#&gt; [2] │ dry</span></span>
+<span><span class="co">#&gt; [3] │ fly</span></span>
+<span><span class="co">#&gt; [4] │ mrs</span></span>
+<span><span class="co">#&gt; [5] │ try</span></span>
+<span><span class="co">#&gt; [6] │ why</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αυτή είναι μία χρήσιμη τεχνική για κάθε φορά που έχετε να κάνετε με λογικούς συνδυασμούς, ιδιαίτερα αυτούς που περιλαμβάνουν “και” ή “όχι”. Για παράδειγμα, φανταστείτε ότι θέλετε να βρείτε όλες τις λέξεις που περιέχουν “a” και “b”. Δεν υπάρχει ενσωματωμένος τελεστής “και” στις κανονικές εκφράσεις, επομένως πρέπει να το αντιμετωπίσουμε αναζητώντας όλες τις λέξεις που περιέχουν ένα “a” ακολουθούμενο από ένα “b”, ή ένα “b” ακολουθούμενο από ένα “a”:</p>
+<div class="cell">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a.*b|b.*a"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [2] │ &lt;ab&gt;le</span></span>
+<span><span class="co">#&gt;  [3] │ &lt;ab&gt;out</span></span>
+<span><span class="co">#&gt;  [4] │ &lt;ab&gt;solute</span></span>
+<span><span class="co">#&gt; [62] │ &lt;availab&gt;le</span></span>
+<span><span class="co">#&gt; [66] │ &lt;ba&gt;by</span></span>
+<span><span class="co">#&gt; [67] │ &lt;ba&gt;ck</span></span>
+<span><span class="co">#&gt; ... and 24 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Είναι πιο απλό να συνδυάσετε τα αποτελέσματα δύο κλήσεων στην <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] "able"      "about"     "absolute"  "available" "baby"      "back"     </span></span>
+<span><span class="co">#&gt;  [7] "bad"       "bag"       "balance"   "ball"      "bank"      "bar"      </span></span>
+<span><span class="co">#&gt; [13] "base"      "basis"     "bear"      "beat"      "beauty"    "because"  </span></span>
+<span><span class="co">#&gt; [19] "black"     "board"     "boat"      "break"     "brilliant" "britain"  </span></span>
+<span><span class="co">#&gt; [25] "debate"    "husband"   "labour"    "maybe"     "probable"  "table"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τι θα γινόταν αν θέλαμε να δούμε αν υπάρχει μία λέξη που περιέχει όλα τα φωνήεντα;&nbsp; Αν το κάναμε με μοτίβα θα έπρεπε να δημιουργήσουμε 5! διαφορετικά μοτίβα, δηλαδή 120 διαφορετικά μοτίβα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a.*e.*i.*o.*u"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co"># ...</span></span>
+<span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"u.*o.*i.*e.*a"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Είναι πολύ πιο απλό να συνδυάσετε πέντε κλήσεις της <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"e"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"i"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"o"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"u"</span><span class="op">)</span></span>
+<span><span class="op">]</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Γενικά, αν κολλήσετε προσπαθώντας να δημιουργήσετε ένα ενιαίο regexp που λύνει το πρόβλημά σας, κάντε ένα βήμα πίσω και σκεφτείτε αν θα μπορούσατε να σπάσετε το πρόβλημα σε μικρότερα κομμάτια, λύνοντας κάθε πτυχή πριν προχωρήσετε στην επόμενη.</p>
+</section><section id="δημιουργία-μοτίβου-με-κώδικα" class="level3" data-number="15.6.3"><h3 data-number="15.6.3" class="anchored" data-anchor-id="δημιουργία-μοτίβου-με-κώδικα">
+<span class="header-section-number">15.6.3</span> Δημιουργία μοτίβου με κώδικα</h3>
+<p>Τι θα γινόταν αν θέλαμε να βρούμε όλες τις προτάσεις (<code>sentences</code>) που αναφέρουν ένα χρώμα;<br>
+Η βασική ιδέα είναι απλή: απλώς συνδυάζουμε την εναλλαγή με τα όρια λέξεων.</p>
+<div class="cell">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"\\b(red|green|blue)\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [2] │ Glue the sheet to the dark &lt;blue&gt; background.</span></span>
+<span><span class="co">#&gt;  [26] │ Two &lt;blue&gt; fish swam in the tank.</span></span>
+<span><span class="co">#&gt;  [92] │ A wisp of cloud hung in the &lt;blue&gt; air.</span></span>
+<span><span class="co">#&gt; [148] │ The spot on the blotter was made by &lt;green&gt; ink.</span></span>
+<span><span class="co">#&gt; [160] │ The sofa cushion is &lt;red&gt; and of light weight.</span></span>
+<span><span class="co">#&gt; [174] │ The sky that morning was clear and bright &lt;blue&gt;.</span></span>
+<span><span class="co">#&gt; ... and 20 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αλλά καθώς ο αριθμός των χρωμάτων αυξάνεται, το να κατασκευάσετε αυτό το μοτίβο με το χέρι θα γινόταν γρήγορα κουραστικό. Δεν θα ήταν ωραίο αν μπορούσαμε να αποθηκεύσουμε τα χρώματα σε ένα διάνυσμα;</p>
+<div class="cell">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Λοιπόν, μπορούμε! Απλώς θα χρειαστεί να δημιουργήσουμε το μοτίβο από το διάνυσμα χρησιμοποιώντας την <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> και την <code><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"\\b("</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="va">rgb</span>, <span class="st">"|"</span><span class="op">)</span>, <span class="st">")\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "\\b(red|green|blue)\\b"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα μπορούσαμε να κάνουμε αυτό το μοτίβο ακόμη πιο ολοκληρωμένο αν είχαμε μία καλή λίστα χρωμάτων. Ένα μέρος από το οποίο θα μπορούσαμε να ξεκινήσουμε είναι η λίστα των ενσωματωμένων χρωμάτων που μπορεί να χρησιμοποιήσει η R για γραφικά:</p>
+<div class="cell">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html">colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ white</span></span>
+<span><span class="co">#&gt; [2] │ aliceblue</span></span>
+<span><span class="co">#&gt; [3] │ antiquewhite</span></span>
+<span><span class="co">#&gt; [4] │ antiquewhite1</span></span>
+<span><span class="co">#&gt; [5] │ antiquewhite2</span></span>
+<span><span class="co">#&gt; [6] │ antiquewhite3</span></span>
+<span><span class="co">#&gt; ... and 651 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ας εξαλείψουμε όμως πρώτα τις αριθμημένες παραλλαγές:</p>
+<div class="cell">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html">colors</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="va">cols</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">cols</span>, <span class="st">"\\d"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] │ white</span></span>
+<span><span class="co">#&gt; [2] │ aliceblue</span></span>
+<span><span class="co">#&gt; [3] │ antiquewhite</span></span>
+<span><span class="co">#&gt; [4] │ aquamarine</span></span>
+<span><span class="co">#&gt; [5] │ azure</span></span>
+<span><span class="co">#&gt; [6] │ beige</span></span>
+<span><span class="co">#&gt; ... and 137 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τότε μπορούμε να το μετατρέψουμε σε ένα μεγάλο μοτίβο. Δεν θα δείξουμε το μοτίβο εδώ επειδή είναι μεγάλο, αλλά μπορείτε να το δείτε να λειτουργεί:</p>
+<div class="cell">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"\\b("</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="va">cols</span>, <span class="st">"|"</span><span class="op">)</span>, <span class="st">")\\b"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="va">pattern</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [2] │ Glue the sheet to the dark &lt;blue&gt; background.</span></span>
+<span><span class="co">#&gt;  [12] │ A rod is used to catch &lt;pink&gt; &lt;salmon&gt;.</span></span>
+<span><span class="co">#&gt;  [26] │ Two &lt;blue&gt; fish swam in the tank.</span></span>
+<span><span class="co">#&gt;  [66] │ Cars and busses stalled in &lt;snow&gt; drifts.</span></span>
+<span><span class="co">#&gt;  [92] │ A wisp of cloud hung in the &lt;blue&gt; air.</span></span>
+<span><span class="co">#&gt; [112] │ Leaves turn &lt;brown&gt; and &lt;yellow&gt; in the fall.</span></span>
+<span><span class="co">#&gt; ... and 57 more</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Σε αυτό το παράδειγμα, το <code>cols</code> περιέχει μόνο αριθμούς και γράμματα, επομένως δεν χρειάζεται να ανησυχείτε για μεταχαρακτήρες. Γενικά όμως, κάθε φορά που δημιουργείτε μοτίβα από υπάρχουσες συμβολοσειρές, είναι καλό να τα περνάτε μέσα από την <code><a href="https://stringr.tidyverse.org/reference/str_escape.html">str_escape()</a></code> για να διασφαλίσετε ότι ταιριάζουν κυριολεκτικά.</p>
+</section><section id="ασκήσεις-2" class="level3" data-number="15.6.4"><h3 data-number="15.6.4" class="anchored" data-anchor-id="ασκήσεις-2">
+<span class="header-section-number">15.6.4</span> Ασκήσεις</h3>
+<ol type="1">
+<li>
+<p>Για καθεμία από τις παρακάτω προκλήσεις, δοκιμάστε να την λύσετε χρησιμοποιώντας τόσο μία απλή κανονική έκφραση όσο και έναν συνδυασμό πολλαπλών κλήσεων της <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>.</p>
+<ol type="a">
+<li>Βρείτε όλες τις λέξεις (<code>words</code>) που ξεκινούν ή τελειώνουν με <code>x</code>.</li>
+<li>Βρείτε όλες τις λέξεις που ξεκινούν από φωνήεν και τελειώνουν σε σύμφωνο.</li>
+<li>Υπάρχουν λέξεις που περιέχουν τουλάχιστον ένα από κάθε διαφορετικό φωνήεν;</li>
+</ol>
+</li>
+<li><p>Κατασκευάστε μοτίβα για να βρείτε στοιχεία υπέρ και κατά του κανόνα “i πριν από e εκτός από το c”.</p></li>
+<li><p>H <code><a href="https://rdrr.io/r/grDevices/colors.html">colors()</a></code> περιέχει έναν αριθμό τροποποιητών, όπως “lightgray” και “darkblue”. Πώς θα μπορούσατε να αναγνωρίσετε αυτόματα αυτούς τους τροποποιητές;<br>
+(Σκεφτείτε πώς μπορείτε να εντοπίσετε και, στη συνέχεια, αφαιρέστε τα χρώματα που έχουν τροποποιηθεί).</p></li>
+<li><p>Δημιουργήστε μία κανονική έκφραση που βρίσκει οποιοδήποτε βασικό σύνολο δεδομένων της R. Μπορείτε να λάβετε μία λίστα με αυτά τα σύνολα δεδομένων μέσω μιας ειδικής χρήσης της συνάρτησης <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code>: <code>data(package = "datasets")$results[, "Item"]</code>. Σημειώστε ότι ορισμένα παλιά σύνολα δεδομένων είναι μεμονωμένα διανύσματα. Αυτά περιέχουν το όνομα του ομαδοποιημένου “πλαισίου δεδομένων” σε παρένθεση, επομένως θα πρέπει να τα αφαιρέσετε.</p></li>
+</ol></section></section><section id="κανονικές-εκφράσεις-σε-άλλα-μέρη" class="level2" data-number="15.7"><h2 data-number="15.7" class="anchored" data-anchor-id="κανονικές-εκφράσεις-σε-άλλα-μέρη">
+<span class="header-section-number">15.7</span> Κανονικές εκφράσεις σε άλλα μέρη</h2>
+<p>Ακριβώς όπως και στις συναρτήσεις του πακέτου stringr και του πακέτου tidyr, υπάρχουν πολλά άλλα μέρη στην R όπου μπορείτε να χρησιμοποιήσετε κανονικές εκφράσεις. Οι ακόλουθες ενότητες περιγράφουν μερικές άλλες χρήσιμες λειτουργίες στο ευρύτερο tidyverse και στο βασικό πακέτο λειτουργιών της R.</p>
+<section id="tidyverse" class="level3" data-number="15.7.1"><h3 data-number="15.7.1" class="anchored" data-anchor-id="tidyverse">
+<span class="header-section-number">15.7.1</span> tidyverse</h3>
+<p>Υπάρχουν τρία άλλα ιδιαίτερα χρήσιμα μέρη όπου μπορεί να θέλετε να χρησιμοποιήσετε κανονικές εκφράσεις</p>
+<ul>
+<li><p>Η <code>match(pattern)</code> θα επιλέξει όλες τις μεταβλητές των οποίων το όνομα ταιριάζει με το παρεχόμενο μοτίβο. Είναι μία συνάρτηση που χρησιμοποιεί κανόνες “tidyselect” και μπορείτε να τη χρησιμοποιήσετε οπουδήποτε σε οποιαδήποτε συνάρτηση της tidyverse που επιλέγει μεταβλητές (π.χ. <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with()</a></code> και <code><a href="https://dplyr.tidyverse.org/reference/across.html">across()</a></code>).</p></li>
+<li><p>Το όρισμα <code>names_pattern</code> της <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> παίρνει ένα διάνυσμα κανονικών εκφράσεων, ακριβώς όπως και η <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_regex()</a></code>. Είναι χρήσιμο κατά την εξαγωγή δεδομένων από ονόματα μεταβλητών με σύνθετη δομή.</p></li>
+<li><p>Το όρισμα <code>delim</code> της <code><a href="https://tidyr.tidyverse.org/reference/separate_longer_delim.html">separate_longer_delim()</a></code> και της <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html">separate_wider_delim()</a></code> συνήθως ταιριάζει με μία σταθερή συμβολοσειρά, αλλά μπορείτε να χρησιμοποιήσετε την <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code> για να το κάνετε να ταιριάζει με ένα μοτίβο. Αυτό είναι χρήσιμο, για παράδειγμα, εάν θέλετε να ταιριάξετε ένα κόμμα που προαιρετικά ακολουθείται από ένα κενό, όπως για παράδειγμα με το <code>regex(", ?")</code>.</p></li>
+</ul></section><section id="βασικό-σύνολο-λειτουργιών-της-r" class="level3" data-number="15.7.2"><h3 data-number="15.7.2" class="anchored" data-anchor-id="βασικό-σύνολο-λειτουργιών-της-r">
+<span class="header-section-number">15.7.2</span> Βασικό σύνολο λειτουργιών της R</h3>
+<p>Η <code>apropos(pattern)</code> αναζητά όλα τα διαθέσιμα αντικείμενα από το περιβάλλον της R που ταιριάζουν με το συγκεκριμένο μοτίβο. Αυτό είναι χρήσιμο εάν δεν μπορείτε να θυμηθείτε το όνομα μιας συνάρτησης:</p>
+<div class="cell">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/apropos.html">apropos</a></span><span class="op">(</span><span class="st">"replace"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "%+replace%"       "replace"          "replace_na"      </span></span>
+<span><span class="co">#&gt; [4] "setReplaceMethod" "str_replace"      "str_replace_all" </span></span>
+<span><span class="co">#&gt; [7] "str_replace_na"   "theme_replace"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>H <code>list.files(path, pattern)</code> παραθέτει όλα τα αρχεία στο μονοπάτι <code>path</code> που ταιριάζουν με μία κανονική έκφραση <code>pattern</code>. Για παράδειγμα, μπορείτε να βρείτε όλα τα αρχεία R Markdown στον τρέχοντα κατάλογο με:</p>
+<div class="cell">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"\\.Rmd$"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αξίζει να σημειωθεί ότι η γλώσσα μοτίβων που χρησιμοποιείται από τη βασικό σύνολο λειτουργιών της R είναι ελαφρώς διαφορετική από αυτή που χρησιμοποιείται από το πακέτο stringr. Αυτό συμβαίνει επειδή το πακέτο stringr είναι χτισμένο πάνω από το <a href="https://stringi.gagolewski.com">πακέτο stringi</a>, το οποίο με τη σειρά του είναι χτισμένο πάνω από το <a href="https://unicode-org.github.io%20/icu/userguide/strings/regexp.html">ICU engine</a>, ενώ οι βασικές συναρτήσεις της R χρησιμοποιούν είτε το <a href="https://github.com/laurikari/tre">TRE engine</a> είτε το <a href="https://www.pcre%20.org">PCRE engine</a>, ανάλογα με το αν έχετε ορίσει ή όχι <code>perl = TRUE</code>. Ευτυχώς, τα βασικά στοιχεία των κανονικών εκφράσεων είναι τόσο καλά εδραιωμένα που θα συναντήσετε λίγες παραλλαγές όταν εργάζεστε με τα μοτίβα που θα μάθετε σε αυτό το βιβλίο. Χρειάζεται μόνο να γνωρίζετε τη διαφορά όταν αρχίσετε να βασίζεστε σε προηγμένες δυνατότητες, όπως σύνθετες περιοχές χαρακτήρων Unicode, ή ειδικές δυνατότητες που χρησιμοποιούν τη σύνταξη τύπου <code>(?…)</code>.</p>
+</section></section><section id="σύνοψη" class="level2" data-number="15.8"><h2 data-number="15.8" class="anchored" data-anchor-id="σύνοψη">
+<span class="header-section-number">15.8</span> Σύνοψη</h2>
+<p>Με κάθε χαρακτήρα στίξης να είναι υπερφορτωμένος με νόημα, οι κανονικές εκφράσεις είναι μία από τις πιο συμπαγείς γλώσσες. Σίγουρα προκαλούν σύγχυση στην αρχή, αλλά καθώς εκπαιδεύετε τα μάτια σας να τα διαβάζουν, και τον εγκέφαλό σας να τα κατανοεί, ξεκλειδώνετε μία ισχυρή δεξιότητα που μπορείτε να χρησιμοποιήσετε στην R και σε πολλά άλλα μέρη.</p>
+<p>Σε αυτό το κεφάλαιο, ξεκινήσατε το ταξίδι σας για να κατακτήσετε τις κανονικές εκφράσεις μαθαίνοντας τις πιο χρήσιμες συναρτήσεις του πακέτου stringr και τα πιο σημαντικά στοιχεία της γλώσσας της κανονικής έκφρασης. Υπάρχουν πολλές πηγές για να μάθετε περισσότερα.</p>
+<p>Ένα καλό μέρος για να ξεκινήσετε είναι το <code>vignette("regular-expressions, package = "stringr")</code>: τεκμηριώνει το πλήρες σύνολο της σύνταξης που υποστηρίζεται από το πακέτο stringr. Μία άλλη χρήσιμη αναφορά είναι το <a href="https://www.regular-expressions.info/tutorial.html">https://www.regular-expressions.info/</a>. Δεν είναι συγκεκριμένο για την R, αλλά μπορείτε να το χρησιμοποιήσετε για να μάθετε για τις πιο προηγμένες δυνατότητες των regexes και πώς λειτουργούν στο παρασκήνιο.</p>
+<p>Είναι επίσης καλό να γνωρίζετε ότι το πακέτο stringr υλοποιείται πάνω από το πακέτο stringi από τον Marek Gagolewski. Αν δυσκολεύεστε να βρείτε μία συνάρτηση που κάνει ό,τι χρειάζεστε στο πακέτο stringr, μην φοβάστε να ψάξετε στην stringi. Θα βρείτε την stringi πολύ εύκολη να μάθετε επειδή ακολουθεί πολλές από τις ίδιες συμβάσεις με το πακέτο stringr.</p>
+<p>Στο επόμενο κεφάλαιο, θα μιλήσουμε για μία δομή δεδομένων που σχετίζεται στενά με συμβολοσειρές: τους παράγοντες. Οι παράγοντες χρησιμοποιούνται για την αναπαράσταση κατηγορικών δεδομένων στην R, δηλαδή δεδομένων με ένα σταθερό και γνωστό σύνολο πιθανών τιμών, που προσδιορίζονται από ένα διάνυσμα συμβολοσειρών.</p>
+
+
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Μπορείτε να το προφέρετε είτε με “γκ” (ρέγκεξ) είτε με “τζ” (ρέτζεξ).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Θα μάθετε πώς να δισφύγετε αυτές τις ειδικές έννοιες στην <a href="#sec-regexp-escaping"><span>Ενότητα&nbsp;15.4.1</span></a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Πρακτικά, οποιοσδήποτε χαρακτήρας εκτός από το <code>\n</code>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Αυτό μας δίνει την αναλογία των <strong>ονομάτων</strong> που περιέχουν ένα “x”. Εάν θέλατε την αναλογία των μωρών, των οποίων το όνομα περιέχει ένα x, θα έπρεπε να υπολογίσετε μία σταθμισμένη μέση τιμή.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Ευχόμαστε να μπορούσαμε να σας διαβεβαιώσουμε ότι δεν θα δείτε ποτέ κάτι τόσο περίεργο σε πραγματικές συνθήκες, αλλά δυστυχώς κατά τη διάρκεια της καριέρας σας είναι πιθανό να δείτε πολύ πιο περίεργες περιπτώσεις!<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Το πλήρες σύνολο μεταχαρακτήρων είναι <code>.^$\|*+?{}[]()</code><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Θυμηθείτε, για να δημιουργήσετε μία κανονική έκφραση που περιέχει τα <code>\d</code> ή <code>\s</code>, θα πρέπει να διαφύγετε το <code>\</code> για τη συμβολοσειρά, επομένως θα πληκτρολογήσετε <code>"\\d"</code> ή <code>"\\s"</code>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Κυρίως επειδή δεν συζητάμε ποτέ μητρώα σε αυτό το βιβλίο!<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Το <code>comments = TRUE</code> είναι ιδιαίτερα αποτελεσματικό σε συνδυασμό με μία ακατέργαστη συμβολοσειρά, όπως το χρησιμοποιούμε εδώ.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Αντιγράφηκε!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./strings.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Συμβολοσειρές</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./factors.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Παράγοντες</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

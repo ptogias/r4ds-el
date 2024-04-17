@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund">
+<title>Η R για την Επιστήμη των Δεδομένων (2η έκδοση) - 21&nbsp; Βάσεις Δεδομένων</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./arrow.html" rel="next">
+<link href="./spreadsheets.html" rel="prev">
+<link href="./cover.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Εισαγωγή δεδομένων</a></li><li class="breadcrumb-item"><a href="./databases.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Η R για την Επιστήμη των Δεδομένων (2η έκδοση)</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Εναλλαγή λειτουργίας ανάγνωσης">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Αναζήτηση"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Καλώς ήλθατε</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Πρόλογος δεύτερης έκδοσης</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Η ολοκληρωμένη εικόνα</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Οπτικοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ροή εργασιών: Bασικές αρχές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Μετασχηματισμός Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ροή εργασιών: πρότυπα γραφής κώδικα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Τακτοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Ροή εργασιών: αρχεία κώδικα και projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Εισαγωγή δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ροή εργασίας: αναζητώντας βοήθεια</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Οπτικοποίηση</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./layers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Επίπεδα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Διερευνητική ανάλυση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Επικοινωνία</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Μετασχηματισμοί</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Λογικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Αριθμητικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Συμβολοσειρές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Λογικές εκφράσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Παράγοντες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Ημερομηνίες και ώρες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Κενές τιμές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή δεδομένων</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Arrow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Ιεραρχικά δεδομένα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Ιστοσυγκομιδή</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Προγραμματισμός</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Συναρτήσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Επανάληψη</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./base-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Επικοινωνία της πληροφορίας</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Επιλογές μορφοποίησης στο Quarto</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Πίνακας περιεχομένων</h2>
+   
+  <ul>
+<li>
+<a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE"><span class="header-section-number">21.1</span> Εισαγωγή</a>
+  <ul class="collapse">
+<li><a href="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1" id="toc-προαπαιτούμενα" class="nav-link" data-scroll-target="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1"><span class="header-section-number">21.1.1</span> Προαπαιτούμενα</a></li>
+  </ul>
+</li>
+  <li><a href="#%CF%84%CE%B1-%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%84%CF%89%CE%BD-%CE%B2%CE%AC%CF%83%CE%B5%CF%89%CE%BD-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD" id="toc-τα-βασικά-των-βάσεων-δεδομένων" class="nav-link" data-scroll-target="#%CF%84%CE%B1-%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%84%CF%89%CE%BD-%CE%B2%CE%AC%CF%83%CE%B5%CF%89%CE%BD-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD"><span class="header-section-number">21.2</span> Τα βασικά των βάσεων δεδομένων</a></li>
+  <li>
+<a href="#%CF%83%CF%8D%CE%BD%CE%B4%CE%B5%CF%83%CE%B7-%CF%83%CE%B5-%CE%BC%CE%AF%CE%B1-%CE%B2%CE%AC%CF%83%CE%B7-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD" id="toc-σύνδεση-σε-μία-βάση-δεδομένων" class="nav-link" data-scroll-target="#%CF%83%CF%8D%CE%BD%CE%B4%CE%B5%CF%83%CE%B7-%CF%83%CE%B5-%CE%BC%CE%AF%CE%B1-%CE%B2%CE%AC%CF%83%CE%B7-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD"><span class="header-section-number">21.3</span> Σύνδεση σε μία βάση δεδομένων</a>
+  <ul class="collapse">
+<li><a href="#%CF%83%CE%B5-%CE%B1%CF%85%CF%84%CF%8C-%CF%84%CE%BF-%CE%B2%CE%B9%CE%B2%CE%BB%CE%AF%CE%BF" id="toc-σε-αυτό-το-βιβλίο" class="nav-link" data-scroll-target="#%CF%83%CE%B5-%CE%B1%CF%85%CF%84%CF%8C-%CF%84%CE%BF-%CE%B2%CE%B9%CE%B2%CE%BB%CE%AF%CE%BF"><span class="header-section-number">21.3.1</span> Σε αυτό το βιβλίο</a></li>
+  <li><a href="#sec-load-data" id="toc-sec-load-data" class="nav-link" data-scroll-target="#sec-load-data"><span class="header-section-number">21.3.2</span> Φορτώστε μερικά δεδομένα</a></li>
+  <li><a href="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B5%CE%AF%CE%B1-dbi" id="toc-βασικά-στοιχεία-dbi" class="nav-link" data-scroll-target="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B5%CE%AF%CE%B1-dbi"><span class="header-section-number">21.3.3</span> Βασικά στοιχεία DBI</a></li>
+  </ul>
+</li>
+  <li><a href="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B5%CE%AF%CE%B1-%CF%84%CE%BF%CF%85-%CF%80%CE%B1%CE%BA%CE%AD%CF%84%CE%BF%CF%85-dbplyr" id="toc-βασικά-στοιχεία-του-πακέτου-dbplyr" class="nav-link" data-scroll-target="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B5%CE%AF%CE%B1-%CF%84%CE%BF%CF%85-%CF%80%CE%B1%CE%BA%CE%AD%CF%84%CE%BF%CF%85-dbplyr"><span class="header-section-number">21.4</span> Βασικά στοιχεία του πακέτου dbplyr</a></li>
+  <li>
+<a href="#sql" id="toc-sql" class="nav-link" data-scroll-target="#sql"><span class="header-section-number">21.5</span> SQL</a>
+  <ul class="collapse">
+<li><a href="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B5%CE%AF%CE%B1-sql" id="toc-βασικά-στοιχεία-sql" class="nav-link" data-scroll-target="#%CE%B2%CE%B1%CF%83%CE%B9%CE%BA%CE%AC-%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B5%CE%AF%CE%B1-sql"><span class="header-section-number">21.5.1</span> Βασικά στοιχεία SQL</a></li>
+  <li><a href="#select" id="toc-select" class="nav-link" data-scroll-target="#select"><span class="header-section-number">21.5.2</span> SELECT</a></li>
+  <li><a href="#from" id="toc-from" class="nav-link" data-scroll-target="#from"><span class="header-section-number">21.5.3</span> FROM</a></li>
+  <li><a href="#group-by" id="toc-group-by" class="nav-link" data-scroll-target="#group-by"><span class="header-section-number">21.5.4</span> GROUP BY</a></li>
+  <li><a href="#where" id="toc-where" class="nav-link" data-scroll-target="#where"><span class="header-section-number">21.5.5</span> WHERE</a></li>
+  <li><a href="#order-by" id="toc-order-by" class="nav-link" data-scroll-target="#order-by"><span class="header-section-number">21.5.6</span> ORDER BY</a></li>
+  <li><a href="#%CF%85%CF%80%CE%BF%CE%B5%CF%81%CF%89%CF%84%CE%AE%CE%BC%CE%B1%CF%84%CE%B1" id="toc-υποερωτήματα" class="nav-link" data-scroll-target="#%CF%85%CF%80%CE%BF%CE%B5%CF%81%CF%89%CF%84%CE%AE%CE%BC%CE%B1%CF%84%CE%B1"><span class="header-section-number">21.5.7</span> Υποερωτήματα</a></li>
+  <li><a href="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-joins" id="toc-ενώσεις-joins" class="nav-link" data-scroll-target="#%CE%B5%CE%BD%CF%8E%CF%83%CE%B5%CE%B9%CF%82-joins"><span class="header-section-number">21.5.8</span> Ενώσεις (Joins)</a></li>
+  <li><a href="#%CE%BB%CE%BF%CE%B9%CF%80%CE%AD%CF%82-%CF%83%CF%85%CE%BD%CE%B1%CF%81%CF%84%CE%AE%CF%83%CE%B5%CE%B9%CF%82" id="toc-λοιπές-συναρτήσεις" class="nav-link" data-scroll-target="#%CE%BB%CE%BF%CE%B9%CF%80%CE%AD%CF%82-%CF%83%CF%85%CE%BD%CE%B1%CF%81%CF%84%CE%AE%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">21.5.9</span> Λοιπές συναρτήσεις</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82" id="toc-ασκήσεις" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">21.5.10</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li><a href="#sec-sql-expressions" id="toc-sec-sql-expressions" class="nav-link" data-scroll-target="#sec-sql-expressions"><span class="header-section-number">21.6</span> Μεταφράσεις συναρτήσεων</a></li>
+  <li><a href="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7" id="toc-σύνοψη" class="nav-link" data-scroll-target="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7"><span class="header-section-number">21.7</span> Σύνοψη</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-import-databases" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="εισαγωγή" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="εισαγωγή">
+<span class="header-section-number">21.1</span> Εισαγωγή</h2>
+<p>Ένας τεράστιος όγκος δεδομένων βρίσκετε σε βάσεις δεδομένων, επομένως είναι σημαντικό να γνωρίζετε με ποιο τρόπο μπορείτε να έχετε πρόσβαση σε αυτά. Μερικές φορές μπορεί να ζητήσετε από κάποιον να κατεβάσει για εσάς ένα <code>.csv</code> αρχείο, αλλά αυτό μπορεί να γίνει επώδυνο γρήγορα: κάθε φορά που χρειάζεται να κάνετε μία αλλαγή θα πρέπει να επικοινωνείτε με κάποιον άλλο. Αυτό που Θέλετε είναι να μπορείτε να μεταβείτε απευθείας στη βάση δεδομένων για να λάβετε τα δεδομένα που χρειάζεστε, όταν τα χρειάζεστε.</p>
+<p>Σε αυτό το κεφάλαιο, θα μάθετε πρώτα τα βασικά του πακέτου DBI: πώς να το χρησιμοποιήσετε για να συνδεθείτε σε μία βάση δεδομένων και στη συνέχεια να ανακτήσετε δεδομένα με ένα ερώτημα SQL<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Η <strong>SQL</strong>, συντομογραφία του <strong>s</strong>tructured <strong>q</strong>uery <strong>l</strong>anguage, είναι η κοινή γλώσσα των βάσεων δεδομένων και είναι μία σημαντική γλώσσα για να μάθουν όλοι οι επιστήμονες δεδομένων. Δεν πρόκειται να ξεκινήσουμε με την SQL, αλλά αντ’ αυτού θα σας διδάξουμε το πακέτο dbplyr, το οποία μπορεί να μεταφράσει τον κώδικά σας, γραμμένο με dplyr, σε SQL. Θα την χρησιμοποιήσουμε ως τρόπο για να σας διδάξουμε μερικές από τις πιο σημαντικές δυνατότητες της SQL. Δεν θα γίνετε άριστοι στην SQL μέχρι το τέλος του κεφαλαίου, αλλά θα μπορείτε να είστε σε θέση να προσδιορίσετε τα πιο σημαντικά στοιχεία της και να κατανοήσετε τι κάνουν.</p>
+<section id="προαπαιτούμενα" class="level3" data-number="21.1.1"><h3 data-number="21.1.1" class="anchored" data-anchor-id="προαπαιτούμενα">
+<span class="header-section-number">21.1.1</span> Προαπαιτούμενα</h3>
+<p>Σε αυτό το κεφάλαιο, θα παρουσιάσουμε την DBI και το πακέτο dbplyr. Η DBI είναι μία διεπαφή χαμηλού επιπέδου που συνδέεται με βάσεις δεδομένων και εκτελεί SQL. Το dbplyr είναι μία διεπαφή υψηλού επιπέδου που μεταφράζει τον κώδικα dplyr σε ερωτήματα SQL και στη συνέχεια τα εκτελεί με την DBI.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org">DBI</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dbplyr.tidyverse.org/">dbplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="τα-βασικά-των-βάσεων-δεδομένων" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="τα-βασικά-των-βάσεων-δεδομένων">
+<span class="header-section-number">21.2</span> Τα βασικά των βάσεων δεδομένων</h2>
+<p>Στο πιο απλό επίπεδο, μπορείτε να σκεφτείτε μία βάση δεδομένων ως μία συλλογή πλαισίων δεδομένων, που ονομάζονται, στην ορολογία των βάσεων δεδομένων, <strong>πίνακες</strong>. Όπως ένα πλαίσιο δεδομένων έτσι και ένας πίνακας βάσης δεδομένων είναι μία συλλογή από ονομασμένες στήλες, όπου κάθε τιμή στη στήλη είναι του ίδιου τύπου. Υπάρχουν τρεις διαφορές υψηλού επιπέδου μεταξύ των πλαισίων δεδομένων και των πινάκων βάσεων δεδομένων:</p>
+<ul>
+<li><p>Οι πίνακες βάσεων δεδομένων αποθηκεύονται στο δίσκο και μπορεί να είναι αυθαίρετα μεγάλοι. Τα πλαίσια δεδομένων αποθηκεύονται στη μνήμη και είναι θεμελιωδώς περιορισμένα (αν και αυτό το όριο εξακολουθεί να είναι αρκετά μεγάλο για πολλά προβλήματα).</p></li>
+<li><p>Οι πίνακες βάσεων δεδομένων έχουν σχεδόν πάντα ευρετήρια (indexes). Όπως το ευρετήριο ενός βιβλίου έτσι και ένα ευρετήριο βάσης δεδομένων καθιστά δυνατή τη γρήγορη εύρεση γραμμών ενδιαφέροντος χωρίς να χρειάζεται να κοιτάξετε κάθε μεμονωμένη γραμμή. Τα πλαίσια δεδομένων και τα tibbles δεν έχουν ευρετήρια, τα data.tables όμως έχουν και είναι ένας από τους λόγους που είναι τόσο γρήγορα.</p></li>
+<li><p>Οι περισσότερες κλασικές βάσεις δεδομένων είναι βελτιστοποιημένες για γρήγορη συλλογή δεδομένων και όχι για ανάλυση δεδομένων. Αυτές οι βάσεις δεδομένων ονομάζονται <strong>row-oriented</strong> επειδή τα δεδομένα αποθηκεύονται σειρά προς σειρά, αντί στήλη προς στήλη όπως στην R. Στις μέρες μας, υπάρχει μεγάλη ανάπτυξη <strong>column-oriented</strong> βάσεων δεδομένων που κάνουν την ανάλυση δεδομένων πολύ πιο γρήγορη.</p></li>
+</ul>
+<p>Οι βάσεις δεδομένων εκτελούνται από συστήματα διαχείρισης βάσεων δεδομένων (<strong>ΣΔΒΔ</strong> εν συντομία), τα οποία διατίθενται σε τρεις βασικές μορφές:</p>
+<ul>
+<li>Τα ΣΔΒΔ <strong>πελάτη-διακομιστή</strong> εκτελούνται σε έναν ισχυρό κεντρικό διακομιστή, στον οποίο συνδέετε από τον υπολογιστή σας (τον πελάτη). Είναι εξαιρετικά για την κοινή χρήση δεδομένων με πολλά άτομα μέσα σε μία ομάδα. Κάποια δημοφιλή ΣΔΒΔ πελάτη-διακομιστή είναι τα PostgreSQL, MariaDB, SQL Server και Oracle.</li>
+<li>Τα <strong>cloud</strong> ΣΔΒΔ, όπως το Snowflake, το RedShift της Amazon και το BigQuery της Google, είναι παρόμοια με τα ΣΔΒΔ πελάτη-διακομιστή, αλλά εκτελούνται στο cloud. Αυτό σημαίνει ότι μπορούν εύκολα να χειριστούν εξαιρετικά μεγάλα σύνολα δεδομένων και μπορούν να παρέχουν αυτόματα περισσότερους υπολογιστικούς πόρους, όποτε αυτοί απαιτούνται.</li>
+<li>Τα <strong>in-process</strong> ΣΔΒΔ, όπως το SQLite, ή το duckdb, εκτελούνται εξ ολοκλήρου στον υπολογιστή σας. Είναι ιδανικά για εργασία με μεγάλα σύνολα δεδομένων, όπου ο κύριος χρήστης είστε εσείς.</li>
+</ul></section><section id="σύνδεση-σε-μία-βάση-δεδομένων" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="σύνδεση-σε-μία-βάση-δεδομένων">
+<span class="header-section-number">21.3</span> Σύνδεση σε μία βάση δεδομένων</h2>
+<p>Για να συνδεθείτε στη βάση δεδομένων από την R, θα χρησιμοποιήσετε δύο πακέτα:</p>
+<ul>
+<li><p>Θα χρησιμοποιείτε πάντα το DBI (<strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface) επειδή παρέχει ένα σύνολο γενικών συναρτήσεων που συνδέονται με τη βάση δεδομένων, ανεβάζουν δεδομένα, εκτελούν ερωτήματα SQL κ.λπ.</p></li>
+<li><p>Θα χρησιμοποιήσετε επίσης ένα πακέτο προσαρμοσμένο για το ΣΔΒΔ στο οποίο συνδέεστε. Αυτό το πακέτο μεταφράζει τις γενικές DBI εντολές στις λεπτομέρειες που απαιτούνται για ένα συγκεκριμένο ΣΔΒΔ. Συνήθως υπάρχει ένα πακέτο για κάθε ΣΔΒΔ, π.χ. RPostgres για PostgreSQL και RMariaDB για MySQL.</p></li>
+</ul>
+<p>Εάν δεν μπορείτε να βρείτε ένα συγκεκριμένο πακέτο για το ΣΔΒΔ σας, μπορείτε συνήθως να χρησιμοποιήσετε το πακέτο odbc. Αυτό χρησιμοποιεί το πρωτόκολλο ODBC που υποστηρίζεται από αρκετά ΣΔΒΔ. Το odbc απαιτεί λίγο περισσότερο χρόνο στην εγκατάστασή του, γιατί θα χρειαστεί επίσης να εγκαταστήσετε ένα πρόγραμμα οδήγησης ODBC και να πείτε στο πακέτο odbc πού να το βρει.</p>
+<p>Συγκεκριμένα, δημιουργείτε μία σύνδεση βάσης δεδομένων χρησιμοποιώντας την <code><a href="https://dbi.r-dbi.org/reference/dbConnect.html">DBI::dbConnect()</a></code>. Το πρώτο όρισμα επιλέγει το ΣΔΒΔ<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> και, στη συνέχεια, το δεύτερο και τα επόμενα ορίσματα περιγράφουν τον τρόπο σύνδεσης σε αυτό (δηλαδή την τοποθεσία και τα διαπιστευτήρια που χρειάζεστε για την πρόσβαση σε αυτό). Ο παρακάτω κώδικας δείχνει μερικά παραδείγματα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span></span>
+<span>  <span class="fu">RMariaDB</span><span class="fu">::</span><span class="fu">MariaDB</span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  username <span class="op">=</span> <span class="st">"foo"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span></span>
+<span>  <span class="fu">RPostgres</span><span class="fu">::</span><span class="fu">Postgres</span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  hostname <span class="op">=</span> <span class="st">"databases.mycompany.com"</span>, </span>
+<span>  port <span class="op">=</span> <span class="fl">1234</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Οι ακριβείς λεπτομέρειες της σύνδεσης διαφέρουν πολύ από ΣΔΒΔ σε ΣΔΒΔ, οπότε δυστυχώς δεν μπορούμε να καλύψουμε όλες τις λεπτομέρειες εδώ. Αυτό σημαίνει ότι θα χρειαστεί να κάνετε λίγη έρευνα μόνοι σας. Συνήθως μπορείτε να ρωτήσετε άλλους επιστήμονες δεδομένων στην ομάδα σας ή να μιλήσετε με τον διαχειριστή της βάσης δεδομένων σας (<strong>d</strong>ata<strong>b</strong>ase <strong>a</strong>dministrator, DBA). Η αρχική ρύθμιση θα χρειαστεί συχνά λίγο ψάξιμο (και ίσως λίγο γκουγκλάρισμα) για να γίνει σωστά, αλλά γενικά θα χρειαστεί να το κάνετε μόνο μία φορά.</p>
+<section id="σε-αυτό-το-βιβλίο" class="level3" data-number="21.3.1"><h3 data-number="21.3.1" class="anchored" data-anchor-id="σε-αυτό-το-βιβλίο">
+<span class="header-section-number">21.3.1</span> Σε αυτό το βιβλίο</h3>
+<p>Η εγκατάσταση ενός ΣΔΒΔ πελάτη-διακομιστή ή cloud θα ήταν οδυνηρή για αυτό το βιβλίο, επομένως θα χρησιμοποιήσουμε αντ ’αυτού ένα in-process ΣΔΒΔ που υπάρχει εξ ολοκλήρου σε ένα πακέτο της R: το duckdb. Χάρη στη μαγεία του DBI, η μόνη διαφορά μεταξύ της χρήσης του duckdb και οποιουδήποτε άλλου ΣΔΒΔ είναι ο τρόπος με τον οποίο θα συνδεθείτε στη βάση δεδομένων. Αυτό το καθιστά υπέροχο να διδαχτεί, καθώς και ο κώδικας είναι εύκολος ως προς την εκτέλεσή του, ενώ μπορείτε να πάρετε εύκολα ό,τι μαθαίνετε και να το εφαρμόσετε αλλού.</p>
+<p>Η σύνδεση στο duckdb είναι ιδιαίτερα απλή, επειδή οι προεπιλογές δημιουργούν μία προσωρινή βάση δεδομένων που διαγράφεται όταν τερματίσετε την R. Αυτό είναι εξαιρετικό για εκμάθηση, επειδή εγγυάται ότι θα ξεκινάτε από κάτι καθαρό κάθε φορά που κάνετε επανεκκίνηση της R:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Το duckdb είναι μία βάση δεδομένων υψηλής απόδοσης που έχει σχεδιαστεί για τις ανάγκες ενός επιστήμονα δεδομένων. Το χρησιμοποιούμε εδώ καθώς είναι πολύ εύκολο για να ξεκινήσετε, αλλά είναι επίσης ικανό να χειρίζεται gigabyte δεδομένων με μεγάλη ταχύτητα. Εάν θέλετε να χρησιμοποιήσετε το duckdb για ένα πραγματικό έργο ανάλυσης δεδομένων, θα χρειαστεί επίσης να δώσετε μία τιμή στο όρισμα <code>dbdir</code> για να δημιουργήσετε μία μόνιμη βάση δεδομένων και να πείτε στο duckdb πού να την αποθηκεύσει. Υποθέτοντας ότι χρησιμοποιείτε ένα project (<a href="workflow-scripts.html"><span>Κεφάλαιο&nbsp;6</span></a>), είναι λογικό να το αποθηκεύσετε στον κατάλογο <code>duckdb</code> του αντίστοιχου project:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html">duckdb</a></span><span class="op">(</span><span class="op">)</span>, dbdir <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="sec-load-data" class="level3" data-number="21.3.2"><h3 data-number="21.3.2" class="anchored" data-anchor-id="sec-load-data">
+<span class="header-section-number">21.3.2</span> Φορτώστε μερικά δεδομένα</h3>
+<p>Δεδομένου ότι πρόκειται για μία νέα βάση δεδομένων, πρέπει να ξεκινήσουμε προσθέτοντας κάποια δεδομένα. Εδώ θα προσθέσουμε τα σύνολα δεδομένων <code>mpg</code> και <code>diamonds</code> από το πακέτο ggplot2 χρησιμοποιώντας την <code><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html">DBI::dbWriteTable()</a></code>. Η απλούστερη χρήση της <code><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html">dbWriteTable()</a></code> χρειάζεται τρία ορίσματα: μία σύνδεση βάσης δεδομένων, το όνομα του πίνακα που θα δημιουργηθεί στη βάση δεδομένων και ένα πλαίσιο δεδομένων που περιέχει κάποια δεδομένα.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html">dbWriteTable</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"mpg"</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/mpg.html">mpg</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html">dbWriteTable</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"diamonds"</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html">diamonds</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν χρησιμοποιείτε το duckdb σε πραγματικό project, συνιστούμε ανεπιφύλακτα να μάθετε για τις συναρτήσεις <code>duckdb_read_csv()</code> και <code>duckdb_register_arrow()</code>. Σας δίνουν ισχυρούς και αποδοτικούς τρόπους για να φορτώνετε γρήγορα δεδομένα απευθείας στο duckdb, χωρίς να χρειάζεται να τα φορτώσετε πρώτα στην R. Θα δείξουμε επίσης μία χρήσιμη τεχνική για τη φόρτωση πολλών αρχείων σε μία βάση δεδομένων στην <a href="iteration.html#sec-save-database"><span>Ενότητα&nbsp;26.4.1</span></a>.</p>
+</section><section id="βασικά-στοιχεία-dbi" class="level3" data-number="21.3.3"><h3 data-number="21.3.3" class="anchored" data-anchor-id="βασικά-στοιχεία-dbi">
+<span class="header-section-number">21.3.3</span> Βασικά στοιχεία DBI</h3>
+<p>Μπορείτε να ελέγξετε ότι τα δεδομένα έχουν φορτωθεί σωστά χρησιμοποιώντας μερικές άλλες συναρτήσεις DBI: Η <code><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables()</a></code> παραθέτει όλους τους πίνακες στη βάση δεδομένων<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> και η <code><a href="https://dbi.r-dbi.org/reference/dbReadTable.html">dbReadTable()</a></code> ανακτά τα περιεχόμενα ενός πίνακα.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html">dbListTables</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "diamonds" "mpg"</span></span>
+<span></span>
+<span><span class="va">con</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbReadTable.html">dbReadTable</a></span><span class="op">(</span><span class="st">"diamonds"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 53,940 × 10</span></span>
+<span><span class="co">#&gt;   carat cut       color clarity depth table price     x     y     z</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43</span></span>
+<span><span class="co">#&gt; 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31</span></span>
+<span><span class="co">#&gt; 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31</span></span>
+<span><span class="co">#&gt; 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63</span></span>
+<span><span class="co">#&gt; 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75</span></span>
+<span><span class="co">#&gt; 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48</span></span>
+<span><span class="co">#&gt; # ℹ 53,934 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η <code><a href="https://dbi.r-dbi.org/reference/dbReadTable.html">dbReadTable()</a></code> επιστρέφει ένα <code>data.frame</code> επομένως χρησιμοποιούμε την <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble()</a></code> για να το μετατρέψουμε σε tibble, έτσι ώστε να εκτυπώνεται όμορφα.</p>
+<p>Εάν γνωρίζετε ήδη SQL, μπορείτε να χρησιμοποιήσετε την <code><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery()</a></code> για να λάβετε τα αποτελέσματα της εκτέλεσης ενός ερωτήματος στη βάση δεδομένων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sql</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">  SELECT carat, cut, clarity, color, price </span></span>
+<span><span class="st">  FROM diamonds </span></span>
+<span><span class="st">  WHERE price &gt; 15000</span></span>
+<span><span class="st">"</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">sql</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1,655 × 5</span></span>
+<span><span class="co">#&gt;   carat cut       clarity color price</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;fct&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1  1.54 Premium   VS2     E     15002</span></span>
+<span><span class="co">#&gt; 2  1.19 Ideal     VVS1    F     15005</span></span>
+<span><span class="co">#&gt; 3  2.1  Premium   SI1     I     15007</span></span>
+<span><span class="co">#&gt; 4  1.69 Ideal     SI1     D     15011</span></span>
+<span><span class="co">#&gt; 5  1.5  Very Good VVS2    G     15013</span></span>
+<span><span class="co">#&gt; 6  1.73 Very Good VS1     G     15014</span></span>
+<span><span class="co">#&gt; # ℹ 1,649 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν δεν έχετε ξαναδεί SQL, μην ανησυχείτε! Θα μάθετε περισσότερα σύντομα. Αλλά αν διαβάσετε προσεκτικά, μπορεί να μαντέψετε ότι το παραπάνω ερώτημα επιλέγει πέντε στήλες του συνόλου δεδομένων diamonds και όλες τις γραμμές στις οποίες η <code>price</code> είναι μεγαλύτερη από 15.000.</p>
+</section></section><section id="βασικά-στοιχεία-του-πακέτου-dbplyr" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="βασικά-στοιχεία-του-πακέτου-dbplyr">
+<span class="header-section-number">21.4</span> Βασικά στοιχεία του πακέτου dbplyr</h2>
+<p>Τώρα που συνδεθήκαμε σε μία βάση δεδομένων και φορτώσαμε μερικά δεδομένα, μπορούμε να αρχίσουμε να μαθαίνουμε για το πακέτο dbplyr. Το dbplyr είναι ένα <strong>σύστημα υποστήριξης</strong> της dplyr, που σημαίνει ότι συνεχίζετε να γράφετε κώδικα dplyr, αλλά το σύστημα υποστήριξης τον εκτελεί διαφορετικά. Σε αυτή την περίπτωση, το dbplyr μεταφράζεται σε SQL. Άλλα συστήματα υποστήριξης περιλαμβάνουν το πακέτο <a href="https://dtplyr.tidyverse.org">dtplyr</a> που μεταφράζεται σε <a href="https://r-datatable.com">data.table</a> και το <a href="https://multidplyr.tidyverse.%20org">multidplyr</a> που εκτελεί τον κώδικά σας σε πολλαπλούς πυρήνες.</p>
+<p>Για να χρησιμοποιήσετε το dbplyr, πρέπει πρώτα να χρησιμοποιήσετε την <code><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl()</a></code> για να δημιουργήσετε ένα αντικείμενο που αντιπροσωπεύει έναν πίνακα βάσης δεδομένων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"diamonds"</span><span class="op">)</span></span>
+<span><span class="va">diamonds_db</span></span>
+<span><span class="co">#&gt; # Source:   table&lt;diamonds&gt; [?? x 10]</span></span>
+<span><span class="co">#&gt; # Database: DuckDB v0.10.1 [root@Darwin 23.2.0:R 4.3.2/:memory:]</span></span>
+<span><span class="co">#&gt;   carat cut       color clarity depth table price     x     y     z</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43</span></span>
+<span><span class="co">#&gt; 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31</span></span>
+<span><span class="co">#&gt; 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31</span></span>
+<span><span class="co">#&gt; 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63</span></span>
+<span><span class="co">#&gt; 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75</span></span>
+<span><span class="co">#&gt; 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48</span></span>
+<span><span class="co">#&gt; # ℹ more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Υπάρχουν δύο άλλοι συχνοί τρόποι αλληλεπίδρασης με μία βάση δεδομένων. Πρώτον, πολλές εταιρικές βάσεις δεδομένων είναι αρκετά μεγάλες, επομένως χρειάζεστε κάποια ιεραρχία για να κρατήσετε όλους τους πίνακες οργανωμένους. Σε αυτήν την περίπτωση, ίσως χρειαστεί να παρέχετε μία δομή ή έναν κατάλογο και μία δομή, για να επιλέξετε τον πίνακα που σας ενδιαφέρει:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/in_schema.html">in_schema</a></span><span class="op">(</span><span class="st">"sales"</span>, <span class="st">"diamonds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">diamonds_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/in_schema.html">in_catalog</a></span><span class="op">(</span><span class="st">"north_america"</span>, <span class="st">"sales"</span>, <span class="st">"diamonds"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Άλλες φορές μπορεί να θέλετε να χρησιμοποιήσετε το δικό σας ερώτημα SQL ως σημείο εκκίνησης:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="fu"><a href="https://dbplyr.tidyverse.org/reference/sql.html">sql</a></span><span class="op">(</span><span class="st">"SELECT * FROM diamonds"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>Το παραπάνω αντικείμενο είναι <strong>οκνηρό</strong>. Όταν χρησιμοποιείτε συναρτήσεις dplyr σε αυτό, το πακέτο dplyr δεν κάνει καμία εργασία: απλώς καταγράφει την ακολουθία πράξεων που θέλετε να εκτελέσετε και τις εκτελεί μόνο όταν χρειάζεται. Για παράδειγμα, πάρτε την ακόλουθη ροή:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">big_diamonds_db</span> <span class="op">&lt;-</span> <span class="va">diamonds_db</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">price</span> <span class="op">&gt;</span> <span class="fl">15000</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">carat</span><span class="op">:</span><span class="va">clarity</span>, <span class="va">price</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">big_diamonds_db</span></span>
+<span><span class="co">#&gt; # Source:   SQL [?? x 5]</span></span>
+<span><span class="co">#&gt; # Database: DuckDB v0.10.1 [root@Darwin 23.2.0:R 4.3.2/:memory:]</span></span>
+<span><span class="co">#&gt;   carat cut       color clarity price</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1  1.54 Premium   E     VS2     15002</span></span>
+<span><span class="co">#&gt; 2  1.19 Ideal     F     VVS1    15005</span></span>
+<span><span class="co">#&gt; 3  2.1  Premium   I     SI1     15007</span></span>
+<span><span class="co">#&gt; 4  1.69 Ideal     D     SI1     15011</span></span>
+<span><span class="co">#&gt; 5  1.5  Very Good G     VVS2    15013</span></span>
+<span><span class="co">#&gt; 6  1.73 Very Good G     VS1     15014</span></span>
+<span><span class="co">#&gt; # ℹ more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορείτε να πείτε ότι αυτό το αντικείμενο αντιπροσωπεύει ένα ερώτημα βάσης δεδομένων, επειδή εκτυπώνει το όνομα του ΣΔΒΔ στο επάνω μέρος και ενώ σας λέει τον αριθμό των στηλών, συνήθως δεν γνωρίζει τον αριθμό των γραμμών. Αυτό συμβαίνει επειδή η εύρεση του συνολικού αριθμού γραμμών απαιτεί συνήθως την εκτέλεση του πλήρους ερωτήματος, κάτι που προσπαθούμε να αποφύγουμε.</p>
+<p>Μπορείτε να δείτε τον κώδικα SQL που δημιουργείται από τη συνάρτηση της dplyr <code><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query()</a></code>. Το να γνωρίζετε πως να εφαρμόζετε συναρτήσεις της dplyr, είναι ένας πολύ καλός τρόπος για να μάθετε και SQL! Γράψτε λίγο κώδικα dplyr, πείτε στο dbplyr να τον μεταφράσει σε SQL και, στη συνέχεια, προσπαθήστε να καταλάβετε πώς ταιριάζουν οι δύο γλώσσες.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">big_diamonds_db</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT carat, cut, color, clarity, price</span></span>
+<span><span class="co">#&gt; FROM diamonds</span></span>
+<span><span class="co">#&gt; WHERE (price &gt; 15000.0)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Για να επαναφέρετε όλα τα δεδομένα στην R, καλείτε την <code><a href="https://dplyr.tidyverse.org/reference/compute.html">collect()</a></code>. Στο παρασκήνιο, αυτό δημιουργεί την SQL, καλεί την <code><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery()</a></code> για να πάρει τα δεδομένα και μετά μετατρέπει το αποτέλεσμα σε tibble:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">big_diamonds</span> <span class="op">&lt;-</span> <span class="va">big_diamonds_db</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">big_diamonds</span></span>
+<span><span class="co">#&gt; # A tibble: 1,655 × 5</span></span>
+<span><span class="co">#&gt;   carat cut       color clarity price</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1  1.54 Premium   E     VS2     15002</span></span>
+<span><span class="co">#&gt; 2  1.19 Ideal     F     VVS1    15005</span></span>
+<span><span class="co">#&gt; 3  2.1  Premium   I     SI1     15007</span></span>
+<span><span class="co">#&gt; 4  1.69 Ideal     D     SI1     15011</span></span>
+<span><span class="co">#&gt; 5  1.5  Very Good G     VVS2    15013</span></span>
+<span><span class="co">#&gt; 6  1.73 Very Good G     VS1     15014</span></span>
+<span><span class="co">#&gt; # ℹ 1,649 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Συνήθως, θα χρησιμοποιήσετε το πακέτο dbplyr για να επιλέξετε τα δεδομένα που θέλετε από τη βάση δεδομένων, εκτελώντας κάποιο απλό φιλτράρισμα και κάποια σύνοψη χρησιμοποιώντας τις μεταφράσεις που περιγράφονται παρακάτω.</p>
+</section><section id="sql" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="sql">
+<span class="header-section-number">21.5</span> SQL</h2>
+<p>Το υπόλοιπο κεφάλαιο θα σας διδάξει λίγη SQL μέσα από το φακό του dbplyr. Είναι μία μάλλον μη παραδοσιακή εισαγωγή στην SQL, αλλά ελπίζουμε ότι θα σας μεταφέρει τα βασικά γρήγορα. Ευτυχώς, αν καταλαβαίνετε το πακέτο dplyr, βρίσκεστε σε ένα εξαιρετικό μέρος για να καταλάβετε γρήγορα και την SQL, καθώς πολλές από τις έννοιες είναι ίδιες.</p>
+<p>Θα εξερευνήσουμε τη σχέση μεταξύ dplyr και SQL χρησιμοποιώντας μερικούς παλιούς φίλους από το πακέτο nycflights13: τα σύνολα δεδομένων <code>flights</code> και <code>planes</code>. Αυτά τα σύνολα δεδομένων είναι εύκολο να εισαχθούν στην δοκιμαστική βάση δεδομένων μας, καθώς το πακέτο dbplyr συνοδεύεται από μία συνάρτηση που αντιγράφει τους πίνακες από το nycflights13 στη βάση:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/nycflights13.html">copy_nycflights13</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Creating table: airlines</span></span>
+<span><span class="co">#&gt; Creating table: airports</span></span>
+<span><span class="co">#&gt; Creating table: flights</span></span>
+<span><span class="co">#&gt; Creating table: planes</span></span>
+<span><span class="co">#&gt; Creating table: weather</span></span>
+<span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"flights"</span><span class="op">)</span></span>
+<span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"planes"</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="βασικά-στοιχεία-sql" class="level3" data-number="21.5.1"><h3 data-number="21.5.1" class="anchored" data-anchor-id="βασικά-στοιχεία-sql">
+<span class="header-section-number">21.5.1</span> Βασικά στοιχεία SQL</h3>
+<p>Τα στοιχεία ανώτατου επιπέδου της SQL ονομάζονται <strong>δηλώσεις</strong>. Οι κοινές δηλώσεις περιλαμβάνουν την <code>CREATE</code> για τον ορισμό νέων πινάκων, την <code>INSERT</code> για προσθήκη δεδομένων και την <code>SELECT</code> για ανάκτηση δεδομένων. Θα επικεντρωθούμε στις δηλώσεις <code>SELECT</code> που ονομάζονται επίσης <strong>ερωτήματα</strong>, καθώς είναι σχεδόν αποκλειστικά αυτό που θα χρησιμοποιήσετε ως επιστήμονας δεδομένων.</p>
+<p>Ένα ερώτημα αποτελείται από <strong>συνθήκες</strong>. Υπάρχουν πέντε σημαντικές συνθήκες: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>ORDER BY</code>, και <code>GROUP BY</code>. Κάθε ερώτημα πρέπει να έχει τις <code>SELECT</code><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> και <code>FROM</code><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> και το απλούστερο ερώτημα είναι το <code>SELECT * FROM table</code>, το οποίο επιλέγει όλες τις στήλες από τον καθορισμένο πίνακα . Το αποτέλεσμα του dbplyr για έναν καθαρό πίνακα είναι :</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT *</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="va">planes</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT *</span></span>
+<span><span class="co">#&gt; FROM planes</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Οι <code>WHERE</code> και <code>ORDER BY</code> ελέγχουν ποιες γραμμές θα περιέχονται στην έξοδο και πως αυτές θα είναι ταξινομημένες.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dest</span> <span class="op">==</span> <span class="st">"IAH"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; WHERE (dest = 'IAH')</span></span>
+<span><span class="co">#&gt; ORDER BY dep_delay</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η <code>GROUP BY</code> μετατρέπει το ερώτημα σε μία σύνοψη, προκαλώντας μία συνάθροιση των δεδομένων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT dest, AVG(dep_delay) AS dep_delay</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; GROUP BY dest</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχουν δύο σημαντικές διαφορές μεταξύ των συναρτήσεων της dplyr και των συνθηκών SELECT:</p>
+<ul>
+<li>Στην SQL, τα πεζά και κεφαλαία δεν έχουν σημασία: μπορείτε να γράψετε <code>select</code>, <code>SELECT</code>, ή ακόμα και <code>SeLeCt</code>. Σε αυτό το βιβλίο θα επιμείνουμε στη συχνή σύνταξη λέξεων-κλειδιών SQL με κεφαλαία για να τις ξεχωρίζουμε από τα ονόματα πινάκων ή μεταβλητών.</li>
+<li>Στην SQL, η σειρά έχει σημασία: πρέπει πάντα να γράφετε τις συνθήκες με την εξής σειρά <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>ORDER BY</code>. Η σειρά αυτή όμως δεν είναι ίδια με τον τρόπο όπου πραγματικά, οι συνθήκες, αξιολογούνται. Ξεκινά η <code>FROM</code>, μετά η <code>WHERE</code>, <code>GROUP BY</code>, <code>SELECT</code> και η <code>ORDER BY</code>.</li>
+</ul>
+<p>Οι ακόλουθες ενότητες εξερευνούν κάθε συνθήκη με περισσότερες λεπτομέρειες.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Σημειώστε ότι ενώ η SQL είναι καθιερωμένη, είναι εξαιρετικά περίπλοκη και καμία βάση δεδομένων δεν την ακολουθεί ακριβώς. Ενώ τα κύρια στοιχεία στα οποία θα επικεντρωθούμε σε αυτό το βιβλίο είναι παρόμοια μεταξύ των ΣΔΒΔ, υπάρχουν πολλές μικρές παραλλαγές. Ευτυχώς, το πακέτο dbplyr έχει σχεδιαστεί για να χειρίζεται αυτό το πρόβλημα και δημιουργεί διαφορετικές μεταφράσεις για διαφορετικές βάσεις δεδομένων. Δεν είναι τέλεια, αλλά βελτιώνεται συνεχώς και στην περίπτωση που αντιμετωπίσετε κάποιο πρόβλημα, μπορείτε να το υποβάλετε <a href="https://github.com/tidyverse/dbplyr/issues/">στο GitHub</a> για να μας βοηθήσετε να τα πάμε καλύτερα.</p>
+</div>
+</div>
+</div>
+</section><section id="select" class="level3" data-number="21.5.2"><h3 data-number="21.5.2" class="anchored" data-anchor-id="select">
+<span class="header-section-number">21.5.2</span> SELECT</h3>
+<p>Η συνθήκη <code>SELECT</code> είναι “η μηχανή” των ερωτημάτων και εκτελεί την ίδια δουλειά με τις <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate()</a></code> και, όπως θα μάθετε στην επόμενη ενότητα, την <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>.</p>
+<p>Οι <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename()</a></code>, και <code><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate()</a></code> έχουν αρκετά άμεσες μεταφράσεις στην <code>SELECT</code> καθώς απλώς επηρεάζουν το πού εμφανίζεται μία στήλη (αν εμφανίζεται καθόλου) μαζί με το όνομά της:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">planes</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">tailnum</span>, <span class="va">type</span>, <span class="va">manufacturer</span>, <span class="va">model</span>, <span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT tailnum, "type", manufacturer, model, "year"</span></span>
+<span><span class="co">#&gt; FROM planes</span></span>
+<span></span>
+<span><span class="va">planes</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">tailnum</span>, <span class="va">type</span>, <span class="va">manufacturer</span>, <span class="va">model</span>, <span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>year_built <span class="op">=</span> <span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT tailnum, "type", manufacturer, model, "year" AS year_built</span></span>
+<span><span class="co">#&gt; FROM planes</span></span>
+<span></span>
+<span><span class="va">planes</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">tailnum</span>, <span class="va">type</span>, <span class="va">manufacturer</span>, <span class="va">model</span>, <span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">manufacturer</span>, <span class="va">model</span>, .before <span class="op">=</span> <span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT tailnum, manufacturer, model, "type", "year"</span></span>
+<span><span class="co">#&gt; FROM planes</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αυτό το παράδειγμα δείχνει επίσης πώς η SQL αλλάζει ονόματα σε στήλες. Στην ορολογία της SQL η μετονομασία ονομάζεται <strong>aliasing</strong> και γίνεται με την <code>AS</code>. Σημειώστε ότι σε αντίθεση με την <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, το παλιό όνομα βρίσκεται στα αριστερά και το νέο όνομα βρίσκεται στα δεξιά.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Στα παραπάνω παραδείγματα σημειώστε ότι τα <code>"year"</code> και <code>"type"</code> είναι μέσα σε διπλά εισαγωγικά. Αυτό συμβαίνει επειδή πρόκειται για <strong>δεσμευμένες λέξεις</strong> στο duckdb, κι επομένως το πακέτο dbplyr τις παραθέτει για να αποφύγει οποιαδήποτε πιθανή σύγχυση μεταξύ των ονομάτων στηλών/πινάκων και των τελεστών SQL.</p>
+<p>Όταν εργάζεστε με άλλες βάσεις δεδομένων, είναι πιθανό να βλέπετε εισαγωγικά στα ονόματα κάθε μεταβλητής, επειδή μόνο λίγα πακέτα πελατών, όπως το duckdb, γνωρίζουν ποιες είναι όλες οι λέξεις που ανήκουν στο σύνολο των δεσμευμένων λέξεων τους, επομένως βάζουν σε εισαγωγικά τα πάντα για ασφάλεια.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="ot">"tailnum"</span>, <span class="ot">"type"</span>, <span class="ot">"manufacturer"</span>, <span class="ot">"model"</span>, <span class="ot">"year"</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="ot">"planes"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Άλλα συστήματα βάσεων δεδομένων χρησιμοποιούν backticks αντί για εισαγωγικά:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> `tailnum`, `type`, `manufacturer`, `model`, `year`</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `planes`</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Οι μεταφράσεις για την <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> είναι εξίσου απλές: κάθε μεταβλητή γίνεται μία νέα έκφραση στην <code>SELECT</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    speed <span class="op">=</span> <span class="va">distance</span> <span class="op">/</span> <span class="op">(</span><span class="va">air_time</span> <span class="op">/</span> <span class="fl">60</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*, distance / (air_time / 60.0) AS speed</span></span>
+<span><span class="co">#&gt; FROM flights</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα επανέλθουμε στη μετάφραση μεμονωμένων στοιχείων (όπως το <code>/</code>) στην <a href="#sec-sql-expressions"><span>Ενότητα&nbsp;21.6</span></a>.</p>
+</section><section id="from" class="level3" data-number="21.5.3"><h3 data-number="21.5.3" class="anchored" data-anchor-id="from">
+<span class="header-section-number">21.5.3</span> FROM</h3>
+<p>Η συνθήκη <code>FROM</code> ορίζει την πηγή των δεδομένων. Δεν θα έχει πολύ ενδιαφέρον για λίγο, επειδή χρησιμοποιούμε απλά μεμονωμένους πίνακες. Θα δείτε όμως πιο περίπλοκα παραδείγματα μόλις δούμε τις συναρτήσεις ένωσης (join).</p>
+</section><section id="group-by" class="level3" data-number="21.5.4"><h3 data-number="21.5.4" class="anchored" data-anchor-id="group-by">
+<span class="header-section-number">21.5.4</span> GROUP BY</h3>
+<p>H <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> μεταφράζεται στην συνθήκη <code>GROUP BY</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> και η <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> μεταφράζεται στην συνθήκη <code>SELECT</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds_db</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span></span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    avg_price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">price</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT cut, COUNT(*) AS n, AVG(price) AS avg_price</span></span>
+<span><span class="co">#&gt; FROM diamonds</span></span>
+<span><span class="co">#&gt; GROUP BY cut</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα επανέλθουμε στο τι συμβαίνει με τη μετάφραση των <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code> και <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> στην <a href="#sec-sql-expressions"><span>Ενότητα&nbsp;21.6</span></a>.</p>
+</section><section id="where" class="level3" data-number="21.5.5"><h3 data-number="21.5.5" class="anchored" data-anchor-id="where">
+<span class="header-section-number">21.5.5</span> WHERE</h3>
+<p>Η <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>μεταφράζεται στη συνθήκη <code>WHERE</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dest</span> <span class="op">==</span> <span class="st">"IAH"</span> <span class="op">|</span> <span class="va">dest</span> <span class="op">==</span> <span class="st">"HOU"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; WHERE (dest = 'IAH' OR dest = 'HOU')</span></span>
+<span></span>
+<span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">arr_delay</span> <span class="op">&lt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; WHERE (arr_delay &gt; 0.0 AND arr_delay &lt; 20.0)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχουν μερικές σημαντικές λεπτομέρειες που πρέπει να σημειωθούν εδώ:</p>
+<ul>
+<li>Ο τελεστής <code>|</code> γίνεται <code>OR</code> και το <code>&amp;</code> γίνεται <code>AND</code>.</li>
+<li>Η SQL χρησιμοποιεί τον τελεστή <code>=</code> για σύγκριση, κι όχι τον <code>==</code>. Η SQL δεν έχει ανάθεση, επομένως δεν υπάρχει πιθανότητα σύγχυσης εκεί.</li>
+<li>Η SQL χρησιμοποιεί μόνο <code>''</code> για συμβολοσειρές, όχι <code>""</code>. Ακόμη, στην SQL, το <code>""</code> χρησιμοποιείται για τον προσδιορισμό μεταβλητών, όπως το <code>``</code> της R.</li>
+</ul>
+<p>Ένας άλλος χρήσιμος τελεστής της SQL είναι ο <code>IN</code>, ο οποίος είναι πολύ κοντά στον <code>%in%</code> της R:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dest</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IAH"</span>, <span class="st">"HOU"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; WHERE (dest IN ('IAH', 'HOU'))</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η SQL χρησιμοποιεί <code>NULL</code> αντί για <code>NA</code>. Τα <code>NULL</code> συμπεριφέρονται παρόμοια με τα <code>NA</code>. Η κύρια διαφορά είναι ότι, ενώ μπορούν να επηρεάσουν αποτελέσματα στις συγκρίσεις και στην αριθμητική, απορρίπτονται σιωπηλά κατά τη σύνοψη. Το πακέτο dbplyr θα σας υπενθυμίσει αυτήν τη συμπεριφορά την πρώτη φορά που θα τη συναντήσετε:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Missing values are always removed in SQL aggregation functions.</span></span>
+<span><span class="co">#&gt; Use `na.rm = TRUE` to silence this warning</span></span>
+<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span><span class="co">#&gt; # Source:   SQL [?? x 2]</span></span>
+<span><span class="co">#&gt; # Database: DuckDB v0.10.1 [root@Darwin 23.2.0:R 4.3.2/:memory:]</span></span>
+<span><span class="co">#&gt;   dest  delay</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 ATL   11.3 </span></span>
+<span><span class="co">#&gt; 2 MCO    5.45</span></span>
+<span><span class="co">#&gt; 3 MSY    6.49</span></span>
+<span><span class="co">#&gt; 4 XNA    7.47</span></span>
+<span><span class="co">#&gt; 5 BNA   11.8 </span></span>
+<span><span class="co">#&gt; 6 ALB   14.4 </span></span>
+<span><span class="co">#&gt; # ℹ more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εάν θέλετε να μάθετε περισσότερα για το πώς λειτουργεί το<code>NULL</code>, μπορεί να σας φανεί χρήσιμο το “<a href="https://modern-sql.com/concept/three-valued-logic"><em>Three valued logic</em></a>” του Markus Winand.</p>
+<p>Σε γενικές γραμμές, μπορείτε να εργαστείτε με <code>NULL</code> τιμές χρησιμοποιώντας τις συναρτήσεις που θα χρησιμοποιούσατε για <code>NA</code> στην R:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; WHERE (NOT((dep_delay IS NULL)))</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αυτό το ερώτημα SQL απεικονίζει ένα από τα μειονεκτήματα του dbplyr: ενώ η SQL είναι σωστή, το ερώτημα δεν είναι τόσο απλό όσο θα μπορούσατε να το γράψετε χειροκίνητα. Σε αυτήν την περίπτωση, μπορείτε να αποφύγετε τις παρενθέσεις και να χρησιμοποιήσετε έναν ειδικό τελεστή που είναι πιο ευανάγνωστος:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="ot">"dep_delay"</span> <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Σημειώστε ότι εάν εφαρμόσετε την <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> σε μία μεταβλητή που δημιουργήσατε χρησιμοποιώντας μία σύνοψη, το dbplyr θα δημιουργήσει μία συνθήκη <code>HAVING</code> αντί για μία συνθήκη <code>WHERE</code>. Αυτή είναι μία από τις ιδιοσυγκρασίες της SQL: η <code>WHERE</code> αξιολογείται πριν από τη <code>SELECT</code> και τη <code>GROUP BY</code>. Επομένως η SQL χρειάζεται μία άλλη συνθήκη που θα αξιολογηθεί στη συνέχεια.</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds_db</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT cut, COUNT(*) AS n</span></span>
+<span><span class="co">#&gt; FROM diamonds</span></span>
+<span><span class="co">#&gt; GROUP BY cut</span></span>
+<span><span class="co">#&gt; HAVING (COUNT(*) &gt; 100.0)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="order-by" class="level3" data-number="21.5.6"><h3 data-number="21.5.6" class="anchored" data-anchor-id="order-by">
+<span class="header-section-number">21.5.6</span> ORDER BY</h3>
+<p>Η ταξινόμηση γραμμών περιλαμβάνει μία απλή μετάφραση από την <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> στην συνθήκη <code>ORDER BY</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT flights.*</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; ORDER BY "year", "month", "day", dep_delay DESC</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Παρατηρήστε πώς η <code><a href="https://dplyr.tidyverse.org/reference/desc.html">desc()</a></code> μεταφράζεται στην <code>DESC</code>: αυτή είναι μία από τις πολλές συναρτήσεις της dplyr των οποίων το όνομα εμπνεύστηκαν από την SQL.</p>
+</section><section id="υποερωτήματα" class="level3" data-number="21.5.7"><h3 data-number="21.5.7" class="anchored" data-anchor-id="υποερωτήματα">
+<span class="header-section-number">21.5.7</span> Υποερωτήματα</h3>
+<p>Μερικές φορές δεν είναι δυνατό να μεταφραστεί μία ροή με συναρτήσεις dplyr σε μία μεμονωμένη δήλωση <code>SELECT</code> και έτσι πρέπει να χρησιμοποιήσετε ένα υποερώτημα (ή εμφολευμένο ερώτημα). Ένα <strong>υποερώτημα</strong> είναι απλώς ένα ερώτημα που χρησιμοποιείται ως πηγή δεδομένων στην συνθήκη <code>FROM</code>, αντί για τον συνηθισμένο πίνακα.</p>
+<p>Το dbplyr συνήθως χρησιμοποιεί υποερωτήματα για να αντιμετωπίσει τους περιορισμούς της SQL. Για παράδειγμα, οι εκφράσεις στην συνθήκη <code>SELECT</code> δεν μπορούν να αναφέρονται σε στήλες που μόλις δημιουργήθηκαν. Αυτό σημαίνει ότι η ακόλουθη (απλή) ροή συναρτήσεων dplyr πρέπει να συμβεί σε δύο βήματα: το πρώτο (εσωτερικό) ερώτημα υπολογίζει την <code>year1</code> και στη συνέχεια το δεύτερο (εξωτερικό) ερώτημα μπορεί να υπολογίσει το <code>year2</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    year1 <span class="op">=</span> <span class="va">year</span> <span class="op">+</span> <span class="fl">1</span>,</span>
+<span>    year2 <span class="op">=</span> <span class="va">year1</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT q01.*, year1 + 1.0 AS year2</span></span>
+<span><span class="co">#&gt; FROM (</span></span>
+<span><span class="co">#&gt;   SELECT flights.*, "year" + 1.0 AS year1</span></span>
+<span><span class="co">#&gt;   FROM flights</span></span>
+<span><span class="co">#&gt; ) q01</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αυτό θα το δείτε επίσης αν επιχειρήσετε να εφαρμόσετε την <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> σε μία μεταβλητή που μόλις δημιουργήσατε. Θυμηθείτε, παρόλο που η <code>WHERE</code> είναι γραμμένη μετά τη <code>SELECT</code>, αξιολογείται πριν από αυτή, επομένως χρειαζόμαστε ένα υποερώτημα σε αυτό το (απλό) παράδειγμα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year1 <span class="op">=</span> <span class="va">year</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year1</span> <span class="op">==</span> <span class="fl">2014</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT q01.*</span></span>
+<span><span class="co">#&gt; FROM (</span></span>
+<span><span class="co">#&gt;   SELECT flights.*, "year" + 1.0 AS year1</span></span>
+<span><span class="co">#&gt;   FROM flights</span></span>
+<span><span class="co">#&gt; ) q01</span></span>
+<span><span class="co">#&gt; WHERE (year1 = 2014.0)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μερικές φορές το dbplyr θα δημιουργήσει ένα υποερώτημα που δεν χρειάζεται, επειδή δεν γνωρίζει ακόμη πώς να βελτιστοποιήσει αυτήν τη μετάφραση. Καθώς η dbplyr βελτιώνεται με την πάροδο του χρόνου, αυτές οι περιπτώσεις θα γίνονται πιο σπάνιες αλλά πιθανότατα δεν θα εξαφανιστούν ποτέ.</p>
+</section><section id="ενώσεις-joins" class="level3" data-number="21.5.8"><h3 data-number="21.5.8" class="anchored" data-anchor-id="ενώσεις-joins">
+<span class="header-section-number">21.5.8</span> Ενώσεις (Joins)</h3>
+<p>Εάν είστε εξοικειωμένοι με τις ενώσεις της dplyr, οι ενώσεις της SQL είναι αρκετά παρόμοιες. Ορίστε ένα απλό παράδειγμα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">planes</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>year_built <span class="op">=</span> <span class="va">year</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"tailnum"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT</span></span>
+<span><span class="co">#&gt;   flights.*,</span></span>
+<span><span class="co">#&gt;   planes."year" AS year_built,</span></span>
+<span><span class="co">#&gt;   "type",</span></span>
+<span><span class="co">#&gt;   manufacturer,</span></span>
+<span><span class="co">#&gt;   model,</span></span>
+<span><span class="co">#&gt;   engines,</span></span>
+<span><span class="co">#&gt;   seats,</span></span>
+<span><span class="co">#&gt;   speed,</span></span>
+<span><span class="co">#&gt;   engine</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; LEFT JOIN planes</span></span>
+<span><span class="co">#&gt;   ON (flights.tailnum = planes.tailnum)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Το κύριο στοιχείο που πρέπει να προσέξετε εδώ είναι η σύνταξη: οι ενώσεις της SQL χρησιμοποιούν υποσυνθήκες της <code>FROM</code> για να επιστρέψουν πρόσθετους πίνακες, ενώ καθορίζουν το πώς σχετίζονται οι πίνακες με το <code>ON</code>.</p>
+<p>Τα ονόματα της dplyr για αυτές τις συναρτήσεις είναι τόσο στενά συνδεδεμένα με την SQL που μπορείτε εύκολα να μαντέψετε την αντιστοίχιση σε SQL για τις <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">right_join()</a></code> και <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code>:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> flights.<span class="op">*</span>, <span class="ot">"type"</span>, manufacturer, model, engines, seats, speed</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> planes <span class="kw">ON</span> (flights.tailnum <span class="op">=</span> planes.tailnum)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> flights.<span class="op">*</span>, <span class="ot">"type"</span>, manufacturer, model, engines, seats, speed</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RIGHT</span> <span class="kw">JOIN</span> planes <span class="kw">ON</span> (flights.tailnum <span class="op">=</span> planes.tailnum)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> flights.<span class="op">*</span>, <span class="ot">"type"</span>, manufacturer, model, engines, seats, speed</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FULL</span> <span class="kw">JOIN</span> planes <span class="kw">ON</span> (flights.tailnum <span class="op">=</span> planes.tailnum)</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Είναι πιθανό να χρειαστείτε πολλές ενώσεις όταν εργάζεστε με δεδομένα από μία βάση δεδομένων. Αυτό συμβαίνει επειδή οι πίνακες βάσεων δεδομένων αποθηκεύονται συχνά σε μία εξαιρετικά κανονικοποιημένη μορφή, όπου κάθε “γεγονός” αποθηκεύεται σε ένα μόνο μέρος, οπότε για να διατηρήσετε ένα πλήρες σύνολο δεδομένων για ανάλυση, πρέπει να πλοηγηθείτε σε ένα σύνθετο δίκτυο πινάκων που συνδέονται με πρωτεύοντα και ξένα κλειδιά. Αν συναντήσετε αυτό το σενάριο, το <a href="https://cynkra.github.io/dm/">πακέτο dm</a>, των Tobias Schieferdecker, Kirill Müller και Darko Bergant, θα κάνει τη ζωή σας λίγο πιο εύκολη. Μπορεί να καθορίσει αυτόματα τις συνδέσεις μεταξύ πινάκων χρησιμοποιώντας τους περιορισμούς που τα DBA συχνά παρέχουν, να οπτικοποιήσει τις συνδέσεις και να δημιουργήσει τις συνδέσεις που χρειάζεστε για να συνδέσετε έναν πίνακα με έναν άλλο.</p>
+</section><section id="λοιπές-συναρτήσεις" class="level3" data-number="21.5.9"><h3 data-number="21.5.9" class="anchored" data-anchor-id="λοιπές-συναρτήσεις">
+<span class="header-section-number">21.5.9</span> Λοιπές συναρτήσεις</h3>
+<p>Το dbplyr μεταφράζει επίσης και άλλες συναρτήσεις όπως οι <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code>, <code>slice_*()</code>, και <code><a href="https://generics.r-lib.org/reference/setops.html">intersect()</a></code>, και μία ολοένα αυξανόμενη γκάμα από συναρτήσεις του πακέτου tidyr όπως οι <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> και <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code>. Ο πιο εύκολος τρόπος για να δείτε το πλήρες σύνολο των διαθέσιμων, προς το παρόν, μεταφράσεων είναι να επισκεφτείτε τον ιστότοπο του dbplyr: <a href="https://dbplyr.tidyverse.org/reference/" class="uri">https://dbplyr.tidyverse.org/reference/</a>.</p>
+</section><section id="ασκήσεις" class="level3" data-number="21.5.10"><h3 data-number="21.5.10" class="anchored" data-anchor-id="ασκήσεις">
+<span class="header-section-number">21.5.10</span> Ασκήσεις</h3>
+<ol type="1">
+<li><p>Σε τι μεταφράζεται η <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code>;<br>
+Σε τι η <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>;</p></li>
+<li>
+<p>Εξηγήστε τι κάνει καθένα από τα ακόλουθα ερωτήματα SQL και δοκιμάστε να τα δημιουργήσετε ξανά χρησιμοποιώντας το πακέτο dbplyr.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> dep_delay <span class="op">&lt;</span> arr_delay</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>, distance <span class="op">/</span> (air_time <span class="op">/</span> <span class="dv">60</span>) <span class="kw">AS</span> speed</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</li>
+</ol></section></section><section id="sec-sql-expressions" class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="sec-sql-expressions">
+<span class="header-section-number">21.6</span> Μεταφράσεις συναρτήσεων</h2>
+<p>Μέχρι στιγμής έχουμε επικεντρωθεί στη μεγάλη εικόνα του πώς οι συναρτήσεις της dplyr μεταφράζονται στις συνθήκες ενός ερωτήματος. Τώρα θα εμβαθύνουμε λίγο και θα μιλήσουμε για τη μετάφραση των συναρτήσεων της R που λειτουργούν με μεμονωμένες στήλες, π.χ., τι συμβαίνει όταν χρησιμοποιείτε την <code>mean(x)</code> σε ένα <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>;</p>
+<p>Για να δούμε τι συμβαίνει, θα χρησιμοποιήσουμε μερικές μικρές βοηθητικές συναρτήσεις που εκτελούν μία <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> ή μία <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> και εμφανίζουν το SQL ερώτημα που δημιουργήθηκε. Αυτό θα κάνει λίγο πιο εύκολο το να εξερευνήσετε μερικές παραλλαγές και να δείτε πως μπορεί να διαφέρουν οι συνόψεις και οι μετασχηματισμοί.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summarize_query</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">mutate_query</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">...</span>, .keep <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/explain.html">show_query</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ας επικεντρωθούμε σε μερικές συνόψεις! Κοιτάζοντας τον παρακάτω κώδικα θα παρατηρήσετε ότι ορισμένες συναρτήσεις σύνοψης, όπως η <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, έχουν σχετικά απλή μετάφραση ενώ άλλες, όπως η <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, είναι πολύ πιο περίπλοκες. Η πολυπλοκότητα είναι συνήθως μεγαλύτερη για συναρτήσεις που είναι συχνές στη στατιστική, αλλά λιγότερο συχνές σε βάσεις δεδομένων.</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">summarize_query</span><span class="op">(</span></span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">arr_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">arr_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; `summarise()` has grouped output by "year" and "month". You can override</span></span>
+<span><span class="co">#&gt; using the `.groups` argument.</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT</span></span>
+<span><span class="co">#&gt;   "year",</span></span>
+<span><span class="co">#&gt;   "month",</span></span>
+<span><span class="co">#&gt;   "day",</span></span>
+<span><span class="co">#&gt;   AVG(arr_delay) AS mean,</span></span>
+<span><span class="co">#&gt;   PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY arr_delay) AS median</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; GROUP BY "year", "month", "day"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η μετάφραση των συναρτήσεων σύνοψης γίνεται πιο περίπλοκη όταν χρησιμοποιούνται μέσα σε μία <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, επειδή πρέπει να μετατραπούν στις λεγόμενες συναρτήσεις <strong>window</strong>. Στην SQL, μετατρέπετε μία συνηθισμένη συνάρτηση συνάθροισης σε συνάρτηση window προσθέτοντας το <code>OVER</code> μετά από αυτήν:</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">mutate_query</span><span class="op">(</span></span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">arr_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT</span></span>
+<span><span class="co">#&gt;   "year",</span></span>
+<span><span class="co">#&gt;   "month",</span></span>
+<span><span class="co">#&gt;   "day",</span></span>
+<span><span class="co">#&gt;   AVG(arr_delay) OVER (PARTITION BY "year", "month", "day") AS mean</span></span>
+<span><span class="co">#&gt; FROM flights</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Στην SQL, η έκφραση <code>GROUP BY</code> χρησιμοποιείται αποκλειστικά για συνόψεις, επομένως εδώ μπορείτε να δείτε ότι η ομαδοποίηση έχει μετακινηθεί από το όρισμα <code>PARTITION BY</code> στο <code>OVER</code>.</p>
+<p>Οι συναρτήσεις window περιλαμβάνουν όλες τις συναρτήσεις που κοιτάζουν προς τα εμπρός ή προς τα πίσω, όπως η <code><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lead()</a></code> και η <code><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag()</a></code>, που κοιτάζουν την τιμή “πριν” ή “μετά” αντίστοιχα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">time_hour</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate_query</span><span class="op">(</span></span>
+<span>    lead <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lead</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>,</span>
+<span>    lag <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lag</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT</span></span>
+<span><span class="co">#&gt;   dest,</span></span>
+<span><span class="co">#&gt;   LEAD(arr_delay, 1, NULL) OVER (PARTITION BY dest ORDER BY time_hour) AS lead,</span></span>
+<span><span class="co">#&gt;   LAG(arr_delay, 1, NULL) OVER (PARTITION BY dest ORDER BY time_hour) AS lag</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="co">#&gt; ORDER BY time_hour</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Εδώ είναι σημαντικό να εφαρμόσετε την <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> στα δεδομένα, επειδή οι πίνακες SQL δεν έχουν εγγενή σειρά. Στην πραγματικότητα, αν δεν χρησιμοποιήσετε την <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>, μπορεί να πάρετε τις γραμμές με διαφορετική σειρά κάθε φορά! Σημειώστε ότι για τις συναρτήσεις window, οι πληροφορίες ταξινόμησης επαναλαμβάνονται: η συνθήκη <code>ORDER BY</code> του κύριου ερωτήματος δεν εφαρμόζεται αυτόματα στις συναρτήσεις window.</p>
+<p>Μία άλλη σημαντική συνάρτηση της SQL είναι η <code>CASE WHEN</code>. Χρησιμοποιείται ως μετάφραση των <code><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else()</a></code> και <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>, των συναρτήσεων του πακέτου dplyr που ενέπνευσε. Ακολουθούν μερικά απλά παραδείγματα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate_query</span><span class="op">(</span></span>
+<span>    description <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">arr_delay</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="st">"delayed"</span>, <span class="st">"on-time"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT CASE WHEN (arr_delay &gt; 0.0) THEN 'delayed' WHEN NOT (arr_delay &gt; 0.0) THEN 'on-time' END AS description</span></span>
+<span><span class="co">#&gt; FROM flights</span></span>
+<span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate_query</span><span class="op">(</span></span>
+<span>    description <span class="op">=</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span></span>
+<span>        <span class="va">arr_delay</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">5</span> <span class="op">~</span> <span class="st">"early"</span>, </span>
+<span>        <span class="va">arr_delay</span> <span class="op">&lt;</span> <span class="fl">5</span> <span class="op">~</span> <span class="st">"on-time"</span>,</span>
+<span>        <span class="va">arr_delay</span> <span class="op">&gt;=</span> <span class="fl">5</span> <span class="op">~</span> <span class="st">"late"</span></span>
+<span>      <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT CASE</span></span>
+<span><span class="co">#&gt; WHEN (arr_delay &lt; -5.0) THEN 'early'</span></span>
+<span><span class="co">#&gt; WHEN (arr_delay &lt; 5.0) THEN 'on-time'</span></span>
+<span><span class="co">#&gt; WHEN (arr_delay &gt;= 5.0) THEN 'late'</span></span>
+<span><span class="co">#&gt; END AS description</span></span>
+<span><span class="co">#&gt; FROM flights</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η <code>CASE WHEN</code> χρησιμοποιείται επίσης για ορισμένες άλλες συναρτήσεις που δεν έχουν άμεση μετάφραση από την R στην SQL. Ένα καλό παράδειγμα αυτού είναι η <code><a href="https://rdrr.io/r/base/cut.html">cut()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate_query</span><span class="op">(</span></span>
+<span>    description <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span></span>
+<span>      <span class="va">arr_delay</span>, </span>
+<span>      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="cn">Inf</span><span class="op">)</span>, </span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"early"</span>, <span class="st">"on-time"</span>, <span class="st">"late"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span><span class="co">#&gt; SELECT CASE</span></span>
+<span><span class="co">#&gt; WHEN (arr_delay &lt;= -5.0) THEN 'early'</span></span>
+<span><span class="co">#&gt; WHEN (arr_delay &lt;= 5.0) THEN 'on-time'</span></span>
+<span><span class="co">#&gt; WHEN (arr_delay &gt; 5.0) THEN 'late'</span></span>
+<span><span class="co">#&gt; END AS description</span></span>
+<span><span class="co">#&gt; FROM flights</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Το dbplyr μεταφράζει επίσης κοινές συναρτήσεις χειρισμού συμβολοσειράς και ημερομηνίας, για τις οποίες μπορείτε να μάθετε στο <code><a href="https://dbplyr.tidyverse.org/articles/translation-function.html">vignette("translation-function", package = "dbplyr")</a></code>. Οι μεταφράσεις του dbplyr σίγουρα δεν είναι τέλειες και υπάρχουν πολλές συναρτήσεις της R που δεν έχουν μεταφραστεί ακόμα, όμως το dbplyr κάνει εκπληκτικά καλή δουλειά καλύπτοντας τις λειτουργίες που θα χρησιμοποιείτε τις περισσότερες φορές.</p>
+</section><section id="σύνοψη" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="σύνοψη">
+<span class="header-section-number">21.7</span> Σύνοψη</h2>
+<p>Σε αυτό το κεφάλαιο μάθατε πώς να έχετε πρόσβαση σε δεδομένα από βάσεις δεδομένων. Εστιάσαμε στο dbplyr, ένα “σύστημα υποστήριξης” του dplyr που σας επιτρέπει να γράψετε κώδικα dplyr με τον οποίο είστε εξοικειωμένοι και να μεταφραστεί αυτόματα σε SQL. Χρησιμοποιήσαμε, ακόμα, αυτή τη μετάφραση για να σας μάθουμε λίγη SQL. Είναι σημαντικό να μάθετε κάποια κομμάτια της SQL καθώς είναι <em>η</em> πιο συχνά χρησιμοποιούμενη γλώσσα για εργασία με δεδομένα και η μερική γνώση θα σας διευκολύνει να επικοινωνείτε με άλλους ανθρώπους, σχετικούς με δεδομένα, που δεν χρησιμοποιούν R. Εάν έχετε ολοκληρώσει αυτό το κεφάλαιο και θέλετε να μάθετε περισσότερα για την SQL, έχουμε δύο συστάσεις:</p>
+<ul>
+<li>Το <a href="https://sqlfordatascientists.com"><em>SQL for Data Scientists</em></a> από την Renée M. P. Teate είναι μία εισαγωγή στην SQL που έχει σχεδιαστεί ειδικά για τις ανάγκες των επιστημόνων δεδομένων και περιλαμβάνει παραδείγματα του είδους των δεδομένων που είναι πολύ πιθανό να συναντηθούν σε πραγματικές επιχειρήσεις.</li>
+<li>Το <a href="https://www.practicalsql.com"><em>Practical SQL</em></a> από τον Anthony DeBarros είναι γραμμένο από την οπτική γωνία ενός δημοσιογράφου δεδομένων (ένας επιστήμονας δεδομένων που ειδικεύεται στην αφήγηση συναρπαστικών ιστοριών) και αναφέρεται σε περισσότερες λεπτομέρειες σχετικά με την εισαγωγή των δεδομένων σας μία βάση δεδομένων και την εγκατάσταση του δικού σας ΣΔΒΔ.</li>
+</ul>
+<p>Στο επόμενο κεφάλαιο, θα μάθουμε για ένα άλλο σύστημα υποστήριξης της dplyr για εργασία με μεγάλα δεδομένα: το arrow. Το arrow έχει σχεδιαστεί για εργασία με μεγάλα αρχεία στον δίσκο και αποτελεί φυσικό συμπλήρωμα των βάσεων δεδομένων.</p>
+
+
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Η SQL προφέρεται είτε “s”-“q”-“l” είτε “sequel”.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Συνήθως, αυτή είναι η μόνη συνάρτηση που θα χρησιμοποιήσετε από το πακέτο πελάτη, επομένως συνιστούμε να χρησιμοποιήσετε τον τελεστή <code>::</code> για να καλέστε αυτήν τη μία συνάρτηση, αντί να φορτώσετε ολόκληρο το πακέτο με το <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> .<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Τουλάχιστον, όλοι οι πίνακες τους οποίους έχετε άδεια να δείτε.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Ανάλογα με τη χρήση, η <code>SELECT</code> μπορεί να είναι είτε δήλωση είτε συνθήκη. Για να αποφευχθεί αυτή η σύγχυση, θα χρησιμοποιούμε το ερώτημα <code>SELECT</code> αντί για τη δήλωση <code>SELECT</code>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Τεχνικά, απαιτείται μόνο η <code>SELECT</code>, καθώς μπορείτε να γράψετε ερωτήματα όπως <code>SELECT 1+1</code> για να εκτελέσετε βασικούς υπολογισμούς. Εαν θέλετε όμως να εργαστείτε με δεδομένα (όπως κάνετε πάντα!), θα χρειαστείτε επίσης μία συνθήκη <code>FROM</code>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Αυτό δεν είναι τυχαίο: το όνομα της συνάρτησης της dplyr εμπνεύστηκε από τον όρο της SQL.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Αντιγράφηκε!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./spreadsheets.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./arrow.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Arrow</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

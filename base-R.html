@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund">
+<title>Η R για την Επιστήμη των Δεδομένων (2η έκδοση) - 27&nbsp; Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./communicate.html" rel="next">
+<link href="./iteration.html" rel="prev">
+<link href="./cover.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./program.html">Προγραμματισμός</a></li><li class="breadcrumb-item"><a href="./base-R.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Η R για την Επιστήμη των Δεδομένων (2η έκδοση)</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Εναλλαγή λειτουργίας ανάγνωσης">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Αναζήτηση"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Καλώς ήλθατε</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Πρόλογος δεύτερης έκδοσης</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Η ολοκληρωμένη εικόνα</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Οπτικοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ροή εργασιών: Bασικές αρχές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Μετασχηματισμός Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ροή εργασιών: πρότυπα γραφής κώδικα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Τακτοποίηση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Ροή εργασιών: αρχεία κώδικα και projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Εισαγωγή δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ροή εργασίας: αναζητώντας βοήθεια</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Οπτικοποίηση</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./layers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Επίπεδα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Διερευνητική ανάλυση δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Επικοινωνία</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Μετασχηματισμοί</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Λογικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Αριθμητικά διανύσματα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Συμβολοσειρές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Λογικές εκφράσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Παράγοντες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Ημερομηνίες και ώρες</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Κενές τιμές</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Εισαγωγή δεδομένων</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Arrow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Ιεραρχικά δεδομένα</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Ιστοσυγκομιδή</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Προγραμματισμός</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Συναρτήσεις</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Επανάληψη</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./base-R.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Επικοινωνία της πληροφορίας</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Εναλλαγή ενότητας">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quarto-formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Επιλογές μορφοποίησης στο Quarto</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Πίνακας περιεχομένων</h2>
+   
+  <ul>
+<li>
+<a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE"><span class="header-section-number">27.1</span> Εισαγωγή</a>
+  <ul class="collapse">
+<li><a href="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1" id="toc-προαπαιτούμενα" class="nav-link" data-scroll-target="#%CF%80%CF%81%CE%BF%CE%B1%CF%80%CE%B1%CE%B9%CF%84%CE%BF%CF%8D%CE%BC%CE%B5%CE%BD%CE%B1"><span class="header-section-number">27.1.1</span> Προαπαιτούμενα</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-subset-many" id="toc-sec-subset-many" class="nav-link" data-scroll-target="#sec-subset-many"><span class="header-section-number">27.2</span> Επιλογή πολλαπλών στοιχείων με <code>[</code></a>
+  <ul class="collapse">
+<li><a href="#%CF%85%CF%80%CE%BF%CF%83%CF%8D%CE%BD%CE%BF%CE%BB%CE%B1-%CE%B1%CF%80%CF%8C-%CE%B4%CE%B9%CE%B1%CE%BD%CF%8D%CF%83%CE%BC%CE%B1%CF%84%CE%B1" id="toc-υποσύνολα-από-διανύσματα" class="nav-link" data-scroll-target="#%CF%85%CF%80%CE%BF%CF%83%CF%8D%CE%BD%CE%BF%CE%BB%CE%B1-%CE%B1%CF%80%CF%8C-%CE%B4%CE%B9%CE%B1%CE%BD%CF%8D%CF%83%CE%BC%CE%B1%CF%84%CE%B1"><span class="header-section-number">27.2.1</span> Υποσύνολα από διανύσματα</a></li>
+  <li><a href="#%CF%85%CF%80%CE%BF%CF%83%CF%8D%CE%BD%CE%BF%CE%BB%CE%B1-%CF%80%CE%BB%CE%B1%CE%B9%CF%83%CE%AF%CF%89%CE%BD-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD" id="toc-υποσύνολα-πλαισίων-δεδομένων" class="nav-link" data-scroll-target="#%CF%85%CF%80%CE%BF%CF%83%CF%8D%CE%BD%CE%BF%CE%BB%CE%B1-%CF%80%CE%BB%CE%B1%CE%B9%CF%83%CE%AF%CF%89%CE%BD-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD"><span class="header-section-number">27.2.2</span> Υποσύνολα πλαισίων δεδομένων</a></li>
+  <li><a href="#%CE%B9%CF%83%CE%BF%CE%B4%CF%8D%CE%BD%CE%B1%CE%BC%CE%B1-%CF%84%CE%B7%CF%82-dplyr" id="toc-ισοδύναμα-της-dplyr" class="nav-link" data-scroll-target="#%CE%B9%CF%83%CE%BF%CE%B4%CF%8D%CE%BD%CE%B1%CE%BC%CE%B1-%CF%84%CE%B7%CF%82-dplyr"><span class="header-section-number">27.2.3</span> Ισοδύναμα της dplyr</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82" id="toc-ασκήσεις" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82"><span class="header-section-number">27.2.4</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-subset-one" id="toc-sec-subset-one" class="nav-link" data-scroll-target="#sec-subset-one"><span class="header-section-number">27.3</span> Επιλέγοντας μόνο ένα στοιχείο με το <code>$</code> και το <code>[[</code></a>
+  <ul class="collapse">
+<li><a href="#%CF%80%CE%BB%CE%B1%CE%AF%CF%83%CE%B9%CE%B1-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD" id="toc-πλαίσια-δεδομένων" class="nav-link" data-scroll-target="#%CF%80%CE%BB%CE%B1%CE%AF%CF%83%CE%B9%CE%B1-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD"><span class="header-section-number">27.3.1</span> Πλαίσια δεδομένων</a></li>
+  <li><a href="#tibbles" id="toc-tibbles" class="nav-link" data-scroll-target="#tibbles"><span class="header-section-number">27.3.2</span> Tibbles</a></li>
+  <li><a href="#%CE%BB%CE%AF%CF%83%CF%84%CE%B5%CF%82" id="toc-λίστες" class="nav-link" data-scroll-target="#%CE%BB%CE%AF%CF%83%CF%84%CE%B5%CF%82"><span class="header-section-number">27.3.3</span> Λίστες</a></li>
+  <li><a href="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-1" id="toc-ασκήσεις-1" class="nav-link" data-scroll-target="#%CE%B1%CF%83%CE%BA%CE%AE%CF%83%CE%B5%CE%B9%CF%82-1"><span class="header-section-number">27.3.4</span> Ασκήσεις</a></li>
+  </ul>
+</li>
+  <li><a href="#%CE%BF%CE%B9%CE%BA%CE%BF%CE%B3%CE%AD%CE%BD%CE%B5%CE%B9%CE%B1-%CF%83%CF%85%CE%BD%CE%B1%CF%81%CF%84%CE%AE%CF%83%CE%B5%CF%89%CE%BD-apply" id="toc-οικογένεια-συναρτήσεων-apply" class="nav-link" data-scroll-target="#%CE%BF%CE%B9%CE%BA%CE%BF%CE%B3%CE%AD%CE%BD%CE%B5%CE%B9%CE%B1-%CF%83%CF%85%CE%BD%CE%B1%CF%81%CF%84%CE%AE%CF%83%CE%B5%CF%89%CE%BD-apply"><span class="header-section-number">27.4</span> Οικογένεια συναρτήσεων apply</a></li>
+  <li><a href="#%CE%B2%CF%81%CF%8C%CE%B3%CF%87%CE%BF%CE%B9-for" id="toc-βρόγχοι-for" class="nav-link" data-scroll-target="#%CE%B2%CF%81%CF%8C%CE%B3%CF%87%CE%BF%CE%B9-for"><span class="header-section-number">27.5</span> Βρόγχοι <code>for</code></a></li>
+  <li><a href="#%CE%B4%CE%B9%CE%B1%CE%B3%CF%81%CE%AC%CE%BC%CE%BC%CE%B1%CF%84%CE%B1" id="toc-διαγράμματα" class="nav-link" data-scroll-target="#%CE%B4%CE%B9%CE%B1%CE%B3%CF%81%CE%AC%CE%BC%CE%BC%CE%B1%CF%84%CE%B1"><span class="header-section-number">27.6</span> Διαγράμματα</a></li>
+  <li><a href="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7" id="toc-σύνοψη" class="nav-link" data-scroll-target="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7"><span class="header-section-number">27.7</span> Σύνοψη</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-base-r" class="quarto-section-identifier"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Ένας οδηγός για το βασικό σύνολο λειτουργιών της R</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="εισαγωγή" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="εισαγωγή">
+<span class="header-section-number">27.1</span> Εισαγωγή</h2>
+<p>Ως επίλογο της ενότητας του προγραμματισμού, θα σας δώσουμε μία ιδέα για τις πιο σημαντικές βασικές συναρτήσεις της R που διαφορετικά δεν θα συζητούσαμε σε αυτό το βιβλίο. Τα εργαλεία αυτά είναι αρκετά χρήσιμα όσο προγραμματίζετε περισσότερο και θα σας βοηθήσουν στο να διαβάζετε κώδικα που κυκλοφορεί εκεί έξω.</p>
+<p>Σε αυτό το σημείο είναι καλό να σας υπενθυμίσουμε ότι το tidyverse δεν υπάρχει μόνο για να αντιμετωπίζει προβλήματα της επιστήμης δεδομένων. Δείχνουμε το tidyverse σε αυτό το βιβλίο επειδή τα αντίστοιχα πακέτα του μοιράζονται μία κοινή φιλοσοφία, αυξάνοντας τη συνοχή μεταξύ των συναρτήσεων και καθιστώντας κάθε νέα συνάρτηση ή πακέτο λίγο πιο εύκολα στην εκμάθηση και χρήση. Δεν είναι δυνατό να χρησιμοποιήσετε το tidyverse χωρίς τη χρήση των βασικών συναρτήσεων της R. Σας έχουμε ήδη μάθει <strong>πολλές</strong> βασικές συναρτήσεις R: από την <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> για την φόρτωση πακέτων, τη <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code> και τη <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> για αριθμητικές περιλήψεις, για τους τύπους δεδομένων με παράγοντες (factors), ημερομηνίες και POSIXct και φυσικά όλους τους βασικούς τελεστές όπως <code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>, <code>|</code>, <code>&amp;</code>, και <code>!</code>. Αυτό στο οποίο δεν έχουμε επικεντρωθεί μέχρι στιγμής είναι οι βασικές ροές εργασίας της R, επομένως θα επισημάνουμε μερικές από αυτές σε αυτό το κεφάλαιο.</p>
+<p>Αφού διαβάσετε αυτό το βιβλίο, θα μάθετε και άλλες προσεγγίσεις πάνω στα ίδια προβλήματα χρησιμοποιώντας το βασικό σύνολο λειτουργιών της R, το data.table και άλλα πακέτα. Θα συναντήσετε αυτές τις άλλες προσεγγίσεις χωρίς αμφιβολία όταν αρχίσετε να διαβάζετε κώδικα R που γράφτηκε από άλλους, ιδιαίτερα εάν χρησιμοποιείτε το StackOverflow. Είναι 100% εντάξει να γράφετε κώδικα που χρησιμοποιεί έναν συνδυασμό προσεγγίσεων και μην αφήνετε κανέναν να σας πει το αντίθετο!</p>
+<p>Σε αυτό το κεφάλαιο, θα εστιάσουμε σε τέσσερις μεγάλες θεματολογίες: δημιουργία υποσυνόλων με <code>[</code>, δημιουργία υποσυνόλων με τα <code>[[</code> και <code>$</code>, την οικογένεια συναρτήσεων apply και βρόγχους <code>for</code>. Τέλος, θα συζητήσουμε εν συντομία δύο συναρτήσεις δημιουργίας διαγραμμάτων.</p>
+<section id="προαπαιτούμενα" class="level3" data-number="27.1.1"><h3 data-number="27.1.1" class="anchored" data-anchor-id="προαπαιτούμενα">
+<span class="header-section-number">27.1.1</span> Προαπαιτούμενα</h3>
+<p>Το πακέτο αυτό εστιάζει στις βασικές λειτουργίες της R, επομένως δεν έχει πραγματικά προαπαιτούμενα, αλλά θα φορτώσουμε το tidyverse για να εξηγήσουμε μερικές διαφορές.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="sec-subset-many" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="sec-subset-many">
+<span class="header-section-number">27.2</span> Επιλογή πολλαπλών στοιχείων με <code>[</code>
+</h2>
+<p>Το <code>[</code> χρησιμοποιείται για την εξαγωγή υποσυνόλων από διανύσματα και πλαίσια δεδομένων και καλείται ως <code>x[i]</code> ή <code>x[i, j]</code>. Σε αυτήν την ενότητα, θα σας παρουσιάσουμε τις ικανότητες του <code>[</code>, δείχνοντάς σας πρώτα πώς μπορείτε να το χρησιμοποιήσετε με διανύσματα και στη συνέχεια πως οι ίδιες αρχές επεκτείνονται με απλό τρόπο στις δύο διαστάσεις όπως στα πλαίσια δεδομένων. Στη συνέχεια, θα σας βοηθήσουμε να το εμπεδώσετε δείχνοντας πώς διάφορες συναρτήσεις της dplyr είναι ειδικές περιπτώσεις του <code>[</code>.</p>
+<section id="υποσύνολα-από-διανύσματα" class="level3" data-number="27.2.1"><h3 data-number="27.2.1" class="anchored" data-anchor-id="υποσύνολα-από-διανύσματα">
+<span class="header-section-number">27.2.1</span> Υποσύνολα από διανύσματα</h3>
+<p>Υπάρχουν πέντε κύριοι τύποι κατηγοριών με τις οποίες μπορείτε να εξάγετε ένα υποσύνολο από ένα διάνυσμα, δηλαδή πέντε διαφορετικές κατηγορίες που αντιστοιχούν στο <code>i</code> από το <code>x[i]</code>:</p>
+<ol type="1">
+<li>
+<p><strong>Διάνυσμα με θετικούς ακέραιους αριθμούς</strong>. Η δημιουργία υποσυνόλων με θετικούς ακέραιους αριθμούς επιστρέφει τα στοιχεία των αντίστοιχων θέσεων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span>, <span class="st">"four"</span>, <span class="st">"five"</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "three" "two"   "five"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Επαναλαμβάνοντας μία θέση μπορείτε να δημιουργήσετε μία μεγαλύτερη έξοδο, κάνοντας τον όρο “υποσύνολο” ελαφρώς λανθασμένο.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "one"  "one"  "five" "five" "five" "two"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p><strong>Διάνυσμα με αρνητικούς ακέραιους αριθμούς</strong>. Αρνητικές τιμές αφαιρούν τα στοιχεία στις αντίστοιχες θέσεις:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">5</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "two"  "four"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p><strong>Λογικό διάνυσμα</strong>. Δημιουργώντας ένα υποσύνολο χρησιμοποιώντας λογικές τιμές επιστρέφει όλες τις τιμές όπου είναι <code>TRUE</code>. Συχνά, αυτό είναι πιο χρήσιμο σε συνδυασμό με συναρτήσεις σύγκρισης.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">3</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Όλες οι μη κενές τιμές του x</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 10  3  5  8  1</span></span>
+<span></span>
+<span><span class="co"># Όλες οι ζυγές (ή κενές!) τιμές του x</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">2</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 10 NA  8 NA</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Σε αντίθεση με την <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, οι θέσεις που περιέχουν <code>NA</code> θα συμπεριληφθούν στην έξοδο ως <code>NA</code>.</p>
+</li>
+<li>
+<p><strong>Διάνυσμα χαρακτήρα</strong>. Εάν έχετε ένα διάνυσμα με ονόματα για κάθε στοιχείο του, μπορείτε να δημιουργήσετε ένα υποσύνολο με ένα διάνυσμα χαρακτήρα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>abc <span class="op">=</span> <span class="fl">1</span>, def <span class="op">=</span> <span class="fl">2</span>, xyz <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"xyz"</span>, <span class="st">"def"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; xyz def </span></span>
+<span><span class="co">#&gt;   5   2</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Όπως και με τα υποσύνολα από θετικούς ακέραιους αριθμούς, μπορείτε να χρησιμοποιήσετε ένα διάνυσμα χαρακτήρων για να επαναλάβετε μεμονωμένες εγγραφές.</p>
+</li>
+<li><p><strong>Κενό</strong>. Ο τελευταίος τύπος δημιουργίας υποσύνολου είναι το κενό, <code>x[]</code>, το οποίο επιστρέφει ολόκληρο το <code>x</code>. Δεν είναι χρήσιμο όμως για υποσύνολα διανυσμάτων, αλλά όπως θα δούμε σύντομα, είναι χρήσιμο για υποσύνολα δισδιάστατων δομών, όπως τα tibbles.</p></li>
+</ol></section><section id="υποσύνολα-πλαισίων-δεδομένων" class="level3" data-number="27.2.2"><h3 data-number="27.2.2" class="anchored" data-anchor-id="υποσύνολα-πλαισίων-δεδομένων">
+<span class="header-section-number">27.2.2</span> Υποσύνολα πλαισίων δεδομένων</h3>
+<p>Υπάρχουν αρκετοί διαφορετικοί τρόποι<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> με τους οποίους μπορείτε να χρησιμοποιήσετε το <code>[</code> με ένα πλαίσιο δεδομένων, αλλά ο πιο σημαντικός είναι να επιλέξετε γραμμές και στήλες ξεχωριστά χρησιμοποιώντας το <code>df[γραμμές, στήλες]</code>. Εδώ οι <code>γραμμές</code> και οι <code>στήλες</code> είναι διανύσματα όπως περιγράφονται παραπάνω. Για παράδειγμα, τα <code>df[γραμμές, ]</code> και <code>df[, στήλες]</code> επιλέγουν μόνο γραμμές ή μόνο στήλες, χρησιμοποιώντας το κενό υποσύνολο για να διατηρήσουν την άλλη διάσταση.</p>
+<p>Μερικά παραδείγματα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, </span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"e"</span>, <span class="st">"f"</span><span class="op">)</span>, </span>
+<span>  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Επιλέξτε την πρώτη γραμμή και τη δεύτερη στήλη</span></span>
+<span><span class="va">df</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span><span class="co">#&gt;   y    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 a</span></span>
+<span></span>
+<span><span class="co"># Επιλέξτε όλες τις γραμμές και τις στήλες x και y</span></span>
+<span><span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span> , <span class="st">"y"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
+<span><span class="co">#&gt;       x y    </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1     1 a    </span></span>
+<span><span class="co">#&gt; 2     2 e    </span></span>
+<span><span class="co">#&gt; 3     3 f</span></span>
+<span></span>
+<span><span class="co"># Επιλέξτε γραμμλες όπου το `x` είναι μεγαλύτερο από 1 και όλες οι στήλες</span></span>
+<span><span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span><span class="co">#&gt;       x y         z</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     2 e     0.834</span></span>
+<span><span class="co">#&gt; 2     3 f     0.601</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα επανέλθουμε σύντομα στο <code>$</code>, θα πρέπει όμως να μπορείτε να μαντέψετε ήδη τι κάνει το <code>df$x</code> από τα συμφραζόμενα: εξάγει τη μεταβλητή <code>x</code> από το <code>df</code>. Εδώ, πρέπει να το χρησιμοποιήσουμε επειδή το <code>[</code> δεν χρησιμοποιεί αξιολόγηση tidy, επομένως πρέπει να είστε ξεκάθαροι σχετικά με την πηγή της μεταβλητής <code>x</code>.</p>
+<p>Υπάρχει μία σημαντική διαφορά μεταξύ των tibbles και των πλαισίων δεδομένων όσον αφορά το <code>[</code>. Σε αυτό το βιβλίο, χρησιμοποιήσαμε κυρίως τα tibbles, τα οποία <em>είναι</em> πλαίσια δεδομένων, αλλά τροποποιούν ορισμένες συμπεριφορές για να κάνουν τη ζωή σας λίγο πιο εύκολη. Στα περισσότερα σημεία, μπορείτε να χρησιμοποιήσετε είτε το “tibble” είτε το “data frame” (πλαίσιο δεδομένων), οπότε όταν θέλουμε να δώσουμε έμφαση στο ενσωματωμένο πλαίσιο δεδομένων της R, θα γράφουμε <code>data.frame</code>. Εάν το <code>df</code> είναι ένα <code>data.frame</code>, τότε το <code>df[, cols]</code> θα επιστρέψει ένα διάνυσμα εάν το <code>col</code> επιλέγει μία στήλη, και ένα πλαίσιο δεδομένων εάν επιλέγει περισσότερες από μία στήλες. Εάν το <code>df</code> είναι tibble, τότε η χρήση του <code>[</code> θα επιστρέφει πάντα ένα tibble.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">df1</span><span class="op">[</span>, <span class="st">"x"</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 1 2 3</span></span>
+<span></span>
+<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">df2</span><span class="op">[</span>, <span class="st">"x"</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 1</span></span>
+<span><span class="co">#&gt;       x</span></span>
+<span><span class="co">#&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1     1</span></span>
+<span><span class="co">#&gt; 2     2</span></span>
+<span><span class="co">#&gt; 3     3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ένας τρόπος για να αποφύγετε αυτή την ασάφεια με τα <code>data.frame</code> είναι να θέτετε το όρισμα <code>drop = FALSE</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df1</span><span class="op">[</span>, <span class="st">"x"</span> , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   x</span></span>
+<span><span class="co">#&gt; 1 1</span></span>
+<span><span class="co">#&gt; 2 2</span></span>
+<span><span class="co">#&gt; 3 3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="ισοδύναμα-της-dplyr" class="level3" data-number="27.2.3"><h3 data-number="27.2.3" class="anchored" data-anchor-id="ισοδύναμα-της-dplyr">
+<span class="header-section-number">27.2.3</span> Ισοδύναμα της dplyr</h3>
+<p>Αρκετές συναρτήσεις της dplyr είναι ειδικές περιπτώσεις του <code>[</code>:</p>
+<ul>
+<li>
+<p>Η <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> ισοδυναμεί με το να δημιουργείτε υποσύνολα γραμμών χρησιμοποιώντας ένα λογικό διάνυσμα ενώ ταυτόχρονα εξαιρείτε τις κενές τιμές:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span>, </span>
+<span>  y <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, </span>
+<span>  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ίδιο με το</span></span>
+<span><span class="va">df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">x</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">df</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">1</span>, <span class="op">]</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μία άλλη γνωστή τεχνική είναι η χρήση της <code><a href="https://rdrr.io/r/base/which.html">which()</a></code>, εξαιτίας της ιδιότητάς της να εξαιρεί κενές τιμές: <code>df[which(df$x &gt; 1), ]</code>.</p>
+</li>
+<li>
+<p>Η <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> ισοδυναμεί με την αναδιοργάνωση των γραμμών χρησιμοποιώντας ένα διάνυσμα ακέραιου αριθμού. Συνήθως γίνεται με την <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ίδιο με το</span></span>
+<span><span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">x</span>, <span class="va">df</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορείτε να χρησιμοποιήσετε το <code>order(decreasing = TRUE)</code> για να ταξινομήσετε όλες τις στήλες με φθίνουσα σειρά ή το <code>-rank(col)</code> για να ταξινομήσετε τις στήλες με φθίνουσα μία προς μία.</p>
+</li>
+<li>
+<p>Τόσο η <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> όσο και η <code><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate()</a></code> είναι παρόμοιες με το να δημιουργείτε υποσύνολα στηλών χρησιμοποιώντας ένα διάνυσμα χαρακτήρων:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ίδιο με το</span></span>
+<span><span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+<p>Το βασικό σύνολο της R προσφέρει μία συνάρτηση η οποία συνδυάζει τα χαρακτηριστικά της <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> και της <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> και ονομάζεται <code><a href="https://rdrr.io/r/base/subset.html">subset()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">z</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span><span class="co">#&gt;   y           z</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 a     0.157  </span></span>
+<span><span class="co">#&gt; 2 b     0.00740</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ίδιο με το</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">z</span><span class="op">)</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η συνάρτηση αυτή ήταν η έμπνευση για ένα αρκετά μεγάλο μέρος του συντακτικού της dplyr.</p>
+</section><section id="ασκήσεις" class="level3" data-number="27.2.4"><h3 data-number="27.2.4" class="anchored" data-anchor-id="ασκήσεις">
+<span class="header-section-number">27.2.4</span> Ασκήσεις</h3>
+<ol type="1">
+<li>
+<p>Δημιουργήστε συναρτήσεις οι οποίες παίρνουν ως είσοδο ένα διάνυσμα και επιστρέφουν:</p>
+<pre><code>α.  Τα στοιχεία που βρίσκονται σε ζυγές θέσεις.
+β.  Όλα τα στοιχεία εκτός του τελευταίου.
+γ.  Μόνο ζυγές τιμές (και όχι κενές τιμές).</code></pre>
+</li>
+<li><p>Γιατί το <code>x[-which(x &gt; 0)]</code> δεν είναι το ίδιο με το <code>x[x &lt;= 0]</code>; Διαβάστε τις οδηγίες για την <code><a href="https://rdrr.io/r/base/which.html">which()</a></code> και πειραματιστείτε για να το βρείτε.</p></li>
+</ol></section></section><section id="sec-subset-one" class="level2" data-number="27.3"><h2 data-number="27.3" class="anchored" data-anchor-id="sec-subset-one">
+<span class="header-section-number">27.3</span> Επιλέγοντας μόνο ένα στοιχείο με το <code>$</code> και το <code>[[</code>
+</h2>
+<p>Το <code>[</code>, το οποίο επιλέγει πολλαπλά στοιχεία, συνδυάζεται με τα <code>[[</code> και <code>$</code>, τα οποία εξάγουν ένα μεμονωμένο στοιχείο. Σε αυτήν την ενότητα, θα σας δείξουμε πώς να χρησιμοποιείτε τα <code>[[</code> και <code>$</code> για να εξάγετε στήλες από τα πλαίσια δεδομένων, θα συζητήσουμε μερικές ακόμη διαφορές μεταξύ των <code>data.frame</code> και των tibbles και θα τονίσουμε μερικές σημαντικές διαφορές μεταξύ του <code>[</code> και του <code>[[</code> όταν χρησιμοποιούνται με λίστες.</p>
+<section id="πλαίσια-δεδομένων" class="level3" data-number="27.3.1"><h3 data-number="27.3.1" class="anchored" data-anchor-id="πλαίσια-δεδομένων">
+<span class="header-section-number">27.3.1</span> Πλαίσια δεδομένων</h3>
+<p>Τα <code>[[</code> και <code>$</code> μπορούν να χρησιμοποιηθούν για την εξαγωγή στηλών από ένα πλαίσιο δεδομένων. Το <code>[[</code> μπορεί να έχει πρόσβαση σε δομές δεδομένων με βάση τη θέση ή το όνομα, και το <code>$</code> είναι ειδικά για πρόσβαση με βάση το όνομα:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">21</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ανά θέση</span></span>
+<span><span class="va">tb</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 1 2 3 4</span></span>
+<span></span>
+<span><span class="co"># ανά όνομα</span></span>
+<span><span class="va">tb</span><span class="op">[[</span><span class="st">"x"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 1 2 3 4</span></span>
+<span><span class="va">tb</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] 1 2 3 4</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Μπορούν να χρησιμοποιηθούν και για τη δημιουργία νέων στηλών. Το αντίστοιχο της <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> στο βασικό σύνολο της R είναι:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tb</span><span class="op">$</span><span class="va">z</span> <span class="op">&lt;-</span> <span class="va">tb</span><span class="op">$</span><span class="va">x</span> <span class="op">+</span> <span class="va">tb</span><span class="op">$</span><span class="va">y</span></span>
+<span><span class="va">tb</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span><span class="co">#&gt;       x     y     z</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1    10    11</span></span>
+<span><span class="co">#&gt; 2     2     4     6</span></span>
+<span><span class="co">#&gt; 3     3     1     4</span></span>
+<span><span class="co">#&gt; 4     4    21    25</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχουν πολλές άλλες προσεγγίσεις του βασικού συνόλου της R για τη δημιουργία νέων στηλών, συμπεριλαμβανομένων των <code><a href="https://rdrr.io/r/base/transform.html">transform()</a></code>, <code><a href="https://rdrr.io/r/base/with.html">with()</a></code> και <code><a href="https://rdrr.io/r/base/with.html">within()</a></code>. Ο Hadley συγκέντρωσε μερικά παραδείγματα στη διεύθυνση <a href="https://gist.github.com/hadley/1986a273e384fb2d4d752c18ed71bedf" class="uri">https://gist.github.com/hadley/1986a273e384fb2d4d752c18ed71bedf</a>.</p>
+<p>Η απευθείας χρήση του <code>$</code> είναι βολική για την κατασκευή γρήγορων περιλήψεων. Για παράδειγμα, εάν θέλετε απλώς να βρείτε το μέγεθος του μεγαλύτερου διαμαντιού ή τις πιθανές τιμές της <code>cut</code>, δεν χρειάζεται να χρησιμοποιήσετε την <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">$</span><span class="va">carat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 5.01</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">$</span><span class="va">cut</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Fair"      "Good"      "Very Good" "Premium"   "Ideal"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η dplyr παρέχει επίσης ένα ισοδύναμο με το <code>[[</code>/<code>$</code> που δεν αναφέραμε στο <a href="data-transform.html"><span>Κεφάλαιο&nbsp;3</span></a>: την <code><a href="https://dplyr.tidyverse.org/reference/pull.html">pull()</a></code>. Η <code><a href="https://dplyr.tidyverse.org/reference/pull.html">pull()</a></code> παίρνει είτε ένα όνομα μεταβλητής είτε μία θέση μεταβλητής και επιστρέφει ακριβώς αυτήν τη στήλη. Αυτό σημαίνει ότι θα μπορούσαμε να ξαναγράψουμε τον παραπάνω κώδικα για να χρησιμοποιήσουμε το pipe:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">carat</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 5.01</span></span>
+<span></span>
+<span><span class="va">diamonds</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Fair"      "Good"      "Very Good" "Premium"   "Ideal"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="tibbles" class="level3" data-number="27.3.2"><h3 data-number="27.3.2" class="anchored" data-anchor-id="tibbles">
+<span class="header-section-number">27.3.2</span> Tibbles</h3>
+<p>Υπάρχουν μερικές σημαντικές διαφορές μεταξύ των tibbles και του βασικού <code>data.frame</code> όσον αφορά το <code>$</code>. Στα πλαίσια δεδομένων αρκεί να ταιριάξει το πρόθεμα οποιουδήποτε ονόματος μεταβλητής (η λεγόμενη <strong>μερική αντιστοίχιση</strong>) και δεν παραπονιέται εάν η στήλη δεν υπάρχει:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">z</span></span>
+<span><span class="co">#&gt; NULL</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τα tibbles είναι πιο αυστηρά: τα ονόματα των μεταβλητών πρέπει να ταιριάζουν ακριβώς και θα επιστρέψουν μία προειδοποίηση εάν η στήλη στην οποία προσπαθείτε να αποκτήσετε πρόσβαση δεν υπάρχει:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tb</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `x`.</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="va">tb</span><span class="op">$</span><span class="va">z</span></span>
+<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `z`.</span></span>
+<span><span class="co">#&gt; NULL</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Για αυτόν τον λόγο, μερικές φορές αστειευόμαστε ότι τα tibbles είναι τεμπέλικα και κακόκεφα: κάνουν λίγα και παραπονιούνται περισσότερο.</p>
+</section><section id="λίστες" class="level3" data-number="27.3.3"><h3 data-number="27.3.3" class="anchored" data-anchor-id="λίστες">
+<span class="header-section-number">27.3.3</span> Λίστες</h3>
+<p>Τα <code>[[</code> και <code>$</code> είναι επίσης πολύ σημαντικά για εργασίες με λίστες και είναι σημαντικό να κατανοήσουμε πώς διαφέρουν από το <code>[</code>. Ας δείξουμε τις διαφορές με μία λίστα με όνομα <code>l</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, </span>
+<span>  b <span class="op">=</span> <span class="st">"a string"</span>, </span>
+<span>  c <span class="op">=</span> <span class="va">pi</span>, </span>
+<span>  d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<p>Το <code>[</code> εξάγει μία υπο-λίστα. Δεν έχει σημασία πόσα στοιχεία θα εξάγετε, το αποτέλεσμα θα είναι πάντα λίστα.</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">l</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt;  $ a: int [1:3] 1 2 3</span></span>
+<span><span class="co">#&gt;  $ b: chr "a string"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">l</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 1</span></span>
+<span><span class="co">#&gt;  $ a: int [1:3] 1 2 3</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">l</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 1</span></span>
+<span><span class="co">#&gt;  $ d:List of 2</span></span>
+<span><span class="co">#&gt;   ..$ : num -1</span></span>
+<span><span class="co">#&gt;   ..$ : num -5</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Όπως και με τα διανύσματα, μπορείτε να δημιουργήσετε υποσύνολα χρησιμοποιώντας διανύσματα λογικών τιμών, ακέραιων αριθμών ή χαρακτήρων.</p>
+</li>
+<li>
+<p>Τα <code>[[</code> και <code>$</code> εξάγουν ένα μόνο στοιχείο από μία λίστα. Αφαιρούν ένα επίπεδο από τη λίστα.</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">l</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  int [1:3] 1 2 3</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">l</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt;  $ : num -1</span></span>
+<span><span class="co">#&gt;  $ : num -5</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">l</span><span class="op">$</span><span class="va">a</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  int [1:3] 1 2 3</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+<p>Η διαφορά μεταξύ <code>[</code> και <code>[[</code> είναι ιδιαίτερα σημαντική για τις λίστες, επειδή το <code>[[</code> εμβαθύνει στη λίστα ενώ το <code>[</code> επιστρέφει μία νέα, μικρότερη λίστα. Για να σας βοηθήσουμε να θυμάστε τη διαφορά, ρίξτε μία ματιά στην ασυνήθιστη πιπεριέρα στο <a href="#fig-pepper">Σχήμα&nbsp;<span>27.1</span></a>. Εάν η πιπεριέρα είναι η λίστα σας με όνομα <code>pepper</code>, τότε, το <code>pepper[1]</code> είναι μία πιπεριέρα που περιέχει ένα μόνο φακελάκι πιπεριού. Το <code>pepper[2]</code> θα ήταν το ίδιο, αλλά θα περιέχει το δεύτερο φακελάκι. Το <code>pepper[1:2]</code> θα ήταν μία πιπεριέρα με δύο φακελάκια πιπεριού. Το <code>pepper[[1]]</code> θα εξάγει το ίδιο το φακελάκι πιπεριού.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pepper" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/pepper.png" class="img-fluid figure-img" style="width:100.0%" alt="Τρεις φωτογραφίες. Στα αριστερά είναι μια φωτογραφία μίας γυάλινης πιπεριέρας. Η πιπεριέρα αντί για πιπέρι, περιέχει μία συσκευασία με πιπέρι. Στη μέση είναι μια φωτογραφία μίας συσκευασίας με πιπέρι. Στα δεξιά είναι μια φωτογραφία του περιεχομένου μίας συσκευασίας με πιπέρι."></p>
+<figcaption class="figure-caption">Σχήμα&nbsp;27.1: (Αριστερά) Μία πιπεριέρα που βρήκε κάποτε ο Χάντλεϊ στο δωμάτιο του ξενοδοχείου του. (Μέση) <code>pepper[1]</code>. (Δεξιά) <code>pepper[[1]]</code></figcaption></figure>
+</div>
+</div>
+</div>
+<p>Η ίδια αρχή ισχύει όταν χρησιμοποιείτε το μονοδιάστατο <code>[</code> σε ένα πλαίσιο δεδομένων: το <code>df["x"]</code> επιστρέφει ένα πλαίσιο δεδομένων μίας στήλης και το <code>df[["x"]]</code> επιστρέφει ένα διάνυσμα.</p>
+</section><section id="ασκήσεις-1" class="level3" data-number="27.3.4"><h3 data-number="27.3.4" class="anchored" data-anchor-id="ασκήσεις-1">
+<span class="header-section-number">27.3.4</span> Ασκήσεις</h3>
+<ol type="1">
+<li><p>Τι συμβαίνει όταν χρησιμοποιείτε το <code>[[</code> με έναν θετικό ακέραιο που είναι μεγαλύτερος από το μήκος του διανύσματος; Τι συμβαίνει όταν δημιουργείτε ένα υποσυνόλου χρησιμοποιώντας ένα όνομα που δεν υπάρχει;</p></li>
+<li><p>Τι θα μπορούσε να είναι το <code>pepper[[1]][1]</code>; Το <code>pepper[[1]][[1]]</code>;</p></li>
+</ol></section></section><section id="οικογένεια-συναρτήσεων-apply" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="οικογένεια-συναρτήσεων-apply">
+<span class="header-section-number">27.4</span> Οικογένεια συναρτήσεων apply</h2>
+<p>Στο <a href="iteration.html"><span>Κεφάλαιο&nbsp;26</span></a>, μάθατε τεχνικές σχετικές με το tidyverse για επανάληψη, όπως την <code><a href="https://dplyr.tidyverse.org/reference/across.html">dplyr::across()</a></code> και την οικογένεια συναρτήσεων map. Σε αυτήν την ενότητα, θα μάθετε για τα βασικά τους ισοδύναμα, την <strong>οικογένεια συναρτήσεων apply</strong>. Σε αυτό το πλαίσιο, η apply και η map είναι συνώνυμες επειδή ένας άλλος τρόπος να πούμε “αντιστοίχιση (map) μιας συνάρτησης σε κάθε στοιχείο ενός διανύσματος” είναι “εφαρμογή (apply) μιας συνάρτησης σε κάθε στοιχείο ενός διανύσματος”. Εδώ θα σας δώσουμε μία γρήγορη επισκόπηση αυτής της οικογένειας συναρτήσεων, ώστε να μπορείτε να την αναγνωρίσετε εκεί έξω.</p>
+<p>Το πιο σημαντικό μέλος αυτής της οικογένειας είναι η <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code>, η οποία μοιάζει πολύ με τη <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Στην πραγματικότητα, επειδή δεν έχουμε χρησιμοποιήσει καμία από τις πιο προχωρημένες δυνατότητες της <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>, μπορείτε να αντικαταστήσετε κάθε κλήση της <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> στο <a href="iteration.html"><span>Κεφάλαιο&nbsp;26</span></a> με την <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code>.</p>
+<p>Δεν υπάρχει ακριβής αντιστοίχιση του βασικού συνόλου λειτουργιών της R με την <code><a href="https://dplyr.tidyverse.org/reference/across.html">across()</a></code>, αλλά μπορείτε να έρθετε αρκετά κοντά χρησιμοποιώντας το <code>[</code> με την <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code>. Αυτό λειτουργεί επειδή στο παρασκήνιο, τα πλαίσια δεδομένων είναι λίστες στηλών, επομένως η κλήση της <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> σε ένα πλαίσιο δεδομένων εφαρμόζει τη συνάρτηση σε κάθε στήλη.</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span>, c <span class="op">=</span> <span class="st">"a"</span>, d <span class="op">=</span> <span class="st">"b"</span>, e <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Πρώτα βρείτε τις αριθμητικές στήλες</span></span>
+<span><span class="va">num_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">is.numeric</span><span class="op">)</span></span>
+<span><span class="va">num_cols</span></span>
+<span><span class="co">#&gt;     a     b     c     d     e </span></span>
+<span><span class="co">#&gt;  TRUE  TRUE FALSE FALSE  TRUE</span></span>
+<span></span>
+<span><span class="co"># Στη συνέχεια, αλλάξτε κάθε στήλη με την lapply() και αντικαταστήστε τις αρχικές τιμές</span></span>
+<span><span class="va">df</span><span class="op">[</span>, <span class="va">num_cols</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="va">num_cols</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">df</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 5</span></span>
+<span><span class="co">#&gt;       a     b c     d         e</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     2     4 a     b         8</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ο παραπάνω κώδικας χρησιμοποιεί μία νέα συνάρτηση, την <code><a href="https://rdrr.io/r/base/lapply.html">sapply()</a></code>. Είναι παρόμοια με την <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code>, αλλά προσπαθεί πάντα να απλοποιήσει το αποτέλεσμα, εξ ου και το <code>s</code> στο όνομά της. Εδώ παράγει ένα λογικό διάνυσμα αντί για μία λίστα. Δεν συνιστούμε να τη χρησιμοποιήσετε για τη δημιουργία προγραμμάτων, επειδή η απλοποίηση μπορεί να αποτύχει και να σας δώσει έναν απροσδόκητο τύπο δεδομένων. Συνήθως όμως είναι καλή για διαδραστική χρήση. Η purrr έχει μία παρόμοια συνάρτηση που ονομάζεται <code><a href="https://purrr.tidyverse.org/reference/map.html">map_vec()</a></code> που δεν αναφέραμε στο <a href="iteration.html"><span>Κεφάλαιο&nbsp;26</span></a>.</p>
+<p>Το βασικό σύνολο της R παρέχει μία πιο αυστηρή έκδοση της <code><a href="https://rdrr.io/r/base/lapply.html">sapply()</a></code> που ονομάζεται <code><a href="https://rdrr.io/r/base/lapply.html">vapply()</a></code>, συντομογραφία για το <strong>v</strong>ector apply. Παίρνει ένα πρόσθετο όρισμα που καθορίζει τον αναμενόμενο τύπο, διασφαλίζοντας ότι η απλοποίηση γίνεται με τον ίδιο τρόπο ανεξάρτητα από την είσοδο. Για παράδειγμα, θα μπορούσαμε να αντικαταστήσουμε την κλήση της <code><a href="https://rdrr.io/r/base/lapply.html">sapply()</a></code> παραπάνω με αυτήν της <code><a href="https://rdrr.io/r/base/lapply.html">vapply()</a></code> όπου προσδιορίζουμε ότι αναμένουμε από την <code><a href="https://rdrr.io/r/base/numeric.html">is.numeric()</a></code> να επιστρέψει ένα λογικό διάνυσμα μήκους 1:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">is.numeric</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     a     b     c     d     e </span></span>
+<span><span class="co">#&gt;  TRUE  TRUE FALSE FALSE  TRUE</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η διαφορά μεταξύ των <code><a href="https://rdrr.io/r/base/lapply.html">sapply()</a></code> και <code><a href="https://rdrr.io/r/base/lapply.html">vapply()</a></code> είναι πολύ σημαντική όταν βρίσκονται μέσα σε μία συνάρτηση (καθώς επηρεάζεται η ανθεκτικότητα της συνάρτησης σε ασυνήθιστες εισόδους), αλλά συνήθως δεν έχει σημασία στην ανάλυση δεδομένων.</p>
+<p>Ένα άλλο σημαντικό μέλος της οικογένειας συναρτήσεων apply είναι η <code><a href="https://rdrr.io/r/base/tapply.html">tapply()</a></code> η οποία υπολογίζει μία ενιαία ομαδοποιημένη σύνοψη:</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 2</span></span>
+<span><span class="co">#&gt;   cut       price</span></span>
+<span><span class="co">#&gt;   &lt;ord&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Fair      4359.</span></span>
+<span><span class="co">#&gt; 2 Good      3929.</span></span>
+<span><span class="co">#&gt; 3 Very Good 3982.</span></span>
+<span><span class="co">#&gt; 4 Premium   4584.</span></span>
+<span><span class="co">#&gt; 5 Ideal     3458.</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">$</span><span class="va">price</span>, <span class="va">diamonds</span><span class="op">$</span><span class="va">cut</span>, <span class="va">mean</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      Fair      Good Very Good   Premium     Ideal </span></span>
+<span><span class="co">#&gt;  4358.758  3928.864  3981.760  4584.258  3457.542</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Δυστυχώς, η <code><a href="https://rdrr.io/r/base/tapply.html">tapply()</a></code> επιστρέφει τα αποτελέσματά της σε ένα διάνυσμα με όνομα και απαιτεί κάποια προσπάθεια εάν θέλετε να συλλέξετε πολλές περιλήψεις και μεταβλητές ομαδοποίησης σε ένα πλαίσιο δεδομένων (είναι σίγουρα εφικτό το να μην το κάνετε αυτό και απλώς να εργαστείτε με ξεχωριστά διανύσματα, αλλά κατά την εμπειρία μας αυτό απλώς καθυστερεί την δουλειά που πρέπει να γίνει). Αν θέλετε να δείτε πώς μπορείτε να χρησιμοποιήσετε την <code><a href="https://rdrr.io/r/base/tapply.html">tapply()</a></code> ή άλλες βασικές τεχνικές για να εκτελέσετε άλλες ομαδοποιημένες περιλήψεις, ο Hadley έχει συγκεντρώσει μερικές τεχνικές <a href="https://gist.github.com/hadley/c430501804349d382ce90754936ab8ec">σε ένα gist</a>.</p>
+<p>Το τελευταίο μέλος της οικογένειας apply είναι η <code><a href="https://rdrr.io/r/base/apply.html">apply()</a></code>, η οποία λειτουργεί με μητρώα και arrays. Πιο αναλυτικά, προσέξτε την <code>apply(df, 2, something)</code>, που είναι ένας αργός και δυνητικά επικίνδυνος τρόπος για να εφαρμόσετε την <code>lapply(df, something)</code>. Αυτό σπάνια εμφανίζεται στην επιστήμη δεδομένων επειδή συνήθως εργαζόμαστε με πλαίσια δεδομένων και όχι με μητρώα.</p>
+</section><section id="βρόγχοι-for" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="βρόγχοι-for">
+<span class="header-section-number">27.5</span> Βρόγχοι <code>for</code>
+</h2>
+<p>Οι βρόγχοι <code>for</code> είναι το θεμελιώδες δομικό στοιχείο της επανάληψης που χρησιμοποιούν και οι οικογένειες apply και map στο παρασκήνιο Οι βρόγχοι <code>for</code> είναι ισχυρά και γενικά εργαλεία που είναι σημαντικό να μάθετε καθώς γίνεστε πιο έμπειρος προγραμματιστής στην R. Η βασική δομή ενός βρόγχου <code>for</code> μοιάζει με το εξής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">element</span> <span class="kw">in</span> <span class="va">vector</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># εφαρμόστε οτιδήποτε με την element</span></span>
+<span><span class="op">}</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η πιο απλή χρήση των βρόγχων <code>for</code> είναι είναι για την επίτευξη του ίδιου αποτελέσματος με την <code><a href="https://purrr.tidyverse.org/reference/map.html">walk()</a></code>: η κλήση κάποιας συνάρτησης με κάποιο αποτέλεσμα σε κάθε στοιχείο μιας λίστας. Για παράδειγμα, στην <a href="iteration.html#sec-save-database"><span>Ενότητα&nbsp;26.4.1</span></a> αντί να χρησιμοποιήσετε τη <code><a href="https://purrr.tidyverse.org/reference/map.html">walk()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paths</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">walk</a></span><span class="op">(</span><span class="va">append_file</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Θα μπορούσαμε να χρησιμοποιήσουμε έναν βρόγχο <code>for</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">path</span> <span class="kw">in</span> <span class="va">paths</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">append_file</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Τα πράγματα γίνονται λίγο πιο δύσκολα αν θέλετε να αποθηκεύσετε την έξοδο του βρόγχου <code>for</code>, για παράδειγμα η ανάγνωση όλων των αρχείων excel σε έναν κατάλογο όπως κάναμε στο <a href="iteration.html"><span>Κεφάλαιο&nbsp;26</span></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="st">"data/gapminder"</span>, pattern <span class="op">=</span> <span class="st">"\\.xlsx$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">paths</span>, <span class="fu">readxl</span><span class="fu">::</span><span class="va"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Υπάρχουν μερικές διαφορετικές τεχνικές που μπορείτε να χρησιμοποιήσετε, αλλά σας συνιστούμε να είστε ξεκάθαροι σχετικά με το πώς θα είναι το αποτέλεσμα εκ των προτέρων. Σε αυτήν την περίπτωση, θα θέλουμε μία λίστα με το ίδιο μήκος με το <code>paths</code>, την οποία μπορούμε να δημιουργήσουμε με την <code><a href="https://rdrr.io/r/base/vector.html">vector()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">vector</a></span><span class="op">(</span><span class="st">"list"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">paths</span><span class="op">)</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Στη συνέχεια, αντί να επαναλαμβάνουμε τις διαδικασίες μας στα στοιχεία του <code>paths</code>, θα τις επαναλαμβάνουμε στους δείκτες τους, χρησιμοποιώντας τη <code><a href="https://rdrr.io/r/base/seq.html">seq_along()</a></code> για να δημιουργήσουμε ένα ευρετήριο για κάθε στοιχείο του paths:</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">paths</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11 12</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Η χρήση των δεικτών είναι σημαντική γιατί μας επιτρέπει να συνδέσουμε κάθε θέση στην είσοδο με την αντίστοιχη θέση στην έξοδο:</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">paths</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">files</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="va">paths</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Για να συνδυάσετε τη λίστα των tibbles σε ένα μόνο tibble, μπορείτε να χρησιμοποιήσετε τις <code><a href="https://rdrr.io/r/base/do.call.html">do.call()</a></code> + <code><a href="https://rdrr.io/r/base/cbind.html">rbind()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">files</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1,704 × 5</span></span>
+<span><span class="co">#&gt;   country     continent lifeExp      pop gdpPercap</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan Asia         28.8  8425333      779.</span></span>
+<span><span class="co">#&gt; 2 Albania     Europe       55.2  1282697     1601.</span></span>
+<span><span class="co">#&gt; 3 Algeria     Africa       43.1  9279525     2449.</span></span>
+<span><span class="co">#&gt; 4 Angola      Africa       30.0  4232095     3521.</span></span>
+<span><span class="co">#&gt; 5 Argentina   Americas     62.5 17876956     5911.</span></span>
+<span><span class="co">#&gt; 6 Australia   Oceania      69.1  8691212    10040.</span></span>
+<span><span class="co">#&gt; # ℹ 1,698 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Αντί να δημιουργήσουμε μία λίστα και να αποθηκεύουμε εκεί τα αποτελέσματα καθώς προχωράμε, μία απλούστερη προσέγγιση είναι να δημιουργήσουμε το πλαίσιο δεδομένων κομμάτι-κομμάτι:</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">path</span> <span class="kw">in</span> <span class="va">paths</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Συνιστούμε να αποφύγετε αυτό το μοτίβο γιατί μπορεί να γίνει αρκετά αργό όταν το διάνυσμα είναι πολύ μεγάλο. Αυτή είναι και η πηγή του μύθου ότι οι βρόγχοι <code>for</code> είναι αργοί: δεν είναι, αλλά το να αυξάνεται προοδευτικά ένα διάνυσμα, είναι.</p>
+</section><section id="διαγράμματα" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="διαγράμματα">
+<span class="header-section-number">27.6</span> Διαγράμματα</h2>
+<p>Πολλοί χρήστες της R, που δεν χρησιμοποιούν υπό άλλες συνθήκες το tidyverse, προτιμούν το πακέτο ggplot2 για σχεδίαση, λόγω των χρήσιμων χαρακτηριστικών της, όπως οι λογικές προεπιλογές, τα αυτοματοποιημένα υπομνήματα και η μοντέρνα εμφάνιση. Ωστόσο, οι βασικές συναρτήσεις σχεδίασης της R μπορούν να είναι ακόμα χρήσιμες μόνο και μόνο επειδή επειδή είναι τόσο συνοπτικές — χρειάζεται πολύ λίγη πληκτρολόγηση για να κάνετε ένα απλό εξερευνητικό διάγραμμα.</p>
+<p>Υπάρχουν δύο κύριοι τύποι απλών διαγραμμάτων που θα δείτε εκεί έξω: διαγράμματα διασποράς και ιστογράμματα, που παράγονται με τις <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> και <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code> αντίστοιχα. Ακολουθεί ένα γρήγορο παράδειγμα από το σύνολο δεδομένων diamonds:</p>
+<div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Αριστερά</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">$</span><span class="va">carat</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Δεξιά</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">$</span><span class="va">carat</span>, <span class="va">diamonds</span><span class="op">$</span><span class="va">price</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="base-R_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" alt="Στα αριστερά, ένα ιστόγραμμα καρατιών διαμαντιών, που κυμαίνεται από 0 έως 5 καράτια. Η κατανομή έχει μία κορυφή και είναι λοξή προς τα δεξιά. Στα δεξιά, ένα διάγραμμα διασποράς των τιμών έναντι των καρατιών διαμαντιών, δείχνοντας μια θετική σχέση στην οποία φαίνεται να αυξάνονται τόσο η τιμή όσο και τα καράτια. Το διάγραμμα διασποράς δείχνει πολύ λίγα διαμάντια μεγαλύτερα από 3 καράτια σε σύγκριση με διαμάντια μεταξύ 0 και 3 καρατιών." width="384"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="base-R_files/figure-html/unnamed-chunk-38-2.png" class="img-fluid" alt="Στα αριστερά, ένα ιστόγραμμα καρατιών διαμαντιών, που κυμαίνεται από 0 έως 5 καράτια. Η κατανομή έχει μία κορυφή και είναι λοξή προς τα δεξιά. Στα δεξιά, ένα διάγραμμα διασποράς των τιμών έναντι των καρατιών διαμαντιών, δείχνοντας μια θετική σχέση στην οποία φαίνεται να αυξάνονται τόσο η τιμή όσο και τα καράτια. Το διάγραμμα διασποράς δείχνει πολύ λίγα διαμάντια μεγαλύτερα από 3 καράτια σε σύγκριση με διαμάντια μεταξύ 0 και 3 καρατιών." width="384"></p>
+</div>
+</div>
+</div>
+</div>
+<p>Σημειώστε ότι οι βασικές συναρτήσεις διαγραμμάτων λειτουργούν με διανύσματα, επομένως πρέπει να επιλέξετε στήλες από το πλαίσιο δεδομένων χρησιμοποιώντας το <code>$</code> ή κάποια άλλη τεχνική.</p>
+</section><section id="σύνοψη" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="σύνοψη">
+<span class="header-section-number">27.7</span> Σύνοψη</h2>
+<p>Σε αυτό το κεφάλαιο, σας δείξαμε μία επιλογή από βασικές συναρτήσεις της R που είναι χρήσιμες για την δημιουργία υποσυνόλων και για την επανάληψη. Σε σύγκριση με προσεγγίσεις που συζητούνται αλλού στο βιβλίο, αυτές οι συναρτήσεις τείνουν να έχουν περισσότερο άρωμα “διανύσματος” παρά “πλαισίου δεδομένων”, επειδή οι βασικές συναρτήσεις της R τείνουν να λαμβάνουν μεμονωμένα διανύσματα ως είσοδο, παρά ένα πλαίσιο δεδομένων μαζί με προδιαγραφές στηλών. Αυτό συχνά, στον προγραμματισμό, κάνει τη ζωή πιο εύκολη και γι’ αυτό γίνεται πιο σημαντικό καθώς γράφετε περισσότερες συναρτήσεις και αρχίζετε να γράφετε τα δικά σας πακέτα.</p>
+<p>Αυτό το κεφάλαιο ολοκληρώνει την ενότητα προγραμματισμού του βιβλίου. Έχετε κάνει μία καλή αρχή στο ταξίδι σας για να γίνετε όχι απλώς ένας επιστήμονας δεδομένων που χρησιμοποιεί την R, αλλά ένας επιστήμονας δεδομένων που μπορεί να <em>προγραμματίσει</em> σε R. Ελπίζουμε ότι αυτά τα κεφάλαια έχουν κεντρίσει το ενδιαφέρον σας για τον προγραμματισμό και ότι ανυπομονείτε να μάθετε περισσότερα εκτός αυτού του βιβλίου.</p>
+
+
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p>Διαβάστε το <a href="https://adv-r.hadley.nz/subsetting.html#subset-multiple" class="uri">https://adv-r.hadley.nz/subsetting.html#subset-multiple</a> για να δείτε πώς μπορείτε επίσης να ορίσετε ένα υποσύνολο σε ένα πλαίσιο δεδομένων σαν να είναι αντικείμενο μίας διάστασης και πώς μπορείτε να δημιουργήσετε ένα υποσύνολο με ένα μητρώο.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Ωστόσο, δεν χειρίζεται ομαδοποιημένα πλαίσια δεδομένων με διαφορετικό τρόπο και δεν υποστηρίζει βοηθητικές συναρτήσεις επιλογής όπως η <code><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with()</a></code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Απλώς δεν διαθέτει βολικές λειτουργίες, όπως καταστάσεις προόδου και αναφορές για το ποιο στοιχείο προκάλεσε το πρόβλημα εάν υπάρχει σφάλμα.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Αντιγράφηκε!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./iteration.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Επανάληψη</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./communicate.html" class="pagination-link">
+        <span class="nav-page-text">Επικοινωνία της πληροφορίας</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>
