@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund">
 <title>Η R για την Επιστήμη των Δεδομένων (2η έκδοση) - 19&nbsp; Ενώσεις</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -78,7 +78,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
     "search-matching-documents-text": "ταιριάζοντα έγγραφα",
@@ -87,6 +93,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
     "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
     "search-clear-button-title": "Καθαρισμός",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Ακύρωση",
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
@@ -97,19 +104,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transform.html">Μετασχηματισμοί</a></li><li class="breadcrumb-item"><a href="./joins.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transform.html">Μετασχηματισμοί</a></li><li class="breadcrumb-item"><a href="./joins.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Η R για την Επιστήμη των Δεδομένων (2η έκδοση)</a> 
         <div class="sidebar-tools-main">
@@ -388,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Πίνακας περιεχομένων</h2>
@@ -439,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./transform.html">Μετασχηματισμοί</a></li><li class="breadcrumb-item"><a href="./joins.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-joins" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Ενώσεις</span></span></h1>
 </div>
 
@@ -452,6 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
   </div>
   
+
 
 </header><section id="εισαγωγή" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="εισαγωγή">
 <span class="header-section-number">19.1</span> Εισαγωγή</h2>
@@ -493,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 <li>
 <p>Το <code>airports</code> καταγράφει δεδομένα για κάθε αεροδρόμιο. Μπορείτε να προσδιορίσετε κάθε αεροδρόμιο με τον κωδικό τριών γραμμάτων που του αντιστοιχεί, καθιστώντας τη μεταβλητή <code>faa</code> το πρωτεύον κλειδί.</p>
-<div class="cell" data-r.options="{&quot;width&quot;:67}">
+<div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">airports</span></span>
 <span><span class="co">#&gt; # A tibble: 1,458 × 8</span></span>
 <span><span class="co">#&gt;   faa   name                            lat   lon   alt    tz dst  </span></span>
@@ -510,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 <li>
 <p>Το <code>planes</code> καταγράφει δεδομένα για κάθε αεροπλάνο. Μπορείτε να προσδιορίσετε ένα αεροπλάνο με τον αναγνωριστικό κωδικό του, καθιστώντας τη μεταβλητή <code>tailnum</code> το πρωτεύον κλειδί.</p>
-<div class="cell" data-r.options="{&quot;width&quot;:67}">
+<div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">planes</span></span>
 <span><span class="co">#&gt; # A tibble: 3,322 × 9</span></span>
 <span><span class="co">#&gt;   tailnum  year type              manufacturer    model     engines</span></span>
@@ -527,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
 <li>
 <p>Το <code>weather</code> καταγράφει δεδομένα για τον καιρό στο αεροδρόμιο αναχώρησης. Μπορείτε να προσδιορίσετε κάθε παρατήρηση από το συνδυασμό τοποθεσίας και ώρας, καθιστώντας τις μεταβλητές <code>origin</code> και <code>time_hour</code> το σύνθετο πρωτεύον κλειδί.</p>
-<div class="cell" data-r.options="{&quot;width&quot;:67}">
+<div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">weather</span></span>
 <span><span class="co">#&gt; # A tibble: 26,115 × 15</span></span>
 <span><span class="co">#&gt;   origin  year month   day  hour  temp  dewp humid wind_dir</span></span>
@@ -551,12 +559,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Η μεταβλητή <code>flights$dest</code> είναι ένα ξένο κλειδί που αντιστοιχεί στο πρωτεύον κλειδί <code>airports$faa</code>.</li>
 <li>Η μεταβλητή <code>flights$origin</code>-<code>flights$time_hour</code> είναι ένα σύνθετο ξένο κλειδί που αντιστοιχεί στο σύνθετο πρωτεύον κλειδί <code>weather$origin</code>-<code>weather$time_hour</code>.</li>
 </ul>
-<p>Αυτές οι σχέσεις συνοψίζονται και οπτικά στο <a href="#fig-flights-relationships">Σχήμα&nbsp;<span>19.1</span></a>.</p>
+<p>Αυτές οι σχέσεις συνοψίζονται και οπτικά στο <a href="#fig-flights-relationships" class="quarto-xref">Σχήμα&nbsp;<span>19.1</span></a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-flights-relationships" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/relational.png" class="img-fluid figure-img" alt="Οι σχέσεις μεταξύ αεροδρομίων, αεροπλάνων, πτήσεων, καιρού και συνόλων δεδομένων αεροπορικών εταιρειών από το πακέτο nycflights13. Η airports$faa συνδέεται με τις flights$origin και flights$dest. Η planes$tailnum συνδέεται με τη flights$tailnum. Οι weather$time_hour weather$origin συνδέονται από κοινού με τις flights$time_hour και τις flights$origin. Η airlines$carrier είναι συνδεδεμένη με τη flights$carrier. Δεν υπάρχουν απευθείας συνδέσεις μεταξύ αεροδρομίων, αεροπλάνων, αεροπορικών εταιρειών και πλαισίων δεδομένων για τον καιρό." width="502"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.1: Συνδέσεις μεταξύ και των πέντε πλαισίων δεδομένων στο πακέτο nycflights13. Οι μεταβλητές που αποτελούν ένα πρωτεύον κλειδί έχουν γκρι χρώμα, και συνδέονται με τα αντίστοιχα ξένα κλειδιά τους με βέλη.</figcaption></figure>
+<div id="fig-flights-relationships" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Οι σχέσεις μεταξύ αεροδρομίων, αεροπλάνων, πτήσεων, καιρού και συνόλων δεδομένων αεροπορικών εταιρειών από το πακέτο nycflights13. Η airports$faa συνδέεται με τις flights$origin και flights$dest. Η planes$tailnum συνδέεται με τη flights$tailnum. Οι weather$time_hour weather$origin συνδέονται από κοινού με τις flights$time_hour και τις flights$origin. Η airlines$carrier είναι συνδεδεμένη με τη flights$carrier. Δεν υπάρχουν απευθείας συνδέσεις μεταξύ αεροδρομίων, αεροπλάνων, αεροπορικών εταιρειών και πλαισίων δεδομένων για τον καιρό.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-flights-relationships-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/relational.png" class="img-fluid figure-img" alt="Οι σχέσεις μεταξύ αεροδρομίων, αεροπλάνων, πτήσεων, καιρού και συνόλων δεδομένων αεροπορικών εταιρειών από το πακέτο nycflights13. Η airports$faa συνδέεται με τις flights$origin και flights$dest. Η planes$tailnum συνδέεται με τη flights$tailnum. Οι weather$time_hour weather$origin συνδέονται από κοινού με τις flights$time_hour και τις flights$origin. Η airlines$carrier είναι συνδεδεμένη με τη flights$carrier. Δεν υπάρχουν απευθείας συνδέσεις μεταξύ αεροδρομίων, αεροπλάνων, αεροπορικών εταιρειών και πλαισίων δεδομένων για τον καιρό." width="502">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flights-relationships-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.1: Συνδέσεις μεταξύ και των πέντε πλαισίων δεδομένων στο πακέτο nycflights13. Οι μεταβλητές που αποτελούν ένα πρωτεύον κλειδί έχουν γκρι χρώμα, και συνδέονται με τα αντίστοιχα ξένα κλειδιά τους με βέλη.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -634,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="ασκήσεις" class="level3" data-number="19.2.4"><h3 data-number="19.2.4" class="anchored" data-anchor-id="ασκήσεις">
 <span class="header-section-number">19.2.4</span> Ασκήσεις</h3>
 <ol type="1">
-<li><p>Ξεχάσαμε να σχεδιάσουμε τη σχέση μεταξύ <code>weather</code> και <code>airports</code> στο <a href="#fig-flights-relationships">Σχήμα&nbsp;<span>19.1</span></a>. Ποια είναι η σχέση και πώς πρέπει να εμφανίζεται στο διάγραμμα;</p></li>
+<li><p>Ξεχάσαμε να σχεδιάσουμε τη σχέση μεταξύ <code>weather</code> και <code>airports</code> στο <a href="#fig-flights-relationships" class="quarto-xref">Σχήμα&nbsp;<span>19.1</span></a>. Ποια είναι η σχέση και πώς πρέπει να εμφανίζεται στο διάγραμμα;</p></li>
 <li><p>Η μεταβλητή <code>weather</code> περιέχει μόνο πληροφορίες για τα τρία αεροδρόμια αναχώρησης στη Νέα Υόρκη. Εάν περιείχε αρχεία καιρού για όλα τα αεροδρόμια των ΗΠΑ, ποια πρόσθετη σύνδεση θα έκανε με το πλαίσιο δεδομένων <code>flights</code>;</p></li>
 <li><p>Οι μεταβλητές <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, και <code>origin</code> σχεδόν σχηματίζουν ένα σύνθετο κλειδί για το πλαίσιο δεδομένων <code>weather</code>, ωστόσο υπάρχει μία τιμή ώρας που έχει διπλότυπες παρατηρήσεις. Μπορείτε να καταλάβετε τι το ιδιαίτερο έχει αυτή η ώρα;</p></li>
 <li><p>Γνωρίζουμε ότι κάποιες μέρες του χρόνου είναι ιδιαίτερες και λιγότεροι άνθρωποι από το συνηθισμένο επιλέγουν να πετάξουν αυτές τις μέρες (για παράδειγμα, παραμονή και ανήμερα Χριστουγέννων). Πώς μπορείτε να αναπαραστήσετε αυτά τα δεδομένα ως πλαίσιο δεδομένων; Ποιο θα ήταν το πρωτεύον κλειδί; Πώς θα συνδεόταν με τα υπάρχοντα πλαίσια δεδομένων;</p></li>
@@ -764,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # ℹ 7 more variables: type &lt;chr&gt;, manufacturer &lt;chr&gt;, model &lt;chr&gt;, …</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Σημειώστε ότι η προέλευση των μεταβλητών <code>year</code> αποσαφηνίζεται στην έξοδο με ένα επίθημα (<code>year.x</code> και <code>year.y</code>), το οποίο μας λέει εάν η μεταβλητή προήλθε από το όρισμα <code>x</code> ή <code>y</code>. Μπορείτε να παρακάμψετε τα προεπιλεγμένα επιθήματα με το όρισμα <code>suffix</code>.</p>
-<p>Το <code>join_by(tailnum)</code> είναι η σύντομη εκδοχή του <code>join_by(tailnum == tailnum)</code>. Είναι σημαντικό να γνωρίζετε αυτήν την πληρέστερη εκδοχή για δύο λόγους. Πρώτον, γιατί περιγράφει τη σχέση μεταξύ των δύο πινάκων: τα κλειδιά πρέπει να είναι ίσα (equal). Αυτός είναι ο λόγος για τον οποίο αυτός ο τύπος ένωσης ονομάζεται συχνά <strong>equi ένωση</strong>. Θα μάθετε για τις non-equi ενώσεις στην <a href="#sec-non-equi-joins"><span>Ενότητα&nbsp;19.5</span></a>.</p>
+<p>Το <code>join_by(tailnum)</code> είναι η σύντομη εκδοχή του <code>join_by(tailnum == tailnum)</code>. Είναι σημαντικό να γνωρίζετε αυτήν την πληρέστερη εκδοχή για δύο λόγους. Πρώτον, γιατί περιγράφει τη σχέση μεταξύ των δύο πινάκων: τα κλειδιά πρέπει να είναι ίσα (equal). Αυτός είναι ο λόγος για τον οποίο αυτός ο τύπος ένωσης ονομάζεται συχνά <strong>equi ένωση</strong>. Θα μάθετε για τις non-equi ενώσεις στην <a href="#sec-non-equi-joins" class="quarto-xref"><span>Ενότητα 19.5</span></a>.</p>
 <p>Δεύτερον, γιατί δείχνει τον τρόπο με τον οποίο καθορίζετε διαφορετικά κλειδιά ένωσης σε κάθε πίνακα. Για παράδειγμα, υπάρχουν δύο τρόποι για να ενώσετε τους πίνακες <code>flight2</code> και <code>airports</code>: είτε με βάση το <code>dest</code> (τον προορισμό) είτε το <code>origin</code> (την προέλευση):</p>
 <div class="cell">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
@@ -830,7 +842,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 6 AUS   Austin Bergstrom Intl   30.2  -97.7   542    -6 A     America/Chicago</span></span>
 <span><span class="co">#&gt; # ℹ 95 more rows</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Οι <strong>αντι-ενώσεις</strong> (<strong>anti-joins</strong>) είναι το αντίθετο: επιστρέφουν όλες τις γραμμές από το <code>x</code> που δεν έχουν αντιστοιχία στο <code>y</code>. Είναι χρήσιμα για την εύρεση κενών τιμών που είναι <strong>έμμεσες</strong> στα δεδομένα, το θέμα του <a href="missing-values.html#sec-missing-implicit"><span>Ενότητα&nbsp;18.3</span></a>. Οι τιμές που λείπουν σιωπηρά δεν εμφανίζονται ως <code>NA</code> αλλά υπάρχουν μόνο ως απουσία. Για παράδειγμα, μπορούμε να βρούμε γραμμές που λείπουν από το <code>airports</code> αναζητώντας πτήσεις που δεν έχουν αντίστοιχο αεροδρόμιο προορισμού:</p>
+<p>Οι <strong>αντι-ενώσεις</strong> (<strong>anti-joins</strong>) είναι το αντίθετο: επιστρέφουν όλες τις γραμμές από το <code>x</code> που δεν έχουν αντιστοιχία στο <code>y</code>. Είναι χρήσιμα για την εύρεση κενών τιμών που είναι <strong>έμμεσες</strong> στα δεδομένα, το θέμα του <a href="missing-values.html#sec-missing-implicit" class="quarto-xref"><span>Ενότητα 18.3</span></a>. Οι τιμές που λείπουν σιωπηρά δεν εμφανίζονται ως <code>NA</code> αλλά υπάρχουν μόνο ως απουσία. Για παράδειγμα, μπορούμε να βρούμε γραμμές που λείπουν από το <code>airports</code> αναζητώντας πτήσεις που δεν έχουν αντίστοιχο αεροδρόμιο προορισμού:</p>
 <div class="cell">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights2</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">airports</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">dest</span> <span class="op">==</span> <span class="va">faa</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -891,7 +903,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Τι συνέβη στις 13 Ιουνίου 2013; Σχεδιάστε έναν χάρτη με τις καθυστερήσεις και, στη συνέχεια, χρησιμοποιήστε το Google για να διασταυρώσετε τα δεδομένα για τον καιρό.</p></li>
 </ol></section></section><section id="πώς-λειτουργούν-οι-ενώσεις" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="πώς-λειτουργούν-οι-ενώσεις">
 <span class="header-section-number">19.4</span> Πώς λειτουργούν οι ενώσεις;</h2>
-<p>Τώρα που έχετε χρησιμοποιήσει ενώσεις κάποιες φορές, ήρθε η ώρα να μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας τους, εστιάζοντας στο πώς κάθε γραμμή στο <code>x</code> αντιστοιχίζεται με τις γραμμές στο <code>y</code>. Θα ξεκινήσουμε εισάγοντας μία οπτική αναπαράσταση των ενώσεων, χρησιμοποιώντας τα απλά tibbles που ορίζονται παρακάτω και εμφανίζονται στο <a href="#fig-join-setup">Σχήμα&nbsp;<span>19.2</span></a>. Σε αυτά τα παραδείγματα θα χρησιμοποιήσουμε ένα μόνο κλειδί που ονομάζεται <code>key</code> και μία στήλη με μία τιμή (<code>val_x</code> και <code>val_y</code>), αλλά όλες οι ιδέες που χρησιμοποιούνται εδώ γενικεύονται σε πολλά κλειδιά και πολλαπλές τιμές.</p>
+<p>Τώρα που έχετε χρησιμοποιήσει ενώσεις κάποιες φορές, ήρθε η ώρα να μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας τους, εστιάζοντας στο πώς κάθε γραμμή στο <code>x</code> αντιστοιχίζεται με τις γραμμές στο <code>y</code>. Θα ξεκινήσουμε εισάγοντας μία οπτική αναπαράσταση των ενώσεων, χρησιμοποιώντας τα απλά tibbles που ορίζονται παρακάτω και εμφανίζονται στο <a href="#fig-join-setup" class="quarto-xref">Σχήμα&nbsp;<span>19.2</span></a>. Σε αυτά τα παραδείγματα θα χρησιμοποιήσουμε ένα μόνο κλειδί που ονομάζεται <code>key</code> και μία στήλη με μία τιμή (<code>val_x</code> και <code>val_y</code>), αλλά όλες οι ιδέες που χρησιμοποιούνται εδώ γενικεύονται σε πολλά κλειδιά και πολλαπλές τιμές.</p>
 <div class="cell">
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">key</span>, <span class="op">~</span><span class="va">val_x</span>,</span>
@@ -908,84 +920,116 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-setup" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/setup.png" class="img-fluid figure-img" alt="Τα x και y είναι δύο πλαίσια δεδομένων με 2 στήλες και 3 γραμμές, με περιεχόμενα όπως περιγράφοτναι στο κείμενο. Οι τιμές των κλειδιών είναι χρωματισμένες: το 1 αντιστοιχεί στο πράσινο, το 2 στο μωβ, το 3 στο πορτοκαλί και το 4 στο κίτρινο." width="160"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.2: Γραφική αναπαράσταση των δύο απλών πινάκων. Οι χρωματισμένες στήλες <code>key</code> αντιστοιχίζουν το χρώμα υποβάθρου στην τιμή του κλειδιού. Οι γκρι στήλες αντιπροσωπεύουν τις στήλες τιμών που μεταφέρονται στην πορεία.</figcaption></figure>
+<div id="fig-join-setup" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Τα x και y είναι δύο πλαίσια δεδομένων με 2 στήλες και 3 γραμμές, με περιεχόμενα όπως περιγράφοτναι στο κείμενο. Οι τιμές των κλειδιών είναι χρωματισμένες: το 1 αντιστοιχεί στο πράσινο, το 2 στο μωβ, το 3 στο πορτοκαλί και το 4 στο κίτρινο.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/setup.png" class="img-fluid figure-img" alt="Τα x και y είναι δύο πλαίσια δεδομένων με 2 στήλες και 3 γραμμές, με περιεχόμενα όπως περιγράφοτναι στο κείμενο. Οι τιμές των κλειδιών είναι χρωματισμένες: το 1 αντιστοιχεί στο πράσινο, το 2 στο μωβ, το 3 στο πορτοκαλί και το 4 στο κίτρινο." width="160">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.2: Γραφική αναπαράσταση των δύο απλών πινάκων. Οι χρωματισμένες στήλες <code>key</code> αντιστοιχίζουν το χρώμα υποβάθρου στην τιμή του κλειδιού. Οι γκρι στήλες αντιπροσωπεύουν τις στήλες τιμών που μεταφέρονται στην πορεία.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Το <a href="#fig-join-setup2">Σχήμα&nbsp;<span>19.3</span></a> εισάγει τη βάση για την οπτική μας αναπαράσταση. Εμφανίζει όλες τις πιθανές αντιστοιχίσεις μεταξύ των <code>x</code> και <code>y</code> ως τομή μεταξύ των γραμμών που σχεδιάζονται από κάθε γραμμή του <code>x</code> και κάθε γραμμής του <code>y</code>. Οι γραμμές και οι στήλες στην έξοδο καθορίζονται κυρίως από το <code>x</code>, επομένως ο πίνακας <code>x</code> είναι οριζόντιος και ευθυγραμμίζεται με την έξοδο.</p>
+<p>Το <a href="#fig-join-setup2" class="quarto-xref">Σχήμα&nbsp;<span>19.3</span></a> εισάγει τη βάση για την οπτική μας αναπαράσταση. Εμφανίζει όλες τις πιθανές αντιστοιχίσεις μεταξύ των <code>x</code> και <code>y</code> ως τομή μεταξύ των γραμμών που σχεδιάζονται από κάθε γραμμή του <code>x</code> και κάθε γραμμής του <code>y</code>. Οι γραμμές και οι στήλες στην έξοδο καθορίζονται κυρίως από το <code>x</code>, επομένως ο πίνακας <code>x</code> είναι οριζόντιος και ευθυγραμμίζεται με την έξοδο.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-setup2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/setup2.png" class="img-fluid figure-img" alt="Τα x και y σχηματίζουν ορθή γωνία, με οριζόντιες γραμμές να εκτείνονται από το x και κάθετες γραμμές να εκτείνονται από το y. Υπάρχουν 3 γραμμές στο x και 3 γραμμές στο y, που έχει σαν αποτέλεσμα 9 τομές, που αντιπροσωπεύουν 9 πιθανούς συνδυασμούς." width="170"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.3: Για να κατανοήσετε πως δουλεύουν οι ενώσεις, είναι χρήσιμο να σκεφτείτε κάθε πιθανό συνδυασμό. Εδώ το δείχνουμε αυτό με ένα πλέγμα συνδεόμενων γραμμών.</figcaption></figure>
+<div id="fig-join-setup2" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Τα x και y σχηματίζουν ορθή γωνία, με οριζόντιες γραμμές να εκτείνονται από το x και κάθετες γραμμές να εκτείνονται από το y. Υπάρχουν 3 γραμμές στο x και 3 γραμμές στο y, που έχει σαν αποτέλεσμα 9 τομές, που αντιπροσωπεύουν 9 πιθανούς συνδυασμούς.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-setup2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/setup2.png" class="img-fluid figure-img" alt="Τα x και y σχηματίζουν ορθή γωνία, με οριζόντιες γραμμές να εκτείνονται από το x και κάθετες γραμμές να εκτείνονται από το y. Υπάρχουν 3 γραμμές στο x και 3 γραμμές στο y, που έχει σαν αποτέλεσμα 9 τομές, που αντιπροσωπεύουν 9 πιθανούς συνδυασμούς." width="170">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-setup2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.3: Για να κατανοήσετε πως δουλεύουν οι ενώσεις, είναι χρήσιμο να σκεφτείτε κάθε πιθανό συνδυασμό. Εδώ το δείχνουμε αυτό με ένα πλέγμα συνδεόμενων γραμμών.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Για να περιγράψουμε έναν συγκεκριμένο τύπο ένωσης, υποδεικνύουμε τις αντιστοιχίσεις με τελείες. Οι αντιστοιχίσεις καθορίζουν τις γραμμές στην έξοδο, ένα νέο πλαίσιο δεδομένων που περιέχει το κλειδί, τις τιμές x και τις τιμές y. Για παράδειγμα, το <a href="#fig-join-inner">Σχήμα&nbsp;<span>19.4</span></a> δείχνει μία εσωτερική ένωση, όπου οι γραμμές διατηρούνται εάν και μόνο εάν τα κλειδιά είναι ίσα.</p>
+<p>Για να περιγράψουμε έναν συγκεκριμένο τύπο ένωσης, υποδεικνύουμε τις αντιστοιχίσεις με τελείες. Οι αντιστοιχίσεις καθορίζουν τις γραμμές στην έξοδο, ένα νέο πλαίσιο δεδομένων που περιέχει το κλειδί, τις τιμές x και τις τιμές y. Για παράδειγμα, το <a href="#fig-join-inner" class="quarto-xref">Σχήμα&nbsp;<span>19.4</span></a> δείχνει μία εσωτερική ένωση, όπου οι γραμμές διατηρούνται εάν και μόνο εάν τα κλειδιά είναι ίσα.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-inner" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/inner.png" class="img-fluid figure-img" alt="Τα x και y σχηματίζουν ορθή γωνία με γραμμές που σχηματίζουν ένα πλέγμα πιθανών συνδυασμών. Τα κλειδιά 1 και 2 εμφανίζονται τόσο στο x όσο και στο y, οπότε παίρνουμε έναν συνδυασμό που υποδεικνεύται από μία κουκίδα. Κάθε κουκίδα αντιστοιχεί σε μια γραμμή της εξόδου, οπότε το πλαίσιο δεδομένων που προκύπτει μετά την ένωση έχει δύο γραμμές." width="363"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.4: Μία εσωτερική ένωση αντιστοιχίζει κάθε γραμμή του <code>x</code> στη γραμμή του <code>y</code> που έχει την ίδια τιμή στο <code>key</code>. Κάθε συνδυασμός γίνεται μια γραμμή στην έξοδο.</figcaption></figure>
+<div id="fig-join-inner" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Τα x και y σχηματίζουν ορθή γωνία με γραμμές που σχηματίζουν ένα πλέγμα πιθανών συνδυασμών. Τα κλειδιά 1 και 2 εμφανίζονται τόσο στο x όσο και στο y, οπότε παίρνουμε έναν συνδυασμό που υποδεικνεύται από μία κουκίδα. Κάθε κουκίδα αντιστοιχεί σε μια γραμμή της εξόδου, οπότε το πλαίσιο δεδομένων που προκύπτει μετά την ένωση έχει δύο γραμμές.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-inner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/inner.png" class="img-fluid figure-img" alt="Τα x και y σχηματίζουν ορθή γωνία με γραμμές που σχηματίζουν ένα πλέγμα πιθανών συνδυασμών. Τα κλειδιά 1 και 2 εμφανίζονται τόσο στο x όσο και στο y, οπότε παίρνουμε έναν συνδυασμό που υποδεικνεύται από μία κουκίδα. Κάθε κουκίδα αντιστοιχεί σε μια γραμμή της εξόδου, οπότε το πλαίσιο δεδομένων που προκύπτει μετά την ένωση έχει δύο γραμμές." width="363">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-inner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.4: Μία εσωτερική ένωση αντιστοιχίζει κάθε γραμμή του <code>x</code> στη γραμμή του <code>y</code> που έχει την ίδια τιμή στο <code>key</code>. Κάθε συνδυασμός γίνεται μια γραμμή στην έξοδο.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>Μπορούμε να εφαρμόσουμε τις ίδιες αρχές για να εξηγήσουμε τις <strong>εξωτερικές ενώσεις</strong> (<strong>outer joins</strong>), οι οποίες διατηρούν τις παρατηρήσεις που εμφανίζονται σε τουλάχιστον ένα από τα πλαίσια δεδομένων. Αυτές οι ενώσεις λειτουργούν προσθέτοντας μία πρόσθετη “εικονική” παρατήρηση σε κάθε πλαίσιο δεδομένων. Αυτή η παρατήρηση έχει ένα κλειδί που ταιριάζει αν δεν ταιριάζει άλλο κλειδί, και τιμές γεμάτες με <code>NA</code>. Υπάρχουν τρεις τύποι εξωτερικών ενώσεων:</p>
 <ul>
 <li>
-<p>Μία <strong>αριστερή ένωση</strong> (<strong>left join</strong>) διατηρεί όλες τις παρατηρήσεις του <code>x</code>, <a href="#fig-join-left">Σχήμα&nbsp;<span>19.5</span></a>. Κάθε γραμμή του <code>x</code> διατηρείται στην έξοδο, μιας και μπορεί να αντιστοιχιστεί σε μία γραμμή με <code>NA</code> του <code>y</code>.</p>
+<p>Μία <strong>αριστερή ένωση</strong> (<strong>left join</strong>) διατηρεί όλες τις παρατηρήσεις του <code>x</code>, <a href="#fig-join-left" class="quarto-xref">Σχήμα&nbsp;<span>19.5</span></a>. Κάθε γραμμή του <code>x</code> διατηρείται στην έξοδο, μιας και μπορεί να αντιστοιχιστεί σε μία γραμμή με <code>NA</code> του <code>y</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-left" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/left.png" class="img-fluid figure-img" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που δείχνει μια εσωτερική ένωση, ο y πίνακας αποκτά μια νέα εικονική γραμμή που περιέχει NA, η οποία θα ταιριάξει με κάθε γραμμή του x, η οποία δεν έχει ταιριάξει με κάποιο άλλο τρόπο. Αυτό σημαίνει ότι η έξοδος πλέον έχει 3 γραμμές. Για την περίπτωση του key = 3, που ταιριάζει με αυτή την εικονική γραμμή, η στήλη val_y παίρνει την τιμή NA." width="385"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.5: Μία οπτική αναπαράσταση της αριστερής ένωσης όπου κάθε γραμμή του <code>x</code> εμφανίζεται στην έξοδο.</figcaption></figure>
+<div id="fig-join-left" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που δείχνει μια εσωτερική ένωση, ο y πίνακας αποκτά μια νέα εικονική γραμμή που περιέχει NA, η οποία θα ταιριάξει με κάθε γραμμή του x, η οποία δεν έχει ταιριάξει με κάποιο άλλο τρόπο. Αυτό σημαίνει ότι η έξοδος πλέον έχει 3 γραμμές. Για την περίπτωση του key = 3, που ταιριάζει με αυτή την εικονική γραμμή, η στήλη val_y παίρνει την τιμή NA.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-left-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/left.png" class="img-fluid figure-img" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που δείχνει μια εσωτερική ένωση, ο y πίνακας αποκτά μια νέα εικονική γραμμή που περιέχει NA, η οποία θα ταιριάξει με κάθε γραμμή του x, η οποία δεν έχει ταιριάξει με κάποιο άλλο τρόπο. Αυτό σημαίνει ότι η έξοδος πλέον έχει 3 γραμμές. Για την περίπτωση του key = 3, που ταιριάζει με αυτή την εικονική γραμμή, η στήλη val_y παίρνει την τιμή NA." width="385">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-left-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.5: Μία οπτική αναπαράσταση της αριστερής ένωσης όπου κάθε γραμμή του <code>x</code> εμφανίζεται στην έξοδο.
+</figcaption></figure>
 </div>
 </div>
 </div>
 </li>
 <li>
-<p>Μία <strong>δεξιά ένωση</strong> (<strong>right join</strong>) διατηρεί όλες τις παρατηρήσεις του <code>y</code>, <a href="#fig-join-right">Σχήμα&nbsp;<span>19.6</span></a>. Κάθε γραμμή του <code>y</code> διατηρείται στην έξοδο, επειδή μπορεί να αντιστοιχιστεί σε μία γραμμή με <code>NA</code> του <code>x</code>. Η έξοδος εξακολουθεί να ταιριάζει με το <code>x</code> όσο το δυνατόν περισσότερο, ενώ τυχόν επιπλέον σειρές από το <code>y</code> προστίθενται στο τέλος.</p>
+<p>Μία <strong>δεξιά ένωση</strong> (<strong>right join</strong>) διατηρεί όλες τις παρατηρήσεις του <code>y</code>, <a href="#fig-join-right" class="quarto-xref">Σχήμα&nbsp;<span>19.6</span></a>. Κάθε γραμμή του <code>y</code> διατηρείται στην έξοδο, επειδή μπορεί να αντιστοιχιστεί σε μία γραμμή με <code>NA</code> του <code>x</code>. Η έξοδος εξακολουθεί να ταιριάζει με το <code>x</code> όσο το δυνατόν περισσότερο, ενώ τυχόν επιπλέον σειρές από το <code>y</code> προστίθενται στο τέλος.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-right" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/right.png" class="img-fluid figure-img" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που έδειχνε μια αριστερή ένωση, ο x πίνακας θα αποκτήσει πλέον μια εικονική γραμμή, ώστε κάθε γραμμή του y να έχει ένα ταίρι στον x. Η στήλη val_x περιέχει NA για κάθε γραμμή του y που δεν έχει ταιριάξει με κάποια γραμμή του x." width="380"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.6: Μία οπτική αναπαράσταση της δεξιάς ένωσης όπου κάθε γραμμή του <code>y</code> εμφανίζεται στην έξοδο.</figcaption></figure>
+<div id="fig-join-right" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που έδειχνε μια αριστερή ένωση, ο x πίνακας θα αποκτήσει πλέον μια εικονική γραμμή, ώστε κάθε γραμμή του y να έχει ένα ταίρι στον x. Η στήλη val_x περιέχει NA για κάθε γραμμή του y που δεν έχει ταιριάξει με κάποια γραμμή του x.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-right-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/right.png" class="img-fluid figure-img" alt="Σε σύγκριση με το προηγούμενο διάγραμμα που έδειχνε μια αριστερή ένωση, ο x πίνακας θα αποκτήσει πλέον μια εικονική γραμμή, ώστε κάθε γραμμή του y να έχει ένα ταίρι στον x. Η στήλη val_x περιέχει NA για κάθε γραμμή του y που δεν έχει ταιριάξει με κάποια γραμμή του x." width="380">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-right-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.6: Μία οπτική αναπαράσταση της δεξιάς ένωσης όπου κάθε γραμμή του <code>y</code> εμφανίζεται στην έξοδο.
+</figcaption></figure>
 </div>
 </div>
 </div>
 </li>
 <li>
-<p>Μία <strong>πλήρης ένωση</strong> (<strong>full join</strong>) διατηρεί όλες τις παρατηρήσεις που εμφανίζονται είτε στο <code>x</code> είτε στο <code>y</code>, <a href="#fig-join-full">Σχήμα&nbsp;<span>19.7</span></a>. Κάθε γραμμή των <code>x</code> και <code>y</code> περιλαμβάνεται στην έξοδο επειδή και τα <code>x</code> και <code>y</code> περιλαμβάνουν μία εναλλακτική γραμμή με <code>NA</code>. Και πάλι, η έξοδος ξεκινά με όλες τις γραμμές από το <code>x</code>, ακολουθούμενες από τις υπόλοιπες γραμμές του <code>y</code> που δεν αντιστοιχίστηκαν σε συγκεκριμένη γραμμή του <code>x</code>.</p>
+<p>Μία <strong>πλήρης ένωση</strong> (<strong>full join</strong>) διατηρεί όλες τις παρατηρήσεις που εμφανίζονται είτε στο <code>x</code> είτε στο <code>y</code>, <a href="#fig-join-full" class="quarto-xref">Σχήμα&nbsp;<span>19.7</span></a>. Κάθε γραμμή των <code>x</code> και <code>y</code> περιλαμβάνεται στην έξοδο επειδή και τα <code>x</code> και <code>y</code> περιλαμβάνουν μία εναλλακτική γραμμή με <code>NA</code>. Και πάλι, η έξοδος ξεκινά με όλες τις γραμμές από το <code>x</code>, ακολουθούμενες από τις υπόλοιπες γραμμές του <code>y</code> που δεν αντιστοιχίστηκαν σε συγκεκριμένη γραμμή του <code>x</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-full" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/full.png" class="img-fluid figure-img" alt="Τώρα τόσο το x όσο και το y έχουν μια εικονική γραμμή που θα ταιριάζει πάντα. Το αποτέλεσμα έχει 4 γραμμές: τα κλειδιά (keys) 1, 2, 3 και 4, με όλες τις τιμές από τις val_x και val_y. Ωστόσο, το κλειδί 2 στην val_y και το κλειδί 4 στην val_x είναι NA, καθώς αυτά τα κλειδιά δεν έχουν αντιστοιχισθεί με το άλλο πλαίσιο δεδομένων." width="388"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.7: Μία οπτική αναπαράσταση της πλήρους ένωσης όπου κάθε γραμμή του<code>x</code> και του <code>y</code> εμφανίζεται στην έξοδο.</figcaption></figure>
+<div id="fig-join-full" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Τώρα τόσο το x όσο και το y έχουν μια εικονική γραμμή που θα ταιριάζει πάντα. Το αποτέλεσμα έχει 4 γραμμές: τα κλειδιά (keys) 1, 2, 3 και 4, με όλες τις τιμές από τις val_x και val_y. Ωστόσο, το κλειδί 2 στην val_y και το κλειδί 4 στην val_x είναι NA, καθώς αυτά τα κλειδιά δεν έχουν αντιστοιχισθεί με το άλλο πλαίσιο δεδομένων.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/full.png" class="img-fluid figure-img" alt="Τώρα τόσο το x όσο και το y έχουν μια εικονική γραμμή που θα ταιριάζει πάντα. Το αποτέλεσμα έχει 4 γραμμές: τα κλειδιά (keys) 1, 2, 3 και 4, με όλες τις τιμές από τις val_x και val_y. Ωστόσο, το κλειδί 2 στην val_y και το κλειδί 4 στην val_x είναι NA, καθώς αυτά τα κλειδιά δεν έχουν αντιστοιχισθεί με το άλλο πλαίσιο δεδομένων." width="388">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.7: Μία οπτική αναπαράσταση της πλήρους ένωσης όπου κάθε γραμμή του<code>x</code> και του <code>y</code> εμφανίζεται στην έξοδο.
+</figcaption></figure>
 </div>
 </div>
 </div>
 </li>
 </ul>
-<p>Ένας άλλος τρόπος για να δείξετε τις διαφορές ανάμεσα στους διάφορους τύπους της εξωτερικής ένωσης είναι με ένα διάγραμμα Venn, όπως στο <a href="#fig-join-venn">Σχήμα&nbsp;<span>19.8</span></a>. Ωστόσο, αυτή δεν είναι μία καλή αναπαράσταση, επειδή, ενώ μπορεί να φρεσκάρει τη μνήμη σας σχετικά με το ποιες γραμμές διατηρούνται, αποτυγχάνει όμως να επεξηγήσει τι συμβαίνει με τις στήλες.</p>
+<p>Ένας άλλος τρόπος για να δείξετε τις διαφορές ανάμεσα στους διάφορους τύπους της εξωτερικής ένωσης είναι με ένα διάγραμμα Venn, όπως στο <a href="#fig-join-venn" class="quarto-xref">Σχήμα&nbsp;<span>19.8</span></a>. Ωστόσο, αυτή δεν είναι μία καλή αναπαράσταση, επειδή, ενώ μπορεί να φρεσκάρει τη μνήμη σας σχετικά με το ποιες γραμμές διατηρούνται, αποτυγχάνει όμως να επεξηγήσει τι συμβαίνει με τις στήλες.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-venn" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/venn.png" class="img-fluid figure-img" alt="Διαγράμματα Venn για εσωτερικές, πλήρεις, αριστερές και δεξιές ενώσεις. Κάθε ένωση αναπαριστάται με δύο κύκλους που τέμνονται και αντιστοιχούν στα πλαίσια δεδομένανω x και y, με το x στα δεξιά και το y στα αριστερά. Η σκίαση υποδεικνύει το αποτέλεσμα της ένωσης." width="385"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.8: Διαγάμματα Venn που δείχνουν τη διαφορά ανάμεσα σε εσωτερικές, αριστερές, δεξιές και πλήρεις ενώσεις.</figcaption></figure>
+<div id="fig-join-venn" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Διαγράμματα Venn για εσωτερικές, πλήρεις, αριστερές και δεξιές ενώσεις. Κάθε ένωση αναπαριστάται με δύο κύκλους που τέμνονται και αντιστοιχούν στα πλαίσια δεδομένανω x και y, με το x στα δεξιά και το y στα αριστερά. Η σκίαση υποδεικνύει το αποτέλεσμα της ένωσης.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/venn.png" class="img-fluid figure-img" alt="Διαγράμματα Venn για εσωτερικές, πλήρεις, αριστερές και δεξιές ενώσεις. Κάθε ένωση αναπαριστάται με δύο κύκλους που τέμνονται και αντιστοιχούν στα πλαίσια δεδομένανω x και y, με το x στα δεξιά και το y στα αριστερά. Η σκίαση υποδεικνύει το αποτέλεσμα της ένωσης." width="385">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-venn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.8: Διαγάμματα Venn που δείχνουν τη διαφορά ανάμεσα σε εσωτερικές, αριστερές, δεξιές και πλήρεις ενώσεις.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Οι ενώσεις που φαίνονται εδώ είναι οι λεγόμενες <strong>equi</strong> <strong>ενωσεις (ενώσεις ισοτιμίας)</strong>, όπου οι γραμμές αντιστοιχίζονται εάν τα κλειδιά είναι ίσα. Οι ενώσεις ισοτιμίας είναι ο πιο συνηθισμένος τύπος ένωσης, επομένως συνήθως παραλείπουμε το πρόθεμα equi και απλώς λέμε “inner join” αντί για “equi inner join”. Θα επανέλθουμε στις non-equi ενώσεις στην <a href="#sec-non-equi-joins"><span>Ενότητα&nbsp;19.5</span></a>.</p>
+<p>Οι ενώσεις που φαίνονται εδώ είναι οι λεγόμενες <strong>equi</strong> <strong>ενωσεις (ενώσεις ισοτιμίας)</strong>, όπου οι γραμμές αντιστοιχίζονται εάν τα κλειδιά είναι ίσα. Οι ενώσεις ισοτιμίας είναι ο πιο συνηθισμένος τύπος ένωσης, επομένως συνήθως παραλείπουμε το πρόθεμα equi και απλώς λέμε “inner join” αντί για “equi inner join”. Θα επανέλθουμε στις non-equi ενώσεις στην <a href="#sec-non-equi-joins" class="quarto-xref"><span>Ενότητα 19.5</span></a>.</p>
 <section id="αντιστοίχιση-γραμμών" class="level3" data-number="19.4.1"><h3 data-number="19.4.1" class="anchored" data-anchor-id="αντιστοίχιση-γραμμών">
 <span class="header-section-number">19.4.1</span> Αντιστοίχιση γραμμών</h3>
-<p>Μέχρι στιγμής έχουμε εξερευνήσει τι συμβαίνει εάν μία γραμμή από το <code>x</code> ταιριάζει με μία ή καμμία γραμμή στο <code>y</code>. Τι συμβαίνει όμως αν ταιριάζει με περισσότερες από μία γραμμές; Για να κατανοήσουμε τι συμβαίνει, ας εστιάσουμε την προσοχή μας στο <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code> και ας σχεδιάσουμε μία εικόνα, <a href="#fig-join-match-types">Σχήμα&nbsp;<span>19.9</span></a>.</p>
+<p>Μέχρι στιγμής έχουμε εξερευνήσει τι συμβαίνει εάν μία γραμμή από το <code>x</code> ταιριάζει με μία ή καμμία γραμμή στο <code>y</code>. Τι συμβαίνει όμως αν ταιριάζει με περισσότερες από μία γραμμές; Για να κατανοήσουμε τι συμβαίνει, ας εστιάσουμε την προσοχή μας στο <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code> και ας σχεδιάσουμε μία εικόνα, <a href="#fig-join-match-types" class="quarto-xref">Σχήμα&nbsp;<span>19.9</span></a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-match-types" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/match-types.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης όπου το x έχει τιμές κλειδιών 1, 2 και 3, ενώ το y έχει τιμές κλειδιών 1, 2 και 2. Η έξοδος έχει τρεις γραμμές, επειδή το κλειδί 1 ταιριάζει με μία γραμμή, το κλειδί 2 ταιριάζει με 2 γραμμές και το κλειδί 3 δεν ταιριάζει με κάποια γραμμή." width="348"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.9: Οι τρεις τρόποι με τους οποίους μπορεί να αντιστοιχιστεί μια γραμμή στο <code>x</code>. Το <code>x1</code> αντιστοιχεί σε μία γραμμή στο <code>y</code>, το <code>x2</code> αντιστοιχεί σε δύο γραμμές στο <code>y</code>, το <code>x3</code> δεν αντιστοιχεί σε καμία γραμμή στο y. Σημειώστε ότι ενώ υπάρχουν τρεις γραμμές στο <code>x</code> και τρεις γραμμές στην έξοδο, δεν υπάρχει άμεση αντιστοιχία μεταξύ των γραμμών.</figcaption></figure>
+<div id="fig-join-match-types" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Ένα διάγραμμα ένωσης όπου το x έχει τιμές κλειδιών 1, 2 και 3, ενώ το y έχει τιμές κλειδιών 1, 2 και 2. Η έξοδος έχει τρεις γραμμές, επειδή το κλειδί 1 ταιριάζει με μία γραμμή, το κλειδί 2 ταιριάζει με 2 γραμμές και το κλειδί 3 δεν ταιριάζει με κάποια γραμμή.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-match-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/match-types.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης όπου το x έχει τιμές κλειδιών 1, 2 και 3, ενώ το y έχει τιμές κλειδιών 1, 2 και 2. Η έξοδος έχει τρεις γραμμές, επειδή το κλειδί 1 ταιριάζει με μία γραμμή, το κλειδί 2 ταιριάζει με 2 γραμμές και το κλειδί 3 δεν ταιριάζει με κάποια γραμμή." width="348">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-match-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.9: Οι τρεις τρόποι με τους οποίους μπορεί να αντιστοιχιστεί μια γραμμή στο <code>x</code>. Το <code>x1</code> αντιστοιχεί σε μία γραμμή στο <code>y</code>, το <code>x2</code> αντιστοιχεί σε δύο γραμμές στο <code>y</code>, το <code>x3</code> δεν αντιστοιχεί σε καμία γραμμή στο y. Σημειώστε ότι ενώ υπάρχουν τρεις γραμμές στο <code>x</code> και τρεις γραμμές στην έξοδο, δεν υπάρχει άμεση αντιστοιχία μεταξύ των γραμμών.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1021,27 +1065,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Εάν το κάνετε αυτό σκόπιμα, μπορείτε να ορίσετε <code>relationship = "many-to-many"</code>,, όπως προτείνει η προειδοποίηση.</p>
 </section><section id="ενώσεις-φιλτραρίσματος-1" class="level3" data-number="19.4.2"><h3 data-number="19.4.2" class="anchored" data-anchor-id="ενώσεις-φιλτραρίσματος-1">
 <span class="header-section-number">19.4.2</span> Ενώσεις φιλτραρίσματος</h3>
-<p>Ο αριθμός των αντιστοιχιών καθορίζει επίσης τη συμπεριφορά των ενώσεων φιλτραρίσματος. Η ημι-ένωση (semi-join) διατηρεί γραμμές στο <code>x</code> που έχουν μία ή περισσότερες αντιστοιχίσεις στο <code>y</code>, όπως στο <a href="#fig-join-semi">Σχήμα&nbsp;<span>19.10</span></a>. Η αντι-ένωση (anti-join) διατηρεί γραμμές στο <code>x</code> που δεν ταιριάζουν με καμία γραμμή στο <code>y</code>, όπως στο <a href="#fig-join-anti">Σχήμα&nbsp;<span>19.11</span></a>. Και στις δύο περιπτώσεις, μόνο η ύπαρξη μιας αντιστοίχισης είναι σημαντική, και όχι το πλήθος των αντιστοιχίσεων. Αυτό σημαίνει ότι οι ενώσεις φιλτραρίσματος δεν δημιουργούν ποτέ διπλότυπες γραμμές όπως κάνουν οι ενώσεις αλλαγής.</p>
+<p>Ο αριθμός των αντιστοιχιών καθορίζει επίσης τη συμπεριφορά των ενώσεων φιλτραρίσματος. Η ημι-ένωση (semi-join) διατηρεί γραμμές στο <code>x</code> που έχουν μία ή περισσότερες αντιστοιχίσεις στο <code>y</code>, όπως στο <a href="#fig-join-semi" class="quarto-xref">Σχήμα&nbsp;<span>19.10</span></a>. Η αντι-ένωση (anti-join) διατηρεί γραμμές στο <code>x</code> που δεν ταιριάζουν με καμία γραμμή στο <code>y</code>, όπως στο <a href="#fig-join-anti" class="quarto-xref">Σχήμα&nbsp;<span>19.11</span></a>. Και στις δύο περιπτώσεις, μόνο η ύπαρξη μιας αντιστοίχισης είναι σημαντική, και όχι το πλήθος των αντιστοιχίσεων. Αυτό σημαίνει ότι οι ενώσεις φιλτραρίσματος δεν δημιουργούν ποτέ διπλότυπες γραμμές όπως κάνουν οι ενώσεις αλλαγής.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-semi" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/semi.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης με τους παλιούς γνωστούς μας x και y. Σε μια ημι-ένωση, μόνο η παρουσία μιας αντιστοίχισης έχει σημασία, οπότε η έξοδος έχει τις ίδιες στήλες με το x." width="318"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.10: Σε μια ημι-ένωση το μόνο που έχει σημασία είναι να υπάρχει μια αντιστοίχιση, διαφορετικά οι τιμές στο πλαίσιο δεδομένων <code>y</code> δεν επηρεάζουν την έξοδο.</figcaption></figure>
+<div id="fig-join-semi" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Ένα διάγραμμα ένωσης με τους παλιούς γνωστούς μας x και y. Σε μια ημι-ένωση, μόνο η παρουσία μιας αντιστοίχισης έχει σημασία, οπότε η έξοδος έχει τις ίδιες στήλες με το x.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-semi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/semi.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης με τους παλιούς γνωστούς μας x και y. Σε μια ημι-ένωση, μόνο η παρουσία μιας αντιστοίχισης έχει σημασία, οπότε η έξοδος έχει τις ίδιες στήλες με το x." width="318">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-semi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.10: Σε μια ημι-ένωση το μόνο που έχει σημασία είναι να υπάρχει μια αντιστοίχιση, διαφορετικά οι τιμές στο πλαίσιο δεδομένων <code>y</code> δεν επηρεάζουν την έξοδο.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-anti" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/anti.png" class="img-fluid figure-img" alt="Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, οπότε οι αντιστοιχίσεις σχεδιάζονται με κόκκινες γραμμές, που υποδεικνύουν ότι αυτές οι γραμμές δεν θα εμφανιστούν στην έξοδο." width="317"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.11: Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, αφαιρώντας γραμμές από το <code>x</code> που αντιστοιχίζονται με το <code>y</code>.</figcaption></figure>
+<div id="fig-join-anti" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, οπότε οι αντιστοιχίσεις σχεδιάζονται με κόκκινες γραμμές, που υποδεικνύουν ότι αυτές οι γραμμές δεν θα εμφανιστούν στην έξοδο.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-anti-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/anti.png" class="img-fluid figure-img" alt="Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, οπότε οι αντιστοιχίσεις σχεδιάζονται με κόκκινες γραμμές, που υποδεικνύουν ότι αυτές οι γραμμές δεν θα εμφανιστούν στην έξοδο." width="317">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-anti-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.11: Μία αντι-ένωση είναι το αντίστροφο μιας ημι-ένωσης, αφαιρώντας γραμμές από το <code>x</code> που αντιστοιχίζονται με το <code>y</code>.
+</figcaption></figure>
 </div>
 </div>
 </div>
 </section></section><section id="sec-non-equi-joins" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="sec-non-equi-joins">
 <span class="header-section-number">19.5</span> Non-equi ενώσεις</h2>
 <p>Μέχρι στιγμής έχετε δει μόνο ενώσεις ισοτιμίας, ενώσεις όπου οι γραμμές ταιριάζουν εάν το κλειδί του <code>x</code> ισούται με το κλειδί στο <code>y</code>. Τώρα θα χαλαρώσουμε αυτόν τον περιορισμό και θα συζητήσουμε άλλους τρόπους για να προσδιορίσουμε εάν ένα ζευγάρι γραμμών ταιριάζει.</p>
-<p>Αλλά προτού μπορέσουμε να το κάνουμε αυτό, πρέπει να επανεξετάσουμε μία απλοποίηση που κάναμε παραπάνω. Σε ισότιμες ενώσεις (equi joins) τα κλειδιά των <code>x</code> και <code>y</code> είναι πάντα ίσα, οπότε αρκεί να εμφανίσουμε μόνο ένα στην έξοδο. Μπορούμε να ζητήσουμε από το πακέτο dplyr να διατηρήσει και τα δύο κλειδιά με το όρισμα <code>keep = TRUE</code>, οδηγώντας στον παρακάτω κώδικα και στο επανασχεδιασμένο <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code> στο <a href="#fig-inner-both">Σχήμα&nbsp;<span>19.12</span></a>.</p>
+<p>Αλλά προτού μπορέσουμε να το κάνουμε αυτό, πρέπει να επανεξετάσουμε μία απλοποίηση που κάναμε παραπάνω. Σε ισότιμες ενώσεις (equi joins) τα κλειδιά των <code>x</code> και <code>y</code> είναι πάντα ίσα, οπότε αρκεί να εμφανίσουμε μόνο ένα στην έξοδο. Μπορούμε να ζητήσουμε από το πακέτο dplyr να διατηρήσει και τα δύο κλειδιά με το όρισμα <code>keep = TRUE</code>, οδηγώντας στον παρακάτω κώδικα και στο επανασχεδιασμένο <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join()</a></code> στο <a href="#fig-inner-both" class="quarto-xref">Σχήμα&nbsp;<span>19.12</span></a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">key</span> <span class="op">==</span> <span class="va">key</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
@@ -1052,18 +1104,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-inner-both" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/inner-both.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που δείχνει μια εσωτερική ένωση μεταξύ των x και y. Η έξοδος περιλαμβάνει πλέον τέσσερις στήλες: τις key.x, val_x, key.y και val_y. Οι τιμές των key.x και key.y είναι πανομοιότυπες, γι' αυτό συνήθως δείχνουμε μόνο μία από αυτές. " width="415"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.12: Μία εσωτερική ένωση που δείνει τα κλειδιά των <code>x</code> και <code>y</code> στην έξοδο.</figcaption></figure>
+<div id="fig-inner-both" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Ένα διάγραμμα ένωσης που δείχνει μια εσωτερική ένωση μεταξύ των x και y. Η έξοδος περιλαμβάνει πλέον τέσσερις στήλες: τις key.x, val_x, key.y και val_y. Οι τιμές των key.x και key.y είναι πανομοιότυπες, γι' αυτό συνήθως δείχνουμε μόνο μία από αυτές. ">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-inner-both-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/inner-both.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που δείχνει μια εσωτερική ένωση μεταξύ των x και y. Η έξοδος περιλαμβάνει πλέον τέσσερις στήλες: τις key.x, val_x, key.y και val_y. Οι τιμές των key.x και key.y είναι πανομοιότυπες, γι' αυτό συνήθως δείχνουμε μόνο μία από αυτές. " width="415">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inner-both-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.12: Μία εσωτερική ένωση που δείνει τα κλειδιά των <code>x</code> και <code>y</code> στην έξοδο.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Όταν απομακρυνόμαστε από τις equi ενώσεις, θα εμφανίζουμε πάντα τα κλειδιά, επειδή οι τιμές των κλειδιών συχνά θα είναι διαφορετικές. Για παράδειγμα, αντί να κάνουμε την αντιστοίχιση μόνο όταν το <code>x$key</code> και το <code>y$key</code> είναι ίσα, θα μπορούσαμε να κάνουμε την αντιστοίχιση κάθε φορά που το <code>x$key</code> είναι μεγαλύτερο ή ίσο με το <code>y$key</code>, που οδηγεί στο <a href="#fig-join-gte">Σχήμα&nbsp;<span>19.13</span></a>. Οι συναρτήσεις ένωσης της dplyr κατανοούν αυτή τη διάκριση ανάμεσα σε ισοδύναμες και μη ισοδύναμες ενώσεις, επομένως θα εμφανίζουν πάντα και τα δύο κλειδιά όταν εκτελείτε μία ένωση χωρίς ισοδυναμία.</p>
+<p>Όταν απομακρυνόμαστε από τις equi ενώσεις, θα εμφανίζουμε πάντα τα κλειδιά, επειδή οι τιμές των κλειδιών συχνά θα είναι διαφορετικές. Για παράδειγμα, αντί να κάνουμε την αντιστοίχιση μόνο όταν το <code>x$key</code> και το <code>y$key</code> είναι ίσα, θα μπορούσαμε να κάνουμε την αντιστοίχιση κάθε φορά που το <code>x$key</code> είναι μεγαλύτερο ή ίσο με το <code>y$key</code>, που οδηγεί στο <a href="#fig-join-gte" class="quarto-xref">Σχήμα&nbsp;<span>19.13</span></a>. Οι συναρτήσεις ένωσης της dplyr κατανοούν αυτή τη διάκριση ανάμεσα σε ισοδύναμες και μη ισοδύναμες ενώσεις, επομένως θα εμφανίζουν πάντα και τα δύο κλειδιά όταν εκτελείτε μία ένωση χωρίς ισοδυναμία.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-gte" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/gte.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που απεικονίζει το αποτέλεσμα της join_by(key >= key). Η πρώτη γραμμή του x ταιριάζει με μία γραμμή του y, ενώ η δεύτερη και τρίτη γραμμή αντιστοιχίζονται με από δύο γραμμές η καθεμία. Αυτό σημαίνει ότι η έξοδος έχει πέντε γραμμές που περιέχουν κάθε ένα από τα ακόλουθα ζεύγη (key.x, key.y): (1, 1), (2, 1), (2, 2), (3, 1), (3, 2)." width="385"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.13: Μία non-equi ένωση, όπου το κλειδί του <code>x</code> πρέπει να είναι μεγαλύτερο ή ίσο του κλειδιού του <code>y</code>. Πολλές γραμμές δημιουργούν πολλαπλές αντιστοιχίσεις.</figcaption></figure>
+<div id="fig-join-gte" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Ένα διάγραμμα ένωσης που απεικονίζει το αποτέλεσμα της join_by(key >= key). Η πρώτη γραμμή του x ταιριάζει με μία γραμμή του y, ενώ η δεύτερη και τρίτη γραμμή αντιστοιχίζονται με από δύο γραμμές η καθεμία. Αυτό σημαίνει ότι η έξοδος έχει πέντε γραμμές που περιέχουν κάθε ένα από τα ακόλουθα ζεύγη (key.x, key.y): (1, 1), (2, 1), (2, 2), (3, 1), (3, 2).">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-gte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/gte.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που απεικονίζει το αποτέλεσμα της join_by(key >= key). Η πρώτη γραμμή του x ταιριάζει με μία γραμμή του y, ενώ η δεύτερη και τρίτη γραμμή αντιστοιχίζονται με από δύο γραμμές η καθεμία. Αυτό σημαίνει ότι η έξοδος έχει πέντε γραμμές που περιέχουν κάθε ένα από τα ακόλουθα ζεύγη (key.x, key.y): (1, 1), (2, 1), (2, 2), (3, 1), (3, 2)." width="385">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-gte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.13: Μία non-equi ένωση, όπου το κλειδί του <code>x</code> πρέπει να είναι μεγαλύτερο ή ίσο του κλειδιού του <code>y</code>. Πολλές γραμμές δημιουργούν πολλαπλές αντιστοιχίσεις.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1077,12 +1137,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Κάθε μία από αυτές περιγράφεται λεπτομερέστερα στις επόμενες ενότητες.</p>
 <section id="διασταυρούμενες-ενώσεις" class="level3" data-number="19.5.1"><h3 data-number="19.5.1" class="anchored" data-anchor-id="διασταυρούμενες-ενώσεις">
 <span class="header-section-number">19.5.1</span> Διασταυρούμενες ενώσεις</h3>
-<p>Μία διασταυρούμενη ένωση ταιριάζει με τα πάντα, όπως στο <a href="#fig-join-cross">Σχήμα&nbsp;<span>19.14</span></a>, δημιουργώντας το καρτεσιανό γινόμενο των γραμμών. Αυτό σημαίνει ότι η έξοδος θα έχει <code>nrow(x) * nrow(y)</code> γραμμές.</p>
+<p>Μία διασταυρούμενη ένωση ταιριάζει με τα πάντα, όπως στο <a href="#fig-join-cross" class="quarto-xref">Σχήμα&nbsp;<span>19.14</span></a>, δημιουργώντας το καρτεσιανό γινόμενο των γραμμών. Αυτό σημαίνει ότι η έξοδος θα έχει <code>nrow(x) * nrow(y)</code> γραμμές.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-cross" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/cross.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που δείνει μια κουκίδα για κάθε συνδυασμό των x και y." width="155"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.14: Μία διασταυρούμενη ένωησ αντιστοιχίζει κάθε γραμμή του <code>x</code> με κάθε γραμμή του <code>y</code>.</figcaption></figure>
+<div id="fig-join-cross" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Ένα διάγραμμα ένωσης που δείνει μια κουκίδα για κάθε συνδυασμό των x και y.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-cross-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/cross.png" class="img-fluid figure-img" alt="Ένα διάγραμμα ένωσης που δείνει μια κουκίδα για κάθε συνδυασμό των x και y." width="155">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-cross-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.14: Μία διασταυρούμενη ένωησ αντιστοιχίζει κάθε γραμμή του <code>x</code> με κάθε γραμμή του <code>y</code>.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1103,12 +1167,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="ενώσεις-ανισότητας" class="level3" data-number="19.5.2"><h3 data-number="19.5.2" class="anchored" data-anchor-id="ενώσεις-ανισότητας">
 <span class="header-section-number">19.5.2</span> Ενώσεις ανισότητας</h3>
-<p>Οι ενώσεις ανισότητας χρησιμοποιούν τους τελεστές <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, ή <code>&gt;</code> για να περιορίσουν το σύνολο των πιθανών αντιστοιχίσεων, όπως στο <a href="#fig-join-gte">Σχήμα&nbsp;<span>19.13</span></a> και το <a href="#fig-join-lt">Σχήμα&nbsp;<span>19.15</span></a>.</p>
+<p>Οι ενώσεις ανισότητας χρησιμοποιούν τους τελεστές <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, ή <code>&gt;</code> για να περιορίσουν το σύνολο των πιθανών αντιστοιχίσεων, όπως στο <a href="#fig-join-gte" class="quarto-xref">Σχήμα&nbsp;<span>19.13</span></a> και το <a href="#fig-join-lt" class="quarto-xref">Σχήμα&nbsp;<span>19.15</span></a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-lt" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/lt.png" class="img-fluid figure-img" alt="Ένα διάγραμμα που απεικονίζει μια ένωση ανισότητας όπου το πλαίδιο δεδομένων x ενώνεται με το πλαίσιο δεδομένων y όπου το κλειδί του x είναι μικρότερο από το κλειδί του y, δημιουργώντας έτσι ένα τριγωνικό σχήμα στην πάνω αριστερή γωνία." width="185"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.15: Μία ένωση ανισότητας όπου το <code>x</code> ενώνεται με το <code>y</code> στις γραμμές όπου το κλειδί του <code>x</code> είναι μικρότερο από το κλειδί του <code>y</code>. Αυτό δημιουργεί ένα τριγωνικό σχήμα στην πάρω αριστερή γωνία.</figcaption></figure>
+<div id="fig-join-lt" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Ένα διάγραμμα που απεικονίζει μια ένωση ανισότητας όπου το πλαίδιο δεδομένων x ενώνεται με το πλαίσιο δεδομένων y όπου το κλειδί του x είναι μικρότερο από το κλειδί του y, δημιουργώντας έτσι ένα τριγωνικό σχήμα στην πάνω αριστερή γωνία.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-lt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/lt.png" class="img-fluid figure-img" alt="Ένα διάγραμμα που απεικονίζει μια ένωση ανισότητας όπου το πλαίδιο δεδομένων x ενώνεται με το πλαίσιο δεδομένων y όπου το κλειδί του x είναι μικρότερο από το κλειδί του y, δημιουργώντας έτσι ένα τριγωνικό σχήμα στην πάνω αριστερή γωνία." width="185">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-lt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.15: Μία ένωση ανισότητας όπου το <code>x</code> ενώνεται με το <code>y</code> στις γραμμές όπου το κλειδί του <code>x</code> είναι μικρότερο από το κλειδί του <code>y</code>. Αυτό δημιουργεί ένα τριγωνικό σχήμα στην πάρω αριστερή γωνία.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1129,12 +1197,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="κυλιόμενες-ενώσεις" class="level3" data-number="19.5.3"><h3 data-number="19.5.3" class="anchored" data-anchor-id="κυλιόμενες-ενώσεις">
 <span class="header-section-number">19.5.3</span> Κυλιόμενες ενώσεις</h3>
-<p>Οι κυλιόμενες ενώσεις είναι ένας ειδικός τύπος ένωσης ανισότητας όπου αντί να λαμβάνουμε <em>κάθε</em> γραμμή που ικανοποιεί την ανισότητα, παίρνουμε μόνο την πλησιέστερη γραμμή, όπως στο <a href="#fig-join-closest">Σχήμα&nbsp;<span>19.16</span></a>. Μπορείτε να μετατρέψετε οποιαδήποτε ένωση ανισότητας σε κυλιόμενη ένωση προσθέτοντας το όρισμα <code>closest()</code>. Για παράδειγμα, το <code>join_by(closest(x &lt;= y))</code> αντιστοιχεί στο μικρότερο <code>y</code> που είναι μεγαλύτερο ή ίσο με το <code>x</code> και το <code>join_by(closest(x &gt; y))</code> αντιστοιχεί στο μεγαλύτερο <code>y</code> που είναι μικρότερο από το <code>x</code>.</p>
+<p>Οι κυλιόμενες ενώσεις είναι ένας ειδικός τύπος ένωσης ανισότητας όπου αντί να λαμβάνουμε <em>κάθε</em> γραμμή που ικανοποιεί την ανισότητα, παίρνουμε μόνο την πλησιέστερη γραμμή, όπως στο <a href="#fig-join-closest" class="quarto-xref">Σχήμα&nbsp;<span>19.16</span></a>. Μπορείτε να μετατρέψετε οποιαδήποτε ένωση ανισότητας σε κυλιόμενη ένωση προσθέτοντας το όρισμα <code>closest()</code>. Για παράδειγμα, το <code>join_by(closest(x &lt;= y))</code> αντιστοιχεί στο μικρότερο <code>y</code> που είναι μεγαλύτερο ή ίσο με το <code>x</code> και το <code>join_by(closest(x &gt; y))</code> αντιστοιχεί στο μεγαλύτερο <code>y</code> που είναι μικρότερο από το <code>x</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-join-closest" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="diagrams/join/closest.png" class="img-fluid figure-img" alt="Μία κυλιώμενη ένωση είναι υποσύνολο μιας ένωσης ανισότητας, οπότε μερικές αντιστοιχίσεις είναι γκριζαρισμένες, υποδεικνύοντας ότι δεν χρησιμοποιούνται, μιας και δεν είναι οι &quot;κοντινότερες&quot;." width="262"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;19.16: Μία κυλιώμενη ένωση είναι παρόμοια με μία μεγαλύτερο-από-ή-ίσο ένωση ανισότητας, αλλά αντιστοιχίζει μόνο την πρώτη τιμή.</figcaption></figure>
+<div id="fig-join-closest" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Μία κυλιώμενη ένωση είναι υποσύνολο μιας ένωσης ανισότητας, οπότε μερικές αντιστοιχίσεις είναι γκριζαρισμένες, υποδεικνύοντας ότι δεν χρησιμοποιούνται, μιας και δεν είναι οι &quot;κοντινότερες&quot;.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-join-closest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="diagrams/join/closest.png" class="img-fluid figure-img" alt="Μία κυλιώμενη ένωση είναι υποσύνολο μιας ένωσης ανισότητας, οπότε μερικές αντιστοιχίσεις είναι γκριζαρισμένες, υποδεικνύοντας ότι δεν χρησιμοποιούνται, μιας και δεν είναι οι &quot;κοντινότερες&quot;." width="262">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-join-closest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;19.16: Μία κυλιώμενη ένωση είναι παρόμοια με μία μεγαλύτερο-από-ή-ίσο ένωση ανισότητας, αλλά αντιστοιχίζει μόνο την πρώτη τιμή.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1366,10 +1438,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1379,8 +1468,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1392,7 +1490,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1436,6 +1657,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1461,6 +1683,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1520,23 +1768,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./missing-values.html" class="pagination-link">
+      <a href="./missing-values.html" class="pagination-link" aria-label="Κενές τιμές">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Κενές τιμές</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./import.html" class="pagination-link">
+      <a href="./import.html" class="pagination-link" aria-label="Εισαγωγή δεδομένων">
         <span class="nav-page-text">Εισαγωγή δεδομένων</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</div>   
+    <div class="nav-footer-left">
+<p>Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">
+<p>Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
   </div>
 </footer>
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund">
 <title>Η R για την Επιστήμη των Δεδομένων (2η έκδοση) - 20&nbsp; Υπολογιστικά φύλλα</title>
@@ -20,7 +20,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -78,7 +78,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
     "search-matching-documents-text": "ταιριάζοντα έγγραφα",
@@ -87,6 +93,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
     "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
     "search-clear-button-title": "Καθαρισμός",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Ακύρωση",
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
@@ -97,19 +104,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Εισαγωγή δεδομένων</a></li><li class="breadcrumb-item"><a href="./spreadsheets.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Εισαγωγή δεδομένων</a></li><li class="breadcrumb-item"><a href="./spreadsheets.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Εναλλαγή πλαϊνής γραμμής πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Η R για την Επιστήμη των Δεδομένων (2η έκδοση)</a> 
         <div class="sidebar-tools-main">
@@ -388,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Πίνακας περιεχομένων</h2>
@@ -424,7 +431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Εισαγωγή δεδομένων</a></li><li class="breadcrumb-item"><a href="./spreadsheets.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-import-spreadsheets" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Υπολογιστικά φύλλα</span></span></h1>
 </div>
 
@@ -438,9 +445,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header><section id="εισαγωγή" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="εισαγωγή">
 <span class="header-section-number">20.1</span> Εισαγωγή</h2>
-<p>Στο <a href="data-import.html"><span>Κεφάλαιο&nbsp;7</span></a> μάθατε για την εισαγωγή δεδομένων από αρχεία απλού κειμένου, όπως <code>.csv</code> και <code>.tsv</code>. Τώρα ήρθε η ώρα να μάθετε πώς να εξάγετε δεδομένα από ένα υπολογιστικό φύλλο, είτε από Excel, είτε από Google Sheet. Θα βασιστούμε σε πολλά από αυτά που έχετε μάθει στο <a href="data-import.html"><span>Κεφάλαιο&nbsp;7</span></a>, θα συζητήσουμε όμως πρόσθετες οπτικές και δυσκολίες κατά την εργασία σας με δεδομένα από υπολογιστικά φύλλα.</p>
+<p>Στο <a href="data-import.html" class="quarto-xref"><span>Κεφάλαιο 7</span></a> μάθατε για την εισαγωγή δεδομένων από αρχεία απλού κειμένου, όπως <code>.csv</code> και <code>.tsv</code>. Τώρα ήρθε η ώρα να μάθετε πώς να εξάγετε δεδομένα από ένα υπολογιστικό φύλλο, είτε από Excel, είτε από Google Sheet. Θα βασιστούμε σε πολλά από αυτά που έχετε μάθει στο <a href="data-import.html" class="quarto-xref"><span>Κεφάλαιο 7</span></a>, θα συζητήσουμε όμως πρόσθετες οπτικές και δυσκολίες κατά την εργασία σας με δεδομένα από υπολογιστικά φύλλα.</p>
 <p>Εάν εσείς ή οι συνεργάτες σας χρησιμοποιείτε υπολογιστικά φύλλα για την οργάνωση δεδομένων, συνιστούμε ανεπιφύλακτα να διαβάσετε τη δημοσίευση “Data Organization in Spreadsheets” των Karl Broman και Kara Woo: <a href="https://doi.org/10.1080/00031305.2017.1375989" class="uri">https://doi.org/10.1080/00031305.2017.1375989</a>. Οι βέλτιστες πρακτικές που παρουσιάζονται θα σας γλυτώσουν από αρκετούς πονοκεφάλους καθώς εισάγετε δεδομένα από ένα υπολογιστικό φύλλο στην R για αναλύσετε και να οπτικοποιήσετε.</p>
 </section><section id="excel" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="excel">
 <span class="header-section-number">20.2</span> Excel</h2>
@@ -464,12 +472,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Αυτές οι συναρτήσεις έχουν παρόμοια σύνταξη όπως και άλλες συναρτήσεις για τις οποίες έχουμε μιλήσει προηγουμένως για την ανάγνωση άλλων τύπων αρχείων, π.χ., <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code>, <code><a href="https://readr.tidyverse.org/reference/read_table.html">read_table()</a></code> κ.λπ. Για το υπόλοιπο του κεφαλαίου θα επικεντρωθούμε στη χρήση της <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code>.</p>
 </section><section id="sec-reading-spreadsheets-excel" class="level3" data-number="20.2.3"><h3 data-number="20.2.3" class="anchored" data-anchor-id="sec-reading-spreadsheets-excel">
 <span class="header-section-number">20.2.3</span> Διαβάζοντας υπολογιστικά φύλλα Excel</h3>
-<p>Το <a href="#fig-students-excel">Σχήμα&nbsp;<span>20.1</span></a> δείχνει πώς φαίνεται στο Excel το υπολογιστικό φύλλο που θα διαβάσουμε στην R. Μπορείτε να το κατεβάσετε ως αρχείο Excel από το <a href="https://docs.google.com/spreadsheets/d/1V1nPp1tzOuutXFLb3G9Eyxi3qxeEhnOXUzL5_BcCQ0w/" class="uri">https://docs.google.com/spreadsheets/d/1V1nPp1tzOuutXFLb3G9Eyxi3qxeEhnOXUzL5_BcCQ0w/</a>.</p>
+<p>Το <a href="#fig-students-excel" class="quarto-xref">Σχήμα&nbsp;<span>20.1</span></a> δείχνει πώς φαίνεται στο Excel το υπολογιστικό φύλλο που θα διαβάσουμε στην R. Μπορείτε να το κατεβάσετε ως αρχείο Excel από το <a href="https://docs.google.com/spreadsheets/d/1V1nPp1tzOuutXFLb3G9Eyxi3qxeEhnOXUzL5_BcCQ0w/" class="uri">https://docs.google.com/spreadsheets/d/1V1nPp1tzOuutXFLb3G9Eyxi3qxeEhnOXUzL5_BcCQ0w/</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-students-excel" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="screenshots/import-spreadsheets-students.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο των μαθητών στο Excel. Το υπολογιστικό φύλλο περιέχει πληροφορίες για 6 μαθητές, την ταυτότητά τους, το πλήρες όνομα, το αγαπημένο τους φαγητό, το πρόγραμμα γευμάτων και την ηλικία τους." width="1200"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;20.1: Υπολογιστικό φύλλο με όνομα students.xlsx στο Excel.</figcaption></figure>
+<div id="fig-students-excel" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Μία ματιά στο υπολογιστικό φύλλο των μαθητών στο Excel. Το υπολογιστικό φύλλο περιέχει πληροφορίες για 6 μαθητές, την ταυτότητά τους, το πλήρες όνομα, το αγαπημένο τους φαγητό, το πρόγραμμα γευμάτων και την ηλικία τους.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-students-excel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="screenshots/import-spreadsheets-students.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο των μαθητών στο Excel. Το υπολογιστικό φύλλο περιέχει πληροφορίες για 6 μαθητές, την ταυτότητά τους, το πλήρες όνομα, το αγαπημένο τους φαγητό, το πρόγραμμα γευμάτων και την ηλικία τους." width="1200">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-students-excel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;20.1: Υπολογιστικό φύλλο με όνομα students.xlsx στο Excel.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -602,12 +614,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Δεν υπάρχει τρόπος να γνωρίζετε ακριβώς πώς θα είναι τα δεδομένα μέχρι να τα φορτώσετε και να τα δείτε. Βασικά, στην πραγματικότητα, υπάρχει. Μπορείτε να ρίξετε μία ματιά ανοίγοντας το αρχείο στο Excel. Εάν πρόκειται να το κάνετε, συνιστούμε να δημιουργήσετε ένα αντίγραφο του αρχείου Excel για να το ανοίξετε και να περιηγηθείτε διαδραστικά και να αφήσετε ως έχει το αρχικό αρχείο που θα διαβάσετε στην R. Αυτό θα διασφαλίσει ότι δεν θα αντικαταστήσετε κατά λάθος κάτι μέσα στο υπολογιστικό φύλλο όσο το εξερευνείτε. Επίσης, δεν πρέπει να φοβάστε να κάνετε αυτό που κάναμε εδώ: φορτώστε τα δεδομένα, ρίξτε μία ματιά, κάντε προσαρμογές στον κώδικά σας, φορτώστε το αρχείο ξανά και επαναλάβετε μέχρι να είστε ευχαριστημένοι με το αποτέλεσμα.</p>
 </section><section id="διαβάζοντας-φύλλα-εργασίας" class="level3" data-number="20.2.4"><h3 data-number="20.2.4" class="anchored" data-anchor-id="διαβάζοντας-φύλλα-εργασίας">
 <span class="header-section-number">20.2.4</span> Διαβάζοντας φύλλα εργασίας</h3>
-<p>Ένα σημαντικό χαρακτηριστικό που ξεχωρίζει τα υπολογιστικά φύλλα από τα flat αρχεία είναι η έννοια των πολλαπλών φύλλων, που ονομάζονται φύλλα εργασίας. Το <a href="#fig-penguins-islands">Σχήμα&nbsp;<span>20.2</span></a> εμφανίζει ένα υπολογιστικό φύλλο Excel με πολλά φύλλα εργασίας. Τα δεδομένα προέρχονται από το πακέτο <strong>palmerpenguins</strong> ενώ μπορείτε να κατεβάσετε το υπολογιστικό φύλλο ως αρχείο Excel από το <a href="https://docs.google.com/spreadsheets/d/1aFu8lnD_g0yjF5O-K6SFgSEWiHPpgvFCF0NY9D6LXnY/" class="uri">https://docs.google.com/spreadsheets/d/1aFu8lnD_g0yjF5O-K6SFgSEWiHPpgvFCF0NY9D6LXnY/</a>. Κάθε φύλλο εργασίας περιέχει πληροφορίες για πιγκουίνους από διαφορετικά νησιά.</p>
+<p>Ένα σημαντικό χαρακτηριστικό που ξεχωρίζει τα υπολογιστικά φύλλα από τα flat αρχεία είναι η έννοια των πολλαπλών φύλλων, που ονομάζονται φύλλα εργασίας. Το <a href="#fig-penguins-islands" class="quarto-xref">Σχήμα&nbsp;<span>20.2</span></a> εμφανίζει ένα υπολογιστικό φύλλο Excel με πολλά φύλλα εργασίας. Τα δεδομένα προέρχονται από το πακέτο <strong>palmerpenguins</strong> ενώ μπορείτε να κατεβάσετε το υπολογιστικό φύλλο ως αρχείο Excel από το <a href="https://docs.google.com/spreadsheets/d/1aFu8lnD_g0yjF5O-K6SFgSEWiHPpgvFCF0NY9D6LXnY/" class="uri">https://docs.google.com/spreadsheets/d/1aFu8lnD_g0yjF5O-K6SFgSEWiHPpgvFCF0NY9D6LXnY/</a>. Κάθε φύλλο εργασίας περιέχει πληροφορίες για πιγκουίνους από διαφορετικά νησιά.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-penguins-islands" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="screenshots/import-spreadsheets-penguins-islands.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο penguins στο Excel. Το υπολογιστικό φύλλο περιέχει τρία φύλλα εργασίας: Torgersen Island, Biscoe Island και Dream Island." width="1514"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;20.2: Υπολογιστικό φύλλο με όνομα penguins.xlsx στο Excel που περιέχει τρία φύλλα εργασίας.</figcaption></figure>
+<div id="fig-penguins-islands" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Μία ματιά στο υπολογιστικό φύλλο penguins στο Excel. Το υπολογιστικό φύλλο περιέχει τρία φύλλα εργασίας: Torgersen Island, Biscoe Island και Dream Island.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-penguins-islands-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="screenshots/import-spreadsheets-penguins-islands.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο penguins στο Excel. Το υπολογιστικό φύλλο περιέχει τρία φύλλα εργασίας: Torgersen Island, Biscoe Island και Dream Island." width="1514">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-penguins-islands-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;20.2: Υπολογιστικό φύλλο με όνομα penguins.xlsx στο Excel που περιέχει τρία φύλλα εργασίας.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -678,15 +694,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # ℹ 338 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, year &lt;dbl&gt;</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Στο <a href="iteration.html"><span>Κεφάλαιο&nbsp;26</span></a> θα μιλήσουμε για τρόπους εκτέλεσης αυτού του είδους εργασίας χωρίς επαναλαμβανόμενο κώδικα.</p>
+<p>Στο <a href="iteration.html" class="quarto-xref"><span>Κεφάλαιο 26</span></a> θα μιλήσουμε για τρόπους εκτέλεσης αυτού του είδους εργασίας χωρίς επαναλαμβανόμενο κώδικα.</p>
 </section><section id="διαβάζοντας-μέρος-ενός-φύλλου" class="level3" data-number="20.2.5"><h3 data-number="20.2.5" class="anchored" data-anchor-id="διαβάζοντας-μέρος-ενός-φύλλου">
 <span class="header-section-number">20.2.5</span> Διαβάζοντας μέρος ενός φύλλου</h3>
-<p>Δεδομένου ότι πολλοί χρησιμοποιούν υπολογιστικά φύλλα Excel για παρουσίαση καθώς και για αποθήκευση δεδομένων, είναι πολύ συνηθισμένο να βρίσκουμε καταχωρήσεις κελιών σε ένα υπολογιστικό φύλλο που δεν αποτελούν μέρος των δεδομένων που θέλετε να διαβάσετε στην R. Το <a href="#fig-deaths-excel">Σχήμα&nbsp;<span>20.3</span></a> δείχνει ένα τέτοιο υπολογιστικό φύλλο: στη μέση του φύλλου υπάρχει κάτι που μοιάζει με πλαίσιο δεδομένων. Υπάρχει όμως εξωτερικό κείμενο στα κελιά πάνω και κάτω από τα δεδομένα.</p>
+<p>Δεδομένου ότι πολλοί χρησιμοποιούν υπολογιστικά φύλλα Excel για παρουσίαση καθώς και για αποθήκευση δεδομένων, είναι πολύ συνηθισμένο να βρίσκουμε καταχωρήσεις κελιών σε ένα υπολογιστικό φύλλο που δεν αποτελούν μέρος των δεδομένων που θέλετε να διαβάσετε στην R. Το <a href="#fig-deaths-excel" class="quarto-xref">Σχήμα&nbsp;<span>20.3</span></a> δείχνει ένα τέτοιο υπολογιστικό φύλλο: στη μέση του φύλλου υπάρχει κάτι που μοιάζει με πλαίσιο δεδομένων. Υπάρχει όμως εξωτερικό κείμενο στα κελιά πάνω και κάτω από τα δεδομένα.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-deaths-excel" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="screenshots/import-spreadsheets-deaths.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο deaths στο Excel. Το υπολογιστικό φύλλο έχει τέσσερις γραμμές στην κορυφή που περιέχουν πληροφορίες χωρίς δεδομένα. Το κείμενο 'For the same of consistency in the data layout, which is really a beautiful thing, I will keep making notes up here.' κατανέμεται σε κελιά σε αυτές τις τέσσερις κορυφαίες γραμμές. Στη συνέχεια, υπάρχει ένα πλαίσιο δεδομένων που περιλαμβάνει πληροφορίες για τους θανάτους 10 διάσημων ανθρώπων, συμπεριλαμβανομένων των ονομάτων, των επαγγελμάτων, των ηλικιών τους, αν έχουν παιδιά ή όχι, την ημερομηνία γέννησης και θανάτου. Στο κάτω μέρος, υπάρχουν τέσσερις ακόμη γραμμές με πληροφορίες χωρίς δεδομένα. Το κείμενο &quot;This has been really fun, but we're signing off now!' κατανέμεται σε κελιά σε αυτές τις τέσσερις κάτω γραμμές." width="1614"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;20.3: Υπολογσιτικό φύλλο με όνομα deaths.xlsx στο Excel.</figcaption></figure>
+<div id="fig-deaths-excel" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Μία ματιά στο υπολογιστικό φύλλο deaths στο Excel. Το υπολογιστικό φύλλο έχει τέσσερις γραμμές στην κορυφή που περιέχουν πληροφορίες χωρίς δεδομένα. Το κείμενο 'For the same of consistency in the data layout, which is really a beautiful thing, I will keep making notes up here.' κατανέμεται σε κελιά σε αυτές τις τέσσερις κορυφαίες γραμμές. Στη συνέχεια, υπάρχει ένα πλαίσιο δεδομένων που περιλαμβάνει πληροφορίες για τους θανάτους 10 διάσημων ανθρώπων, συμπεριλαμβανομένων των ονομάτων, των επαγγελμάτων, των ηλικιών τους, αν έχουν παιδιά ή όχι, την ημερομηνία γέννησης και θανάτου. Στο κάτω μέρος, υπάρχουν τέσσερις ακόμη γραμμές με πληροφορίες χωρίς δεδομένα. Το κείμενο &quot;This has been really fun, but we're signing off now!' κατανέμεται σε κελιά σε αυτές τις τέσσερις κάτω γραμμές.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-deaths-excel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="screenshots/import-spreadsheets-deaths.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο deaths στο Excel. Το υπολογιστικό φύλλο έχει τέσσερις γραμμές στην κορυφή που περιέχουν πληροφορίες χωρίς δεδομένα. Το κείμενο 'For the same of consistency in the data layout, which is really a beautiful thing, I will keep making notes up here.' κατανέμεται σε κελιά σε αυτές τις τέσσερις κορυφαίες γραμμές. Στη συνέχεια, υπάρχει ένα πλαίσιο δεδομένων που περιλαμβάνει πληροφορίες για τους θανάτους 10 διάσημων ανθρώπων, συμπεριλαμβανομένων των ονομάτων, των επαγγελμάτων, των ηλικιών τους, αν έχουν παιδιά ή όχι, την ημερομηνία γέννησης και θανάτου. Στο κάτω μέρος, υπάρχουν τέσσερις ακόμη γραμμές με πληροφορίες χωρίς δεδομένα. Το κείμενο &quot;This has been really fun, but we're signing off now!' κατανέμεται σε κελιά σε αυτές τις τέσσερις κάτω γραμμές." width="1614">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deaths-excel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;20.3: Υπολογσιτικό φύλλο με όνομα deaths.xlsx στο Excel.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -739,7 +759,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Μία συμβολοσειρά, όπως “δέκα”.</p></li>
 </ul>
 <p>Όταν εργάζεστε με δεδομένα από υπολογιστικά φύλλα, είναι σημαντικό να θυμάστε ότι τα υποκείμενα δεδομένα μπορεί να είναι πολύ διαφορετικά από αυτά που βλέπετε στο κελί. Για παράδειγμα, το Excel δεν ορίζει την έννοια του ακέραιου αριθμού. Όλοι οι αριθμοί αποθηκεύονται ως στοιχεία με κινητή υποδιαστολή. Μπορείτε όμως να επιλέξετε τα δεδομένα να εμφανίζονται με έναν προσαρμόσιμο αριθμό δεκαδικών ψηφίων. Ομοίως, οι ημερομηνίες αποθηκεύονται ως αριθμοί, συγκεκριμένα ο αριθμός των δευτερολέπτων από την 1η Ιανουαρίου 1970. Μπορείτε να προσαρμόσετε τον τρόπο εμφάνισης της ημερομηνίας εφαρμόζοντας κάποια μορφοποίηση στο Excel. Συνεχίζοντας με τη σύγχυση, είναι επίσης πιθανό να έχετε κάτι που μοιάζει με αριθμό, αλλά στην πραγματικότητα να είναι μία συμβολοσειρά (π.χ. πληκτρολογήστε <code>10</code> σε ένα κελί στο Excel).</p>
-<p>Οι διαφορές μεταξύ του τρόπου αποθήκευσης των υποκείμενων δεδομένων και του τρόπου εμφάνισής τους μπορεί να προκαλέσουν εκπλήξεις όταν τα δεδομένα φορτώνονται στην R. Από προεπιλογή, το πακέτο readxl θα μαντέψει τον τύπο δεδομένων για κάθε στήλη. Ένας συνιστώμενος τρόπος εργασίας είναι να επιτρέψετε στην readxl να μαντέψει τους τύπους των στηλών, να επιβεβαιώσει ότι είστε ικανοποιημένοι με αυτούς που μάντεψε και, αν όχι, να επιστρέψετε και να εισάγετε ξανά προσδιορίζοντας το <code>col_types</code> όπως φαίνεται στην <a href="#sec-reading-spreadsheets-excel"><span>Ενότητα&nbsp;20.2.3</span></a>.</p>
+<p>Οι διαφορές μεταξύ του τρόπου αποθήκευσης των υποκείμενων δεδομένων και του τρόπου εμφάνισής τους μπορεί να προκαλέσουν εκπλήξεις όταν τα δεδομένα φορτώνονται στην R. Από προεπιλογή, το πακέτο readxl θα μαντέψει τον τύπο δεδομένων για κάθε στήλη. Ένας συνιστώμενος τρόπος εργασίας είναι να επιτρέψετε στην readxl να μαντέψει τους τύπους των στηλών, να επιβεβαιώσει ότι είστε ικανοποιημένοι με αυτούς που μάντεψε και, αν όχι, να επιστρέψετε και να εισάγετε ξανά προσδιορίζοντας το <code>col_types</code> όπως φαίνεται στην <a href="#sec-reading-spreadsheets-excel" class="quarto-xref"><span>Ενότητα 20.2.3</span></a>.</p>
 <p>Μία άλλη πρόκληση είναι όταν έχετε μία στήλη στο υπολογιστικό φύλλο του Excel που περιέχει έναν συνδυασμό αυτών των τύπων, π.χ. ορισμένα κελιά είναι αριθμητικά, άλλα κείμενο, άλλα ημερομηνίες. Κατά την εισαγωγή των δεδομένων στην R, το πακέτο readxl πρέπει να λάβει κάποιες αποφάσεις. Σε αυτές τις περιπτώσεις, μπορείτε να ορίσετε τον τύπο αυτής της στήλης σε <code>λίστα ("list")</code>, η οποία θα φορτώσει τη στήλη ως λίστα διανυσμάτων μήκους 1, όπου μαντεύεται ο τύπος κάθε στοιχείου του διανύσματος.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -772,16 +792,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/writexl/reference/write_xlsx.html">write_xlsx</a></span><span class="op">(</span><span class="va">bake_sale</span>, path <span class="op">=</span> <span class="st">"data/bake-sale.xlsx"</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Το <a href="#fig-bake-sale-excel">Σχήμα&nbsp;<span>20.4</span></a> δείχνει πως φαίνονται τα δεδομένα στο Excel. Σημειώστε ότι τα ονόματα των στηλών περιλαμβάνονται και είναι με έντονη γραφή. Αυτά μπορούν να απενεργοποιηθούν θέτοντας τα ορίσματα <code>col_names</code> και <code>format_headers</code> σε <code>FALSE</code>.</p>
+<p>Το <a href="#fig-bake-sale-excel" class="quarto-xref">Σχήμα&nbsp;<span>20.4</span></a> δείχνει πως φαίνονται τα δεδομένα στο Excel. Σημειώστε ότι τα ονόματα των στηλών περιλαμβάνονται και είναι με έντονη γραφή. Αυτά μπορούν να απενεργοποιηθούν θέτοντας τα ορίσματα <code>col_names</code> και <code>format_headers</code> σε <code>FALSE</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-bake-sale-excel" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="screenshots/import-spreadsheets-bake-sale.png" class="img-fluid figure-img" alt="Πλαίσιο δεδομένων με δεδομένα πώλησης που δημιουργήθηκε νωρίτερα στο Excel." width="917"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;20.4: Υπολογιστικό φύλλο με όνομα bake_sale.xlsx στο Excel.</figcaption></figure>
+<div id="fig-bake-sale-excel" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Πλαίσιο δεδομένων με δεδομένα πώλησης που δημιουργήθηκε νωρίτερα στο Excel.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bake-sale-excel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="screenshots/import-spreadsheets-bake-sale.png" class="img-fluid figure-img" alt="Πλαίσιο δεδομένων με δεδομένα πώλησης που δημιουργήθηκε νωρίτερα στο Excel." width="917">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bake-sale-excel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;20.4: Υπολογιστικό φύλλο με όνομα bake_sale.xlsx στο Excel.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Ακριβώς όπως και κατά την ανάγνωση από ένα CSV, οι πληροφορίες σχετικά με τον τύπο δεδομένων χάνονται όταν διαβάζουμε ξανά τα δεδομένα. Αυτό καθιστά τα αρχεία Excel αναξιόπιστα για την προσωρινή αποθήκευση ενδιάμεσων αποτελεσμάτων. Για εναλλακτικές, ανατρέξτε στην <a href="data-import.html#sec-writing-to-a-file"><span>Ενότητα&nbsp;7.5</span></a>.</p>
+<p>Ακριβώς όπως και κατά την ανάγνωση από ένα CSV, οι πληροφορίες σχετικά με τον τύπο δεδομένων χάνονται όταν διαβάζουμε ξανά τα δεδομένα. Αυτό καθιστά τα αρχεία Excel αναξιόπιστα για την προσωρινή αποθήκευση ενδιάμεσων αποτελεσμάτων. Για εναλλακτικές, ανατρέξτε στην <a href="data-import.html#sec-writing-to-a-file" class="quarto-xref"><span>Ενότητα 7.5</span></a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/bake-sale.xlsx"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
@@ -802,7 +826,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Σε ένα αρχείο Excel, δημιουργήστε το ακόλουθο σύνολο δεδομένων και αποθηκεύστε το ως <code>survey.xlsx</code>. Εναλλακτικά, μπορείτε να το κατεβάσετε ως αρχείο Excel από <a href="https://docs.google.com/spreadsheets/d/1yc5gL-a2OOBr8M7B3IsDNX5uR17vBHOyWZq6xSTG2G8">εδώ</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="screenshots/import-spreadsheets-survey.png" class="img-fluid" alt="Ένα υπολογιστικό φύλλο με 3 στήλες (group, subgroup, and id) και 12 γραμμές. Η στήλη της ομάδας έχει δύο τιμές: 1 (που εκτείνεται σε 7 συγχωνευμένες γραμμές) και 2 (που εκτείνεται σε 5 συγχωνευμένες γραμμές). Η στήλη της subgroup έχει τέσσερις τιμές: A (που εκτείνεται σε 3 συγχωνευμένες γραμμές), B (που εκτείνεται σε 4 συγχωνευμένες γραμμές), A (που εκτείνεται σε 2 συγχωνευμένες γραμμές) και B (που εκτείνεται σε 3 συγχωνευμένες γραμμές). Η στήλη id έχει δώδεκα τιμές, αριθμούς 1 έως 12." width="263"></p>
+<div>
+<figure class="figure"><p><img src="screenshots/import-spreadsheets-survey.png" class="img-fluid figure-img" alt="Ένα υπολογιστικό φύλλο με 3 στήλες (group, subgroup, and id) και 12 γραμμές. Η στήλη της ομάδας έχει δύο τιμές: 1 (που εκτείνεται σε 7 συγχωνευμένες γραμμές) και 2 (που εκτείνεται σε 5 συγχωνευμένες γραμμές). Η στήλη της subgroup έχει τέσσερις τιμές: A (που εκτείνεται σε 3 συγχωνευμένες γραμμές), B (που εκτείνεται σε 4 συγχωνευμένες γραμμές), A (που εκτείνεται σε 2 συγχωνευμένες γραμμές) και B (που εκτείνεται σε 3 συγχωνευμένες γραμμές). Η στήλη id έχει δώδεκα τιμές, αριθμούς 1 έως 12." width="263"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Στη συνέχεια, διαβάστε το στην R, με την <code>survey_id</code> ως μεταβλητή χαρακτήρα και την <code>n_pets</code> ως αριθμητική μεταβλητή.</p>
@@ -822,7 +849,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Σε ένα άλλο αρχείο Excel, δημιουργήστε το ακόλουθο σύνολο δεδομένων και αποθηκεύστε το ως <code>roster.xlsx</code>. Εναλλακτικά, μπορείτε να το κατεβάσετε ως αρχείο Excel από <a href="https://docs.google.com/spreadsheets/d/1LgZ0Bkg9d_NK8uTdP2uHXm07kAlwx8-Ictf8NocebIE">εδώ</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="screenshots/import-spreadsheets-roster.png" class="img-fluid" alt="Ένα υπολογιστικό φύλλο με 3 στήλες (group, subgroup, and id) και 12 γραμμές. Η στήλη της ομάδας έχει δύο τιμές: 1 (που εκτείνεται σε 7 συγχωνευμένες γραμμές) και 2 (που εκτείνεται σε 5 συγχωνευμένες γραμμές). Η στήλη της subgroup έχει τέσσερις τιμές: A (που εκτείνεται σε 3 συγχωνευμένες γραμμές), B (που εκτείνεται σε 4 συγχωνευμένες γραμμές), A (που εκτείνεται σε 2 συγχωνευμένες γραμμές) και B (που εκτείνεται σε 3 συγχωνευμένες γραμμές). Η στήλη id έχει δώδεκα τιμές, αριθμούς από 1 έως 12." width="255"></p>
+<div>
+<figure class="figure"><p><img src="screenshots/import-spreadsheets-roster.png" class="img-fluid figure-img" alt="Ένα υπολογιστικό φύλλο με 3 στήλες (group, subgroup, and id) και 12 γραμμές. Η στήλη της ομάδας έχει δύο τιμές: 1 (που εκτείνεται σε 7 συγχωνευμένες γραμμές) και 2 (που εκτείνεται σε 5 συγχωνευμένες γραμμές). Η στήλη της subgroup έχει τέσσερις τιμές: A (που εκτείνεται σε 3 συγχωνευμένες γραμμές), B (που εκτείνεται σε 4 συγχωνευμένες γραμμές), A (που εκτείνεται σε 2 συγχωνευμένες γραμμές) και B (που εκτείνεται σε 3 συγχωνευμένες γραμμές). Η στήλη id έχει δώδεκα τιμές, αριθμούς από 1 έως 12." width="255"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Στη συνέχεια, διαβάστε το στην R. Το πλαίσιο δεδομένων που προκύπτει θα πρέπει να ονομάζεται <code>roster</code> και θα πρέπει να μοιάζει με το ακόλουθο.</p>
@@ -848,7 +878,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Σε ένα νέο αρχείο Excel, δημιουργήστε το ακόλουθο σύνολο δεδομένων και αποθηκεύστε το ως <code>sales.xlsx</code>. Εναλλακτικά, μπορείτε να το κατεβάσετε ως αρχείο Excel από <a href="https://docs.google.com/spreadsheets/d/1oCqdXUNO8JR3Pca8fHfiz_WXWxMuZAp3YiYFaKze5V0">εδώ</a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="screenshots/import-spreadsheets-sales.png" class="img-fluid" alt="Ένα υπολογιστικό φύλλο με 2 στήλες και 13 γραμμές. Οι πρώτες δύο γραμμές έχουν κείμενο που περιλαμβάνει πληροφορίες για το υπολογιστικό φύλλο. Η γραμμή 1 λέει &quot;This file contains information on sales&quot;. Η γραμμή 2 λέει &quot;Data are organized by brand name, and for each brand, we have the ID number for the item sold, and how many are sold.&quot;. Στη συνέχεια υπάρχουν 2 κενές γραμμές και μετά 9 γραμμές με δεδομένα." width="317"></p>
+<div>
+<figure class="figure"><p><img src="screenshots/import-spreadsheets-sales.png" class="img-fluid figure-img" alt="Ένα υπολογιστικό φύλλο με 2 στήλες και 13 γραμμές. Οι πρώτες δύο γραμμές έχουν κείμενο που περιλαμβάνει πληροφορίες για το υπολογιστικό φύλλο. Η γραμμή 1 λέει &quot;This file contains information on sales&quot;. Η γραμμή 2 λέει &quot;Data are organized by brand name, and for each brand, we have the ID number for the item sold, and how many are sold.&quot;. Στη συνέχεια υπάρχουν 2 κενές γραμμές και μετά 9 γραμμές με δεδομένα." width="317"></p>
+</figure>
+</div>
 </div>
 </div>
 <ol type="a">
@@ -885,7 +918,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </li>
 <li><p>Δημιουργήστε ξανά το πλαίσιο δεδομένων <code>bake_sale</code>, και γράψτε το σε ένα αρχείο Excel χρησιμοποιώντας τη συνάρτηση <code>write.xlsx()</code> από το πακέτο openxlsx.</p></li>
-<li><p>Στο <a href="data-import.html"><span>Κεφάλαιο&nbsp;7</span></a> μάθατε για τη συνάρτηση <code><a href="https://sfirke.github.io/janitor/reference/clean_names.html">janitor::clean_names()</a></code> για τη μετατροπή των ονομάτων των στηλών σε snake case. Διαβάστε το αρχείο <code>students.xlsx</code> που παρουσιάσαμε νωρίτερα σε αυτήν την ενότητα και χρησιμοποιήστε αυτήν τη συνάρτηση για να “καθαρίσετε” τα ονόματα των στηλών.</p></li>
+<li><p>Στο <a href="data-import.html" class="quarto-xref"><span>Κεφάλαιο 7</span></a> μάθατε για τη συνάρτηση <code><a href="https://sfirke.github.io/janitor/reference/clean_names.html">janitor::clean_names()</a></code> για τη μετατροπή των ονομάτων των στηλών σε snake case. Διαβάστε το αρχείο <code>students.xlsx</code> που παρουσιάσαμε νωρίτερα σε αυτήν την ενότητα και χρησιμοποιήστε αυτήν τη συνάρτηση για να “καθαρίσετε” τα ονόματα των στηλών.</p></li>
 <li><p>Τι συμβαίνει αν προσπαθήσετε να διαβάσετε σε ένα αρχείο με επέκταση <code>.xlsx</code> με την <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xls()</a></code>;</p></li>
 </ol></section></section><section id="google-sheets" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="google-sheets">
 <span class="header-section-number">20.3</span> Google Sheets</h2>
@@ -902,15 +935,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">20.3.2</span> Ξεκινώντας</h3>
 <p>Η κύρια συνάρτηση του πακέτου googlesheets4 είναι η <code><a href="https://googlesheets4.tidyverse.org/reference/range_read.html">read_sheet()</a></code>, η οποία διαβάζει ένα φύλλο Google από μία διεύθυνση URL ή ένα αναγνωριστικό αρχείου. Αυτή η συνάρτηση έχει επίσης το όνομα <code><a href="https://googlesheets4.tidyverse.org/reference/range_read.html">range_read()</a></code>.</p>
 <p>Μπορείτε ακόμα να δημιουργήσετε ένα ολοκαίνουργιο φύλλο με την <code><a href="https://googlesheets4.tidyverse.org/reference/gs4_create.html">gs4_create()</a></code> ή να γράψετε σε ένα υπάρχον φύλλο με την <code><a href="https://googlesheets4.tidyverse.org/reference/sheet_write.html">sheet_write()</a></code> και τις σχετικές συναρτήσεις.</p>
-<p>Σε αυτήν την ενότητα θα εργαστούμε με τα ίδια σύνολα δεδομένων με αυτά που είδαμε στην ενότητα του Excel, ώστε να επισημάνουμε ομοιότητες και διαφορές μεταξύ των ροών εργασίας για την ανάγνωση δεδομένων από το Excel και το Google Sheets. Τα πακέτα readxl και googlesheets4 είναι σχεδιασμένα για να μιμούνται τη λειτουργικότητα του πακέτου readr, το οποίο παρέχει τη συνάρτηση <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code> που έχετε δει στο <a href="data-import.html"><span>Κεφάλαιο&nbsp;7</span></a>. Επομένως, πολλές εργασίες μπορούν να επιτευχθούν με μία απλή αντικατάσταση της <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code> με την <code><a href="https://googlesheets4.tidyverse.org/reference/range_read.html">read_sheet()</a></code>. Ωστόσο, θα δείτε ότι το Excel και το Google Sheets δεν συμπεριφέρονται με τον ίδιο ακριβώς τρόπο, επομένως κάποιες εργασίες ενδέχεται να απαιτούν επιπλέον αναβαθμίσεις στις κλήσεις των συναρτήσεων.</p>
+<p>Σε αυτήν την ενότητα θα εργαστούμε με τα ίδια σύνολα δεδομένων με αυτά που είδαμε στην ενότητα του Excel, ώστε να επισημάνουμε ομοιότητες και διαφορές μεταξύ των ροών εργασίας για την ανάγνωση δεδομένων από το Excel και το Google Sheets. Τα πακέτα readxl και googlesheets4 είναι σχεδιασμένα για να μιμούνται τη λειτουργικότητα του πακέτου readr, το οποίο παρέχει τη συνάρτηση <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code> που έχετε δει στο <a href="data-import.html" class="quarto-xref"><span>Κεφάλαιο 7</span></a>. Επομένως, πολλές εργασίες μπορούν να επιτευχθούν με μία απλή αντικατάσταση της <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel()</a></code> με την <code><a href="https://googlesheets4.tidyverse.org/reference/range_read.html">read_sheet()</a></code>. Ωστόσο, θα δείτε ότι το Excel και το Google Sheets δεν συμπεριφέρονται με τον ίδιο ακριβώς τρόπο, επομένως κάποιες εργασίες ενδέχεται να απαιτούν επιπλέον αναβαθμίσεις στις κλήσεις των συναρτήσεων.</p>
 </section><section id="διαβάζοντας-google-sheets" class="level3" data-number="20.3.3"><h3 data-number="20.3.3" class="anchored" data-anchor-id="διαβάζοντας-google-sheets">
 <span class="header-section-number">20.3.3</span> Διαβάζοντας Google Sheets</h3>
-<p>Το <a href="#fig-students-googlesheets">Σχήμα&nbsp;<span>20.5</span></a> δείχνει πώς φαίνεται το υπολογιστικό φύλλο που πρόκειται να διαβάσουμε στην R στο Google Sheets. Αυτό είναι το ίδιο σύνολο δεδομένων όπως και στο <a href="#fig-students-excel">Σχήμα&nbsp;<span>20.1</span></a>, με τη διαφορά ότι είναι αποθηκευμένο σε ένα Google Sheet αντί για Excel.</p>
+<p>Το <a href="#fig-students-googlesheets" class="quarto-xref">Σχήμα&nbsp;<span>20.5</span></a> δείχνει πώς φαίνεται το υπολογιστικό φύλλο που πρόκειται να διαβάσουμε στην R στο Google Sheets. Αυτό είναι το ίδιο σύνολο δεδομένων όπως και στο <a href="#fig-students-excel" class="quarto-xref">Σχήμα&nbsp;<span>20.1</span></a>, με τη διαφορά ότι είναι αποθηκευμένο σε ένα Google Sheet αντί για Excel.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-students-googlesheets" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="screenshots/import-googlesheets-students.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο students στο Google Sheets. Το υπολογιστικό φύλλο περιέχει πληροφορίες για 6 μαθητές, την ταυτότητά τους, το πλήρες όνομα, το αγαπημένο τους φαγητό, το πρόγραμμα γευμάτων και την ηλικία τους." width="986"></p>
-<figcaption class="figure-caption">Σχήμα&nbsp;20.5: Google Sheet called students in a browser window.</figcaption></figure>
+<div id="fig-students-googlesheets" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Μία ματιά στο υπολογιστικό φύλλο students στο Google Sheets. Το υπολογιστικό φύλλο περιέχει πληροφορίες για 6 μαθητές, την ταυτότητά τους, το πλήρες όνομα, το αγαπημένο τους φαγητό, το πρόγραμμα γευμάτων και την ηλικία τους.">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-students-googlesheets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="screenshots/import-googlesheets-students.png" class="img-fluid figure-img" alt="Μία ματιά στο υπολογιστικό φύλλο students στο Google Sheets. Το υπολογιστικό φύλλο περιέχει πληροφορίες για 6 μαθητές, την ταυτότητά τους, το πλήρες όνομα, το αγαπημένο τους φαγητό, το πρόγραμμα γευμάτων και την ηλικία τους." width="986">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-students-googlesheets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα&nbsp;20.5: Google Sheet called students in a browser window.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1126,10 +1163,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1139,8 +1193,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1152,7 +1215,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1196,6 +1382,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1221,6 +1408,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1280,23 +1493,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./import.html" class="pagination-link">
+      <a href="./import.html" class="pagination-link" aria-label="Εισαγωγή δεδομένων">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Εισαγωγή δεδομένων</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./databases.html" class="pagination-link">
+      <a href="./databases.html" class="pagination-link" aria-label="Βάσεις Δεδομένων">
         <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Βάσεις Δεδομένων</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</div>   
+    <div class="nav-footer-left">
+<p>Η 2η έκδοση του “Η R για την Επιστήμη των Δεδομένων” γράφτηκε από τους Hadley Wickham, Mine Çetinkaya-Rundel, και Garrett Grolemund.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">
+<p>Το βιβλίο αυτό δημιουργήθηκε με το <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
   </div>
 </footer>
 
