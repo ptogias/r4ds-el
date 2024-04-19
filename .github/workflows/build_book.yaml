@@ -37,7 +37,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
 
-      - name: Render book to all format
+      - name: Render book
         # Add any command line argument needed
         run: |
           quarto render
