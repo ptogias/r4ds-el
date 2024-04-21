@@ -837,9 +837,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/problems.html">problems</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 5</span></span>
-<span><span class="co">#&gt;     row   col expected actual file                            </span></span>
-<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;                           </span></span>
-<span><span class="co">#&gt; 1     3     1 a double .      /tmp/Rtmp1Rt3Vz/file1de33f2e8d32</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;     row   col expected actual file                           </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;                          </span></span>
+<span><span class="co">#&gt; 1     3     1 a double .      /tmp/RtmpqiPV5z/file1dee8be8e51</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Αυτό μας λέει ότι βρέθηκε ένα πρόβλημα στη γραμμή 3 και στήλη 1 όπου το πακέτο readr περίμενε έναν πραγματικό αριθμό αλλά εντόπισε ένα <code>.</code>. Αυτό υποδηλώνει ότι αυτό το σύνολο δεδομένων χρησιμοποιεί <code>.</code> για τιμές που λείπουν. Στη συνέχεια, ορίζουμε <code>na = "."</code>, και η αυτόματη εικασία επιτυγχάνει, δίνοντάς μας την αριθμητική στήλη που θέλουμε:</p>
 <div class="cell">
