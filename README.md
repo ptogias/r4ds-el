@@ -1,3 +1,5 @@
+[![Quarto Publish](https://github.com/ptogias/r4ds-el/actions/workflows/build_book.yaml/badge.svg?branch=develop)](https://github.com/ptogias/r4ds-el/actions/workflows/build_book.yaml)
+
 # Η R για την Επιστήμη των Δεδομένων
 
 Αυτό το repo περιέχει τα αρχεία κώδικα του βιβλίου [Η R για την Επιστήμη των Δεδομένων](http://r4ds.hadley.nz).
