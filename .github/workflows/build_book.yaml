@@ -33,14 +33,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
 
-      - name: Render book
-        # Add any command line argument needed
-        run: |
-          quarto render
-
-      - name: Deploy to GitHub pages
-        if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
         with:
-          branch: gh-pages
-          folder: _book
+          target: gh-pages
